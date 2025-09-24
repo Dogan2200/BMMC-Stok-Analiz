@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>AVESORO BI – Excel Beslemeli Stok Raporu + Snapshot Paylaşım</title>
+<title>AVESORO BI – Excel Beslemeli Stok Raporu (public + kamu desteği)</title>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 :root{
@@ -22,22 +22,16 @@ header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.9);
 h1{font-size:18px;margin:0;font-weight:800} .note{font-size:12px;color:var(--muted)}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .right-actions{display:flex;gap:8px}
-
 .filters{
   display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:12px;
-  position:relative;
-  padding:14px;
-  background:
+  position:relative;padding:14px;background:
     radial-gradient(1200px 200px at 20% -40%, rgba(250,246,235,.65), transparent 60%),
     radial-gradient(1200px 200px at 80% 140%, rgba(234,244,230,.55), transparent 60%),
     #fff;
-  border:1px solid #eceef2;
-  border-radius:18px;
-  box-shadow:var(--shadow);
+  border:1px solid #eceef2;border-radius:18px;box-shadow:var(--shadow);
 }
 @media(max-width:1040px){.filters{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:640px){.filters{grid-template-columns:repeat(2,1fr)}}
-
 .ddbox{position:relative}
 .ddbox>button,.btn{
   width:100%;padding:10px 12px;border:1px solid #e6e8ec;background:linear-gradient(180deg,#fff,#fafafa);
@@ -46,41 +40,29 @@ h1{font-size:18px;margin:0;font-weight:800} .note{font-size:12px;color:var(--mut
 }
 .ddbox>button:hover,.btn:hover{box-shadow:0 12px 28px rgba(15,23,42,.08), var(--shadow);transform:translateY(-1px)}
 .ddbox>button:active,.btn:active{transform:translateY(0);box-shadow:0 6px 18px rgba(15,23,42,.06)}
-.ddbox>button:focus-visible,.btn:focus-visible{
-  outline:0;box-shadow:0 0 0 3px rgba(59,130,246,.12), 0 8px 24px rgba(15,23,42,.06)
-}
-
+.ddbox>button:focus-visible,.btn:focus-visible{outline:0;box-shadow:0 0 0 3px rgba(59,130,246,.12), 0 8px 24px rgba(15,23,42,.06)}
 .ddbox>button{position:relative;padding-right:36px}
-.ddbox>button::after{
-  content:'';position:absolute;right:12px;top:50%;width:8px;height:8px;margin-top:-4px;
-  border-right:2px solid #94a3b8;border-bottom:2px solid #94a3b8;transform:rotate(45deg);opacity:.85;
-  transition:transform .2s ease, opacity .2s ease;
-}
+.ddbox>button::after{content:'';position:absolute;right:12px;top:50%;width:8px;height:8px;margin-top:-4px;
+  border-right:2px solid #94a3b8;border-bottom:2px solid #94a3b8;transform:rotate(45deg);opacity:.85;transition:.2s}
 .ddbox.open>button::after{transform:rotate(-135deg);opacity:1}
-
 .ddbox>button b{font-size:12px;letter-spacing:.02em;color:var(--muted)}
 .ddbox>button .lab{font-weight:600;color:#334155}
-
 .dd{position:absolute;left:0;top:calc(100% + 6px);z-index:10;background:#fff;border:1px solid #e5e7eb;
   border-radius:12px;box-shadow:var(--shadow);min-width:260px;max-height:320px;overflow:auto;display:none}
 .ddbox.open .dd{display:block}
 .dd .row{display:flex;gap:8px;align-items:center;padding:6px 8px;border-radius:8px}
 .dd .row:hover{background:#f9fafb}
-
 .ghost{border:1px solid #e5e7eb;background:linear-gradient(180deg,#f8fafc,#f3f4f6)}
-
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}
 .kpi{border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;background:linear-gradient(135deg,#fff7da,#fff)}
 .kpi .title{font-size:12px;color:var(--muted);text-transform:uppercase}
 .kpi .value{font-size:22px;font-weight:800}
 .kpi .sub{font-size:12px;color:var(--muted)}
-
 .tabs{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
 .tab{border-radius:12px;padding:10px 14px;background:var(--brand-2);border:1px solid #eee;font-weight:700;cursor:pointer}
 .tab.active{background:var(--brand-3)}
 .panel{display:none;margin-top:12px}
 .panel.active{display:block}
-
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:14px;overflow-x:visible}
 .card h3{margin:0 0 10px;font-size:16px}
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;table-layout:auto}
@@ -90,43 +72,32 @@ tbody td,tfoot td{padding:10px;border-bottom:1px solid #f2f4f7}
 tbody tr:hover{background:rgba(250,240,180,.25)}
 td.num,th.num{text-align:right}
 tfoot td{border-top:2px solid #e5e7eb;font-weight:700;background:#fffef7}
-
 .badge{display:inline-flex;align-items:center;gap:6px;background:var(--chip);border:1px solid var(--chip-b);
   padding:6px 10px;border-radius:999px;font-size:12px}
 .err{color:#b91c1c;background:#fee2e2;border-color:#fecaca}
 .ok{color:#065f46;background:#ecfdf5;border-color:#a7f3d0}
-
 textarea{width:100%;min-height:110px;padding:10px;border:1px solid #e5e7eb;border-radius:10px}
 .small{font-size:12px;color:var(--muted)}
 .ai-header{display:flex;gap:8px;align-items:center;justify-content:space-between}
 .status-dot{width:8px;height:8px;border-radius:50%;background:#bbb;display:inline-block;margin-right:6px}
 .status-ok{background:#10b981}.status-warn{background:#f59e0b}.status-err{background:#ef4444}
-
 .chips{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
 .chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;border:1px solid #e5e7eb;cursor:pointer}
 .chip .dot{width:8px;height:8px;border-radius:50%}
-.chip[data-cat="ex"]  {background:var(--danger)}
-.chip[data-cat="so"]  {background:var(--warn)}
+.chip[data-cat="ex"]{background:var(--danger)}
+.chip[data-cat="so"]{background:var(--warn)}
 .chip[data-cat="idle"]{background:#f1f5f9}
-.chip[data-cat="min"] {background:#dbeafe}
-.chip[data-cat="max"] {background:#dbeafe}
+.chip[data-cat="min"],.chip[data-cat="max"]{background:#dbeafe}
 .chip.active{outline:2px solid #334155}
-
 .group{border:1px solid #e5e7eb;border-radius:10px;margin:10px 0}
 .group>summary{padding:10px 12px;font-weight:700;cursor:pointer;background:#f9fafb;border-radius:10px}
 .sub{margin:6px 14px;border-left:3px solid #eee;padding-left:10px}
-
 .seg{display:inline-flex;gap:0;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);
   background:linear-gradient(180deg,#f7faf7,#fff);padding:4px}
 .seg button{padding:10px 14px;border:0;background:transparent;cursor:pointer;font-weight:700;border-radius:10px;transition:background .18s ease, box-shadow .18s ease}
 .seg button:hover{filter:brightness(98%)}
 .seg button.active{background:linear-gradient(180deg,var(--brand-3),#fff);box-shadow:inset 0 0 0 1px #dbe4d8, 0 6px 16px rgba(16,185,129,.06)}
-
-@media (min-width:1041px){
-  #modeSwitch{
-    grid-column:6/7; grid-row:2; justify-self:end;
-  }
-}
+@media (min-width:1041px){#modeSwitch{grid-column:6/7; grid-row:2; justify-self:end;}}
 </style>
 </head>
 <body>
@@ -151,7 +122,6 @@ textarea{width:100%;min-height:110px;padding:10px;border:1px solid #e5e7eb;borde
       <button data-mode="tutar" class="active">Tutarsal Olarak Analiz</button>
       <button data-mode="miktar">Miktarsal Olarak Analiz</button>
     </div>
-
     <div class="ddbox" data-key="Donem"><button><b>Dönem (Ay)</b> — <span class="lab">(yok)</span></button><div class="dd"></div></div>
     <div class="ddbox" data-key="DepoSinifi"><button><b>Depo Sınıfı</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
     <div class="ddbox" data-key="Depo"><button><b>Depo Adı</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
@@ -253,7 +223,6 @@ const QTY   = n => (n==null || isNaN(n) ? '—' : Math.round(n).toLocaleString('
 const PCT = x => (x==null || isNaN(x) ? '—' : (Math.round(x) + ' %'));
 const msg = (html, ok=true) => { const el=document.getElementById('msg'); if(!el) return; el.innerHTML=html; el.className='note badge ' + (ok?'ok':'err'); };
 const deaccent = (s='') => s.replaceAll('İ','I').replaceAll('ı','i').normalize('NFD').replace(/\\p{Diacritic}/gu,'').toLowerCase();
-
 const monthMap={ ocak:1,oca:1, subat:2,sub:2, mart:3,mar:3, nisan:4,nis:4, mayis:5,may:5, haziran:6,haz:6,
   temmuz:7,tem:7, agustos:8,agu:8, agust:8, eylul:9,eyl:9, ekim:10,eki:10, kasim:11,kas:11, aralik:12,ara:12 };
 function normMonth(v){
@@ -266,51 +235,23 @@ function normMonth(v){
   for(const k of Object.keys(monthMap)){ if(s.includes(k)) return (y?y:'0000')+'-'+('0'+monthMap[k]).slice(-2); }
   return s;
 }
-
-const STATE_KEY = 'AVESORO_BI_STATE';
-let ANALYSIS_MODE = 'tutar';
-function saveState(){
-  try{
-    const state = { filters: FILTERS, aiFilter: AI_FILTER, analysis: ANALYSIS_MODE };
-    localStorage.setItem(STATE_KEY, JSON.stringify(state));
-  }catch(e){}
-}
-function loadState(){
-  try{
-    const raw = localStorage.getItem(STATE_KEY);
-    if(!raw) return;
-    const s = JSON.parse(raw);
-    if (s && s.filters){
-      FILTERS = Object.assign(
-        {Donem:[], DepoSinifi:[], Depo:[], FSN:[], MTRL:[], UstGrup:[], AltGrup:[]},
-        s.filters
-      );
-    }
-    if (s && s.aiFilter) AI_FILTER = s.aiFilter;
-    if (s && s.analysis) ANALYSIS_MODE = s.analysis;
-    initAnalysisUI();
-  }catch(e){}
-}
-
+const STATE_KEY='AVESORO_BI_STATE'; let ANALYSIS_MODE='tutar';
+function saveState(){ try{ const s={filters:FILTERS, aiFilter:AI_FILTER, analysis:ANALYSIS_MODE}; localStorage.setItem(STATE_KEY, JSON.stringify(s)); }catch(e){} }
+function loadState(){ try{ const raw=localStorage.getItem(STATE_KEY); if(!raw) return; const s=JSON.parse(raw);
+  if(s&&s.filters){ FILTERS=Object.assign({Donem:[],DepoSinifi:[],Depo:[],FSN:[],MTRL:[],UstGrup:[],AltGrup:[]}, s.filters); }
+  if(s&&s.aiFilter) AI_FILTER=s.aiFilter; if(s&&s.analysis) ANALYSIS_MODE=s.analysis; initAnalysisUI(); }catch(e){} }
 let RAW=[];
 let FILTERS={Donem:[], DepoSinifi:[], Depo:[], FSN:[], MTRL:[], UstGrup:[], AltGrup:[]};
 let ALL   ={Donem:[], DepoSinifi:[], Depo:[], FSN:[], MTRL:[], UstGrup:[], AltGrup:[]};
 let ACTIVE_MONTH=null;
-
 const msEls=[...document.querySelectorAll('.ddbox')];
 msEls.forEach(ms=>{ ms.querySelector('button').addEventListener('click',()=>{ msEls.forEach(x=>{if(x!==ms)x.classList.remove('open');}); ms.classList.toggle('open');});});
 document.body.addEventListener('click',e=>{ if(!e.target.closest('.ddbox')) msEls.forEach(x=>x.classList.remove('open')); });
-
 function buildMS(){
   const uniq = arr => [...new Set(arr.filter(Boolean))].sort();
   ALL = {
-    Donem: uniq(RAW.map(x=>x.Donem)),
-    DepoSinifi: uniq(RAW.map(x=>x.DepoSinifi)),
-    Depo: uniq(RAW.map(x=>x.Depo)),
-    FSN: uniq(RAW.map(x=>x.FSN)),
-    MTRL: uniq(RAW.map(x=>x.MTRL)),
-    UstGrup: uniq(RAW.map(x=>x.UstGrup)),
-    AltGrup: uniq(RAW.map(x=>x.AltGrup)),
+    Donem: uniq(RAW.map(x=>x.Donem)), DepoSinifi: uniq(RAW.map(x=>x.DepoSinifi)), Depo: uniq(RAW.map(x=>x.Depo)),
+    FSN: uniq(RAW.map(x=>x.FSN)), MTRL: uniq(RAW.map(x=>x.MTRL)), UstGrup: uniq(RAW.map(x=>x.UstGrup)), AltGrup: uniq(RAW.map(x=>x.AltGrup)),
   };
   msEls.forEach(ms=>{
     const key=ms.dataset.key, box=ms.querySelector('.dd'); box.innerHTML='';
@@ -327,9 +268,7 @@ function buildMS(){
       else{ const val=inp.dataset.val; FILTERS[key]=FILTERS[key]||[];
         if(inp.checked) FILTERS[key].push(val); else FILTERS[key]=FILTERS[key].filter(x=>x!==val);
         box.querySelector('input[data-all]').checked=(FILTERS[key].length===0); }
-      updateMSLabels();
-      renderAll();
-      saveState();
+      updateMSLabels(); renderAll(); saveState();
     };
   }); updateMSLabels();
 }
@@ -337,7 +276,6 @@ function updateMSLabels(){
   msEls.forEach(ms=>{ const key=ms.dataset.key, sel=FILTERS[key]||[], lab=ms.querySelector('.lab');
     if(!lab) return; if(!sel.length) lab.textContent='Tümü'; else if(sel.length===1) lab.textContent=sel[0]; else lab.textContent=`${sel.length} seçili`;});
 }
-
 document.getElementById('btnUpload').onclick = ()=> document.getElementById('file').click();
 document.getElementById('btnClear').onclick  = ()=>{ FILTERS={Donem:[], DepoSinifi:[], Depo:[], FSN:[], MTRL:[], UstGrup:[], AltGrup:[]}; buildMS(); renderAll(); saveState(); };
 document.getElementById('file').addEventListener('change', async e=>{
@@ -354,13 +292,12 @@ document.getElementById('file').addEventListener('change', async e=>{
   }catch(err){ console.error(err); msg('Dosya okunamadı: '+(err.message||err),false); }
   finally{ e.target.value=''; }
 });
-
 function parseCSV(text){
   const head=text.split(/\\r?\\n/)[0]||''; const sep=(head.match(/;/g)||[]).length>=(head.match(/,/g)||[]).length?';':',';
   const rows=text.split(/\\r?\\n/).filter(x=>x.trim().length).map(line=>{
     const out=[]; let cur='',q=false; for(let i=0;i<line.length;i++){const ch=line[i];
       if(ch=='"'){q=!q;continue} if(ch===sep&&!q){out.push(cur);cur='';} else cur+=ch;} out.push(cur); return out;});
-  const headers=rows[0]; const data=rows.slice(1).map(arr=>{const o={}; headers.forEach((h,i)=>o[h]=arr[i]??''); return o;});
+  const headers=rows[0]; const data=rows.slice(1).map(arr=>{const o={}; headers.forEach((h,i)=>o[h]=arr[i]??''}); return o;});
   return normalizeRows(data);
 }
 function toNum(val){
@@ -384,17 +321,14 @@ function normalizeRows(arr){
     else if(k.startsWith('mtrl')) map[h]='MTRL';
     else if(k.startsWith('fsn')) map[h]='FSN';
     else if(k.includes('son islem departman')) map[h]='Departman';
-
     else if(k.includes('devreden tutar')) map[h]='Devreden';
     else if(k.includes('giren tutar')) map[h]='Giren';
     else if(k.includes('cikan tutar')) map[h]='Cikan';
     else if(k.includes('kalan tutar')) map[h]='Kalan';
-
     else if(k.includes('devreden miktar')) map[h]='DevredenM';
     else if(k.includes('giren miktar')) map[h]='GirenM';
     else if(k.includes('cikan miktar')) map[h]='CikanM';
     else if(k.includes('kalan miktar')) map[h]='KalanM';
-
     else if(k.includes('min')&&k.includes('seviye')&&k.includes('tutar')) map[h]='MinTutar';
     else if((k.includes('maks')||k.includes('max'))&&k.includes('seviye')&&k.includes('tutar')) map[h]='MaxTutar';
   });
@@ -412,37 +346,24 @@ function normalizeRows(arr){
   }
   return out;
 }
-
 function finishLoad(){
   if(!RAW.length){ msg('Veri bulunamadı. Başlıkları kontrol edin.',false); return; }
   const months=[...new Set(RAW.map(r=>r.Donem))].sort(); ACTIVE_MONTH=months[months.length-1]||null;
-  window.currentData = RAW; // snapshot için
-  loadState();
-  buildMS();
-  renderAll();
+  window.currentData = RAW; loadState(); buildMS(); renderAll();
   msg(`Veri yüklendi. Satır: <b>${RAW.length.toLocaleString('tr-TR')}</b>.`,true);
 }
-
-function getCols(){
-  if(ANALYSIS_MODE==='tutar'){
-    return {dev:'Devreden',gir:'Giren',cik:'Cikan',kal:'Kalan',min:'MinTutar',max:'MaxTutar'};
-  }else{
-    return {dev:'DevredenM',gir:'GirenM',cik:'CikanM',kal:'KalanM',min:null,max:null};
-  }
-}
+function getCols(){ return ANALYSIS_MODE==='tutar'
+  ? {dev:'Devreden',gir:'Giren',cik:'Cikan',kal:'Kalan',min:'MinTutar',max:'MaxTutar'}
+  : {dev:'DevredenM',gir:'GirenM',cik:'CikanM',kal:'KalanM',min:null,max:null}; }
 const FMT = (n)=> (ANALYSIS_MODE==='tutar'?MONEY(n):QTY(n));
 function formatMinMax(v){ return (ANALYSIS_MODE==='tutar'?MONEY(v):'—'); }
-
 function applyFilters(){
   const f=FILTERS; const ok=(key,val)=>{const s=f[key]; if(!s||!s.length) return true; return s.includes(val);};
-  return RAW.filter(r=> ok('Donem',r.Donem)&&ok('DepoSinifi',r.DepoSinifi)&&ok('Depo',r.Depo)&&
-                        ok('FSN',r.FSN)&&ok('MTRL',r.MTRL)&&ok('UstGrup',r.UstGrup)&&ok('AltGrup',r.AltGrup));
+  return RAW.filter(r=> ok('Donem',r.Donem)&&ok('DepoSinifi',r.DepoSinifi)&&ok('Depo',r.Depo)&& ok('FSN',r.FSN)&&ok('MTRL',r.MTRL)&&ok('UstGrup',r.UstGrup)&&ok('AltGrup',r.AltGrup));
 }
 const sum=(arr,key)=> arr.reduce((a,b)=>a+(b[key]||0),0);
-
 function groupMonthly(rows, byKey, curMonth){
-  const cols=getCols();
-  const map=new Map();
+  const cols=getCols(); const map=new Map();
   rows.filter(x=>x.Donem===curMonth).forEach(r=>{
     const key = r[byKey] || 'Belirtilmemiş';
     if(!map.has(key)) map.set(key,{Ad:key,dev:0,gir:0,cik:0,kal:0,min:0,max:0});
@@ -452,255 +373,137 @@ function groupMonthly(rows, byKey, curMonth){
     if(cols.max) g.max+=r[cols.max]||0;
   });
   const rowsOut=[...map.values()].sort((a,b)=> b.kal-a.kal);
-  const footer={
-    Ad:'Alt Toplam',
-    dev:sum(rowsOut,'dev'),gir:sum(rowsOut,'gir'),cik:sum(rowsOut,'cik'),kal:sum(rowsOut,'kal'),
-    min:sum(rowsOut,'min'),max:sum(rowsOut,'max')
-  };
+  const footer={Ad:'Alt Toplam',dev:sum(rowsOut,'dev'),gir:sum(rowsOut,'gir'),cik:sum(rowsOut,'cik'),kal:sum(rowsOut,'kal'),min:sum(rowsOut,'min'),max:sum(rowsOut,'max')};
   return {rows:rowsOut,footer};
 }
-
 function renderTableSimple(mountId, headers, rows, footer){
   const el=document.getElementById(mountId); const tbl=document.createElement('table');
-  tbl.innerHTML=`
-    <thead><tr>${headers.map(h=>`<th class="${h.num?'num':''}">${h.t}</th>`).join('')}</tr></thead>
-    <tbody>${rows.map(r=>`<tr>
-      <td>${r.Ad}</td>
-      <td class="num">${FMT(r.dev)}</td>
-      <td class="num">${FMT(r.gir)}</td>
-      <td class="num">${FMT(r.cik)}</td>
-      <td class="num">${FMT(r.kal)}</td>
-    </tr>`).join('')}</tbody>
-    <tfoot><tr>
-      <td><b>${footer.Ad}</b></td>
-      <td class="num"><b>${FMT(footer.dev)}</b></td>
-      <td class="num"><b>${FMT(footer.gir)}</b></td>
-      <td class="num"><b>${FMT(footer.cik)}</b></td>
-      <td class="num"><b>${FMT(footer.kal)}</b></td>
-    </tr></tfoot>`;
+  tbl.innerHTML=`<thead><tr>${headers.map(h=>`<th class="${h.num?'num':''}">${h.t}</th>`).join('')}</tr></thead>
+    <tbody>${rows.map(r=>`<tr><td>${r.Ad}</td><td class="num">${FMT(r.dev)}</td><td class="num">${FMT(r.gir)}</td><td class="num">${FMT(r.cik)}</td><td class="num">${FMT(r.kal)}</td></tr>`).join('')}</tbody>
+    <tfoot><tr><td><b>${footer.Ad}</b></td><td class="num"><b>${FMT(footer.dev)}</b></td><td class="num"><b>${FMT(footer.gir)}</b></td><td class="num"><b>${FMT(footer.cik)}</b></td><td class="num"><b>${FMT(footer.kal)}</b></td></tr></tfoot>`;
   el.innerHTML=''; el.appendChild(tbl);
 }
-
 function renderTableMinMax(mountId, rows, footer){
   const el=document.getElementById(mountId); const tbl=document.createElement('table');
   const headers=[{t:'Ad'},{t:'Devreden',num:1},{t:'Giren',num:1},{t:'Çıkan',num:1},{t:'Kalan',num:1},{t:'Min Tutar',num:1},{t:'Maks Tutar',num:1}];
-  tbl.innerHTML=`
-    <thead><tr>${headers.map(h=>`<th class="${h.num?'num':''}">${h.t}</th>`).join('')}</tr></thead>
-    <tbody>${rows.map(r=>`<tr>
-      <td>${r.Ad}</td>
-      <td class="num">${FMT(r.dev)}</td>
-      <td class="num">${FMT(r.gir)}</td>
-      <td class="num">${FMT(r.cik)}</td>
-      <td class="num">${FMT(r.kal)}</td>
-      <td class="num">${formatMinMax(r.min)}</td>
-      <td class="num">${formatMinMax(r.max)}</td>
-    </tr>`).join('')}</tbody>
-    <tfoot><tr>
-      <td><b>${footer.Ad}</b></td>
-      <td class="num"><b>${FMT(footer.dev)}</b></td>
-      <td class="num"><b>${FMT(footer.gir)}</b></td>
-      <td class="num"><b>${FMT(footer.cik)}</b></td>
-      <td class="num"><b>${FMT(footer.kal)}</b></td>
-      <td class="num"><b>${formatMinMax(footer.min)}</b></td>
-      <td class="num"><b>${formatMinMax(footer.max)}</b></td>
-    </tr></tfoot>`;
+  tbl.innerHTML=`<thead><tr>${headers.map(h=>`<th class="${h.num?'num':''}">${h.t}</th>`).join('')}</tr></thead>
+    <tbody>${rows.map(r=>`<tr><td>${r.Ad}</td><td class="num">${FMT(r.dev)}</td><td class="num">${FMT(r.gir)}</td><td class="num">${FMT(r.cik)}</td><td class="num">${FMT(r.kal)}</td><td class="num">${formatMinMax(r.min)}</td><td class="num">${formatMinMax(r.max)}</td></tr>`).join('')}</tbody>
+    <tfoot><tr><td><b>${footer.Ad}</b></td><td class="num"><b>${FMT(footer.dev)}</b></td><td class="num"><b>${FMT(footer.gir)}</b></td><td class="num"><b>${FMT(footer.cik)}</b></td><td class="num"><b>${FMT(footer.kal)}</b></td><td class="num"><b>${formatMinMax(footer.min)}</b></td><td class="num"><b>${formatMinMax(footer.max)}</b></td></tr></tfoot>`;
   el.innerHTML=''; el.appendChild(tbl);
 }
-
-let AI_FILTER = 'ex';
-function setAIFilter(cat){
-  AI_FILTER = cat;
-  applyAIFilterUI();
+let AI_FILTER='ex';
+function setAIFilter(cat){ AI_FILTER = cat; [...document.querySelectorAll('.chip')].forEach(c=>{ c.classList.toggle('active', c.dataset.cat===AI_FILTER); });
+  const all=(AI_FILTER==='all');
+  document.getElementById('grpAEx').style.display = (all||AI_FILTER==='ex')?'':'none';
+  document.getElementById('grpASo').style.display = (all||AI_FILTER==='so')?'':'none';
+  document.getElementById('grpIdle').style.display= (all||AI_FILTER==='idle')?'':'none';
+  document.getElementById('grpMinMax').style.display=(all||AI_FILTER==='min'||AI_FILTER==='max')?'':'none';
   saveState();
 }
-function applyAIFilterUI(){
-  [...document.querySelectorAll('.chip')].forEach(c=>{
-    c.classList.toggle('active', c.dataset.cat===AI_FILTER);
-  });
-  const allMode = (AI_FILTER==='all');
-  document.getElementById('grpAEx').style.display    = (allMode || AI_FILTER==='ex')   ? '' : 'none';
-  document.getElementById('grpASo').style.display    = (allMode || AI_FILTER==='so')   ? '' : 'none';
-  document.getElementById('grpIdle').style.display   = (allMode || AI_FILTER==='idle') ? '' : 'none';
-  document.getElementById('grpMinMax').style.display = (allMode || AI_FILTER==='min' || AI_FILTER==='max') ? '' : 'none';
-}
-
 function buildConsumptionContext(){
   const rows=applyFilters(); if(!rows.length) return {cur:'',items:[],months:[]};
   const months=[...new Set(rows.map(r=>r.Donem))].sort();
   const curMonth=(FILTERS.Donem.length===1?FILTERS.Donem[0]:(ACTIVE_MONTH||months.at(-1)));
-  const cols=getCols();
-  const byItem=new Map();
+  const cols=getCols(); const byItem=new Map();
   for(const r of rows){
     const key=(r.StokAdi||'')+' | '+(r.Depo||'');
     if(!byItem.has(key)) byItem.set(key,{Ad:key,Depo:r.Depo||'',DepoSinifi:r.DepoSinifi||'',UstGrup:r.UstGrup||'',Stok:r.StokAdi||'',months:new Map(),min:r[cols.min]||0,max:r[cols.max]||0});
-    const g=byItem.get(key);
-    const exit =(r[cols.cik]||0);
-    const bal  =(r[cols.kal]||0);
+    const g=byItem.get(key); const exit =(r[cols.cik]||0); const bal  =(r[cols.kal]||0);
     if(!g.months.has(r.Donem)) g.months.set(r.Donem,{exit:0,bal:0,dev:0,gir:0,cik:0,kal:0});
-    const m=g.months.get(r.Donem);
-    m.exit+=exit; m.bal+=bal; m.dev+=(r[cols.dev]||0); m.gir+=(r[cols.gir]||0); m.cik+=(r[cols.cik]||0); m.kal+=(r[cols.kal]||0);
+    const m=g.months.get(r.Donem); m.exit+=exit; m.bal+=bal; m.dev+=(r[cols.dev]||0); m.gir+=(r[cols.gir]||0); m.cik+=(r[cols.cik]||0); m.kal+=(r[cols.kal]||0);
   }
   return {cur:curMonth,items:[...byItem.values()],months};
 }
-
 function heuristicBlocksDeep(){
   const ctx=buildConsumptionContext(); if(!ctx.items.length) return {summary:'Veri yok.',excess:[],stockout:[],idle:[],below:[],above:[],depotBullets:''};
-  const monthsAll=[...new Set(ctx.items.flatMap(it=>[...it.months.keys()]))].sort();
-  const last=ctx.cur;
-  const lastIdx=monthsAll.indexOf(last);
+  const monthsAll=[...new Set(ctx.items.flatMap(it=>[...it.months.keys()]))].sort(); const last=ctx.cur; const lastIdx=monthsAll.indexOf(last);
   const prevs= monthsAll.slice(Math.max(0,lastIdx-3), lastIdx);
-
-  const excess=[], stockout=[], idle=[], below=[], above=[];
-  const depotAgg=new Map();
-
+  const excess=[], stockout=[], idle=[], below=[], above=[]; const depotAgg=new Map();
   for(const it of ctx.items){
     const cur=it.months.get(last)||{exit:0,bal:0,dev:0,gir:0,cik:0,kal:0};
     const avgExit = prevs.length ? (prevs.reduce((a,m)=>a+((it.months.get(m)||{exit:0}).exit),0)/prevs.length) : (cur.exit||0);
     const cov = avgExit>0 ? cur.kal/avgExit : (cur.kal>0?Infinity:0);
-
     const dkey=it.Depo||'Belirtilmemiş';
     if(!depotAgg.has(dkey)) depotAgg.set(dkey,{dev:0,gir:0,cik:0,kal:0});
     depotAgg.get(dkey).dev+=cur.dev; depotAgg.get(dkey).gir+=cur.gir; depotAgg.get(dkey).cik+=cur.cik; depotAgg.get(dkey).kal+=cur.kal;
-
     const minv = it.min||0, maxv = it.max||0;
-
     if(avgExit===0 && cur.kal>0)  idle.push({Ad:it.Stok,Depo:it.Depo,kal:cur.kal,cov});
     if(cov>6 || (maxv>0 && cur.kal>maxv)) excess.push({Ad:it.Stok,Depo:it.Depo,kal:cur.kal,cov});
     if(cov>0 && cov<0.5) stockout.push({Ad:it.Stok,Depo:it.Depo,kal:cur.kal,cov});
     if(minv>0 && cur.kal<minv) below.push({Ad:it.Stok,Depo:it.Depo,kal:cur.kal,cov});
     if(maxv>0 && cur.kal>maxv) above.push({Ad:it.Stok,Depo:it.Depo,kal:cur.kal,cov});
   }
-
   const top10=(arr)=> arr.sort((a,b)=>b.kal-a.kal).slice(0,10);
   const ex10=top10(excess), so10=top10(stockout), idle10=top10(idle);
   const depBul=[...depotAgg.entries()].sort((a,b)=>b[1].kal-a[1].kal).map(([k,v])=>`${k} — Dev ${FMT(v.dev)}, Gir ${FMT(v.gir)}, Çık ${FMT(v.cik)}, Kal ${FMT(v.kal)}`).join(' | ');
   const summary = `Seçili ay: ${ctx.cur} | Aşırı stok: ${excess.length} | Stokout riski: ${stockout.length} | Hareketsiz: ${idle.length} | Min altı: ${below.length} | Max üstü: ${above.length}`;
-
   return {summary,excess:ex10,stockout:so10,idle:idle10,below:top10(below),above:top10(above),depotBullets:depBul};
 }
-
 function renderHierarchy(mountId, list){
   const el=document.getElementById(mountId);
   if(!list || !list.length){ el.innerHTML='<div class="note">Kayıt yok.</div>'; return; }
-  const dmap=new Map();
-  list.forEach(x=>{
-    const d=x.Depo||'Belirtilmemiş';
-    if(!dmap.has(d)) dmap.set(d,[]);
-    dmap.get(d).push(x);
-  });
+  const dmap=new Map(); list.forEach(x=>{ const d=x.Depo||'Belirtilmemiş'; if(!dmap.has(d)) dmap.set(d,[]); dmap.get(d).push(x); });
   const wrap=document.createElement('div');
   [...dmap.entries()].forEach(([dep,arr])=>{
     const dDetails=document.createElement('details'); dDetails.className='group'; dDetails.open=true;
     dDetails.innerHTML=`<summary>${dep} — ${arr.length} kalem</summary>`;
     const sdiv=document.createElement('div'); sdiv.className='sub';
     const tbl=document.createElement('table');
-    tbl.innerHTML=`
-      <thead><tr><th>Stok Adı</th><th class="num">Devreden</th><th class="num">Giren</th><th class="num">Çıkan</th><th class="num">Kalan</th><th class="num">Kapsam (ay)</th></tr></thead>
-      <tbody>${arr.map(r=>`<tr>
-        <td>${r.Ad}</td>
-        <td class="num">—</td>
-        <td class="num">—</td>
-        <td class="num">—</td>
-        <td class="num">${FMT(r.kal)}</td>
-        <td class="num">${isFinite(r.cov)?r.cov.toFixed(1):'∞'}</td>
-      </tr>`).join('')}</tbody>`;
-    sdiv.appendChild(tbl);
-    dDetails.appendChild(sdiv);
-    wrap.appendChild(dDetails);
+    tbl.innerHTML=`<thead><tr><th>Stok Adı</th><th class="num">Devreden</th><th class="num">Giren</th><th class="num">Çıkan</th><th class="num">Kalan</th><th class="num">Kapsam (ay)</th></tr></thead>
+      <tbody>${arr.map(r=>`<tr><td>${r.Ad}</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">${FMT(r.kal)}</td><td class="num">${isFinite(r.cov)?r.cov.toFixed(1):'∞'}</td></tr>`).join('')}</tbody>`;
+    sdiv.appendChild(tbl); dDetails.appendChild(sdiv); wrap.appendChild(dDetails);
   });
   el.innerHTML=''; el.appendChild(wrap);
 }
-
 function getApiKey(){ return localStorage.getItem('OPENAI_API_KEY')||''; }
 function setApiKey(k){ localStorage.setItem('OPENAI_API_KEY',k||''); refreshAIStatus(); }
-function refreshAIStatus(){
-  const k=getApiKey(), dot=document.getElementById('aiStatusDot'), tx=document.getElementById('aiStatusText');
-  if(k){ dot.classList.remove('status-warn','status-err'); dot.classList.add('status-ok'); tx.textContent='LLM açık (ChatGPT-4 uyumlu)'; }
-  else{ dot.classList.remove('status-ok','status-err'); dot.classList.add('status-warn'); tx.textContent='LLM kapalı (kural tabanlı)'; }
-}
-document.getElementById('btnApi').onclick=()=>{
-  const cur=getApiKey();
-  const k=prompt('OpenAI API anahtarınızı girin (sk-...):',cur||'');
-  if(k!==null){ setApiKey(k.trim()); alert('Kaydedildi.'); }
-};
+function refreshAIStatus(){ const k=getApiKey(), dot=document.getElementById('aiStatusDot'), tx=document.getElementById('aiStatusText');
+  if(k){ dot.classList.add('status-ok'); dot.classList.remove('status-warn','status-err'); tx.textContent='LLM açık (ChatGPT-4 uyumlu)'; }
+  else{ dot.classList.add('status-warn'); dot.classList.remove('status-ok','status-err'); tx.textContent='LLM kapalı (kural tabanlı)'; } }
+document.getElementById('btnApi').onclick=()=>{ const cur=getApiKey(); const k=prompt('OpenAI API anahtarınızı girin (sk-...):',cur||''); if(k!==null){ setApiKey(k.trim()); alert('Kaydedildi.'); } };
 refreshAIStatus();
-
 function refreshAI(){
   const out = heuristicBlocksDeep();
-
   document.getElementById('aiAuto').textContent   = out.summary;
   document.getElementById('aiDepot').innerHTML    = out.depotBullets || '—';
-
-  const topLines = (arr) => (arr.slice(0,10)
-     .map((x,i)=>`${i+1}. ${x.Ad} — ${x.Depo} | Kal ${FMT(x.kal)} | Kapsam ${isFinite(x.cov)?x.cov.toFixed(1):'∞'} ay`).join('\\n')) || '-';
-
-  document.getElementById('aiExcessTxt').textContent   = topLines(out.excess);
-  document.getElementById('aiStockoutTxt').textContent = topLines(out.stockout);
-  document.getElementById('aiIdleTxt').textContent     = topLines(out.idle);
+  const top = arr => (arr.slice(0,10).map((x,i)=>`${i+1}. ${x.Ad} — ${x.Depo} | Kal ${FMT(x.kal)} | Kapsam ${isFinite(x.cov)?x.cov.toFixed(1):'∞'} ay`).join('\\n')) || '-';
+  document.getElementById('aiExcessTxt').textContent   = top(out.excess);
+  document.getElementById('aiStockoutTxt').textContent = top(out.stockout);
+  document.getElementById('aiIdleTxt').textContent     = top(out.idle);
   document.getElementById('aiLevelsTxt').textContent   = `Min altı: ${out.below.length} | Max üstü: ${out.above.length}`;
-
-  renderHierarchy('tblExcess',   out.excess);
-  renderHierarchy('tblStockout', out.stockout);
-  renderHierarchy('tblIdle',     out.idle);
-  renderHierarchy('tblBelow',    out.below);
-  renderHierarchy('tblAbove',    out.above);
-
-  document.getElementById('exCount').textContent    = out.excess.length;
-  document.getElementById('soCount').textContent    = out.stockout.length;
-  document.getElementById('idleCount').textContent  = out.idle.length;
-  document.getElementById('belowCount').textContent = out.below.length;
-  document.getElementById('aboveCount').textContent = out.above.length;
-
-  applyAIFilterUI();
+  renderHierarchy('tblExcess',out.excess); renderHierarchy('tblStockout',out.stockout); renderHierarchy('tblIdle',out.idle);
+  renderHierarchy('tblBelow',out.below); renderHierarchy('tblAbove',out.above);
+  document.getElementById('exCount').textContent=out.excess.length;
+  document.getElementById('soCount').textContent=out.stockout.length;
+  document.getElementById('idleCount').textContent=out.idle.length;
+  document.getElementById('belowCount').textContent=out.below.length;
+  document.getElementById('aboveCount').textContent=out.above.length;
+  setAIFilter(AI_FILTER);
 }
 document.getElementById('btnAuto').onclick = refreshAI;
-
 document.getElementById('tabs').addEventListener('click',e=>{
   const t=e.target.closest('.tab'); if(!t) return;
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
   t.classList.add('active'); document.getElementById('panel-'+t.dataset.tab).classList.add('active');
 });
-
-function initAnalysisUI(){
-  const sw=document.getElementById('modeSwitch');
-  if(!sw) return;
-  [...sw.querySelectorAll('button')].forEach(btn=>{
-    btn.classList.toggle('active', btn.dataset.mode===ANALYSIS_MODE);
-  });
-}
-document.getElementById('modeSwitch').addEventListener('click', (e)=>{
-  const btn=e.target.closest('button[data-mode]'); if(!btn) return;
-  ANALYSIS_MODE = btn.dataset.mode;
-  initAnalysisUI();
-  renderAll();
-  saveState();
-});
-
+function initAnalysisUI(){ const sw=document.getElementById('modeSwitch'); if(!sw) return; [...sw.querySelectorAll('button')].forEach(btn=>{ btn.classList.toggle('active', btn.dataset.mode===ANALYSIS_MODE); }); }
+document.getElementById('modeSwitch').addEventListener('click', (e)=>{ const btn=e.target.closest('button[data-mode]'); if(!btn) return;
+  ANALYSIS_MODE = btn.dataset.mode; initAnalysisUI(); renderAll(); saveState(); });
 function renderAll(){
-  const rows=applyFilters();
-  const cols=getCols();
-
-  const depHdr = document.getElementById('paretoDepHdr');
-  const itmHdr = document.getElementById('paretoItemHdr');
+  const rows=applyFilters(); const cols=getCols();
+  const depHdr=document.getElementById('paretoDepHdr'); const itmHdr=document.getElementById('paretoItemHdr');
   if(depHdr) depHdr.textContent = (ANALYSIS_MODE==='tutar' ? 'Pareto 80/20 — Departman Özeti (Çıkan Tutar)' : 'Pareto 80/20 — Departman Özeti (Çıkan Miktar)');
   if(itmHdr) itmHdr.textContent = (ANALYSIS_MODE==='tutar' ? 'Pareto 80/20 — Çıkan Tutar bazlı (Depo + Stok Adı)' : 'Pareto 80/20 — Çıkan Miktar bazlı (Depo + Stok Adı)');
-
   if(!rows.length){
-    ['kpi-total','kpi-main','kpi-git','kpi-unit','kpi-month','kpi-total-sub','kpi-git-sub']
-      .forEach(id=>document.getElementById(id).textContent='—');
+    ['kpi-total','kpi-main','kpi-git','kpi-unit','kpi-month','kpi-total-sub','kpi-git-sub'].forEach(id=>document.getElementById(id).textContent='—');
     ['tbl-class-mini','tbl-ware-mini','tbl-fsn-mini','tbl-class','tbl-ware','tbl-mtrl','tbl-dept','tbl-pareto','tbl-pareto-dept']
       .forEach(id=>document.getElementById(id).innerHTML='<div class="note">Veri yok.</div>');
-    document.getElementById('aiAuto').textContent='Veri yok.';
-    saveState();
-    return;
+    document.getElementById('aiAuto').textContent='Veri yok.'; saveState(); return;
   }
-  const months=[...new Set(rows.map(x=>x.Donem))].sort();
-  const cur = FILTERS.Donem.length===1 ? FILTERS.Donem[0] : (ACTIVE_MONTH||months[months.length-1]);
+  const months=[...new Set(rows.map(x=>x.Donem))].sort(); const cur = FILTERS.Donem.length===1 ? FILTERS.Donem[0] : (ACTIVE_MONTH||months[months.length-1]);
   document.getElementById('kpi-month').textContent=cur;
-
-  const curRows=rows.filter(x=>x.Donem===cur);
-  const totalCur=sum(curRows,cols.kal);
+  const curRows=rows.filter(x=>x.Donem===cur); const totalCur=sum(curRows,cols.kal);
   document.getElementById('kpi-total').textContent=FMT(totalCur);
   document.getElementById('kpi-total-sub').textContent='Aylık fark: —';
   const main=sum(curRows.filter(x=>(x.DepoSinifi||'')==='Main Warehouse'),cols.kal);
@@ -710,169 +513,72 @@ function renderAll(){
   document.getElementById('kpi-unit').textContent=FMT(unit);
   document.getElementById('kpi-git').textContent=FMT(git);
   document.getElementById('kpi-git-sub').textContent=`Pay: ${PCT(totalCur?(git/totalCur*100):0)}`;
-
   const headersSimple=[{t:'Ad'},{t:'Devreden',num:1},{t:'Giren',num:1},{t:'Çıkan',num:1},{t:'Kalan',num:1}];
-  const gClass=groupMonthly(rows,'DepoSinifi',cur);
-  renderTableSimple('tbl-class-mini',headersSimple,gClass.rows,gClass.footer);
-  const gWare =groupMonthly(rows,'Depo',cur);
-  renderTableSimple('tbl-ware-mini',headersSimple,gWare.rows,gWare.footer);
-  const gFSN  =groupMonthly(rows,'FSN',cur);
-  renderTableSimple('tbl-fsn-mini',headersSimple,gFSN.rows,gFSN.footer);
-
+  const gClass=groupMonthly(rows,'DepoSinifi',cur); renderTableSimple('tbl-class-mini',headersSimple,gClass.rows,gClass.footer);
+  const gWare =groupMonthly(rows,'Depo',cur); renderTableSimple('tbl-ware-mini',headersSimple,gWare.rows,gWare.footer);
+  const gFSN  =groupMonthly(rows,'FSN',cur);  renderTableSimple('tbl-fsn-mini',headersSimple,gFSN.rows,gFSN.footer);
   renderTableMinMax('tbl-class', gClass.rows, gClass.footer);
   renderTableMinMax('tbl-ware',  gWare.rows,  gWare.footer);
   const gMtrl=groupMonthly(rows,'MTRL',cur); renderTableMinMax('tbl-mtrl', gMtrl.rows, gMtrl.footer);
   const gDept=groupMonthly(rows,'Departman',cur); renderTableMinMax('tbl-dept', gDept.rows, gDept.footer);
-
-  const byItem=new Map();
-  curRows.forEach(r=>{
-    const key=(r.StokAdi||'')+' | '+(r.Depo||'');
-    if(!byItem.has(key)) byItem.set(key,{Ad:key,dev:0,gir:0,cik:0,kal:0,Departman:r.Departman||''});
-    const g=byItem.get(key); g.dev+=r[cols.dev]||0; g.gir+=r[cols.gir]||0; g.cik+=r[cols.cik]||0; g.kal+=r[cols.kal]||0;
-  });
-  const list=[...byItem.values()].sort((a,b)=>b.cik-a.cik);
-  const totalCik=sum(list,'cik')||1; let cum=0; const top=[];
+  /* Pareto */
+  const byItem=new Map(); curRows.forEach(r=>{ const key=(r.StokAdi||'')+' | '+(r.Depo||''); if(!byItem.has(key)) byItem.set(key,{Ad:key,dev:0,gir:0,cik:0,kal:0,Departman:r.Departman||''});
+    const g=byItem.get(key); g.dev+=r[cols.dev]||0; g.gir+=r[cols.gir]||0; g.cik+=r[cols.cik]||0; g.kal+=r[cols.kal]||0; });
+  const list=[...byItem.values()].sort((a,b)=>b.cik-a.cik); const totalCik=sum(list,'cik')||1; let cum=0; const top=[];
   for(const r of list){ cum+=r.cik; top.push(r); if(cum/totalCik>=.8) break; }
-
-  const depMap=new Map();
-  top.forEach(r=>{
-    const k=r.Departman||'Belirtilmemiş';
-    if(!depMap.has(k)) depMap.set(k,{Ad:k,dev:0,gir:0,cik:0,kal:0});
-  });
-  for(const r of top){
-    const g=depMap.get(r.Departman||'Belirtilmemiş'); g.dev+=r.dev; g.gir+=r.gir; g.cik+=r.cik; g.kal+=r.kal;
-  }
-  const depRows=[...depMap.values()].sort((a,b)=>b.cik-a.cik);
-  const depFooter={Ad:'Alt Toplam',dev:sum(depRows,'dev'),gir:sum(depRows,'gir'),cik:sum(depRows,'cik'),kal:sum(depRows,'kal')};
+  const depMap=new Map(); top.forEach(r=>{ const k=r.Departman||'Belirtilmemiş'; if(!depMap.has(k)) depMap.set(k,{Ad:k,dev:0,gir:0,cik:0,kal:0}); });
+  for(const r of top){ const g=depMap.get(r.Departman||'Belirtilmemiş'); g.dev+=r.dev; g.gir+=r.gir; g.cik+=r.cik; g.kal+=r.kal; }
+  const depRows=[...depMap.values()].sort((a,b)=>b.cik-a.cik); const depFooter={Ad:'Alt Toplam',dev:sum(depRows,'dev'),gir:sum(depRows,'gir'),cik:sum(depRows,'cik'),kal:sum(depRows,'kal')};
   renderTableSimple('tbl-pareto-dept', headersSimple, depRows, depFooter);
-
   const paretoFooter={Ad:'Alt Toplam',dev:sum(top,'dev'),gir:sum(top,'gir'),cik:sum(top,'cik'),kal:sum(top,'kal')};
   renderTableSimple('tbl-pareto', headersSimple, top, paretoFooter);
-
-  refreshAI();
-  saveState();
+  refreshAI(); saveState();
 }
-
-function firstMsg(){
-  const modeText = (ANALYSIS_MODE==='tutar'?'Tutarsal':'Miktarsal');
-  msg('“Tümü” filtresi eklendi. Seçiminiz ve filtreleriniz kalıcıdır (localStorage). Analiz modu: <b>'+modeText+'</b>.', true);
-}
-initAnalysisUI();
-firstMsg();
-
-window.addEventListener('message', async (e)=>{
-  const data = e.data || {}; if(!data || !data.type) return;
-  try{
-    switch(data.type){
-      case 'setMode':{
-        const m = (data.payload==='miktar'?'miktar':'tutar');
-        ANALYSIS_MODE = m; initAnalysisUI(); renderAll(); saveState();
-        e.source && e.source.postMessage({type:'ack', cmd:'setMode', ok:true}, '*');
-        break;
-      }
-      case 'clearFilters':{
-        FILTERS={Donem:[], DepoSinifi:[], Depo:[], FSN:[], MTRL:[], UstGrup:[], AltGrup:[]}; buildMS(); renderAll(); saveState();
-        e.source && e.source.postMessage({type:'ack', cmd:'clearFilters', ok:true}, '*');
-        break;
-      }
-      case 'setFilters':{
-        const f = data.payload || {};
-        FILTERS = Object.assign({Donem:[], DepoSinifi:[], Depo:[], FSN:[], MTRL:[], UstGrup:[], AltGrup:[]}, f);
-        buildMS(); renderAll(); saveState();
-        e.source && e.source.postMessage({type:'ack', cmd:'setFilters', ok:true}, '*');
-        break;
-      }
-      case 'focusTab':{
-        const tab = String(data.payload||'overview');
-        const t = document.querySelector(\`.tab[data-tab="\${tab}"]\`);
-        if(t){ t.click(); e.source && e.source.postMessage({type:'ack', cmd:'focusTab', ok:true}, '*'); }
-        break;
-      }
-      case 'loadCSV':{
-        const url = String(data.payload||'').trim(); if(!url) throw new Error('URL boş');
-        const res = await fetch(url); const txt = await res.text();
-        RAW = parseCSV(txt); finishLoad();
-        e.source && e.source.postMessage({type:'ack', cmd:'loadCSV', ok:true, rows: RAW.length}, '*');
-        break;
-      }
-      case 'getState':{
-        e.source && e.source.postMessage({type:'state', payload: {filters: FILTERS, analysis: ANALYSIS_MODE}}, '*');
-        break;
-      }
-      default: break;
-    }
-  }catch(err){
-    e.source && e.source.postMessage({type:'error', message: String(err)}, '*');
-  }
-});
+function firstMsg(){ const modeText=(ANALYSIS_MODE==='tutar'?'Tutarsal':'Miktarsal'); msg('Otomatik yükleme aktif (public/ veya kamu/). Analiz modu: <b>'+modeText+'</b>.', true); }
+initAnalysisUI(); firstMsg();
+window.addEventListener('message', async (e)=>{ const data=e.data||{}; if(!data||!data.type) return; try{
+  switch(data.type){
+    case 'setMode':{ const m=(data.payload==='miktar'?'miktar':'tutar'); ANALYSIS_MODE=m; initAnalysisUI(); renderAll(); saveState(); e.source&&e.source.postMessage({type:'ack',cmd:'setMode',ok:true},'*'); break; }
+    case 'clearFilters':{ FILTERS={Donem:[], DepoSinifi:[], Depo:[], FSN:[], MTRL:[], UstGrup:[], AltGrup:[]}; buildMS(); renderAll(); saveState(); e.source&&e.source.postMessage({type:'ack',cmd:'clearFilters',ok:true},'*'); break; }
+    case 'setFilters':{ const f=data.payload||{}; FILTERS=Object.assign({Donem:[], DepoSinifi:[], Depo:[], FSN:[], MTRL:[], UstGrup:[], AltGrup:[]}, f); buildMS(); renderAll(); saveState(); e.source&&e.source.postMessage({type:'ack',cmd:'setFilters',ok:true},'*'); break; }
+    case 'focusTab':{ const tab=String(data.payload||'overview'); const t=document.querySelector(`.tab[data-tab="${tab}"]`); if(t){ t.click(); e.source&&e.source.postMessage({type:'ack',cmd:'focusTab',ok:true},'*'); } break; }
+    case 'loadCSV':{ const url=String(data.payload||'').trim(); if(!url) throw new Error('URL boş'); const res=await fetch(url); const txt=await res.text(); RAW=parseCSV(txt); finishLoad(); e.source&&e.source.postMessage({type:'ack',cmd:'loadCSV',ok:true,rows:RAW.length},'*'); break; }
+    case 'getState':{ e.source&&e.source.postMessage({type:'state',payload:{filters: FILTERS, analysis: ANALYSIS_MODE}},'*'); break; }
+    default: break;
+  } }catch(err){ e.source && e.source.postMessage({type:'error',message:String(err)}, '*'); } });
 try{ window.parent && window.parent !== window && window.parent.postMessage({type:'ready', payload:true}, '*'); }catch{}
-
-function exportSelfContainedPage() {
-  try {
-    const data = (window.currentData ?? []);
-    let html = document.documentElement.outerHTML;
-    const injectTag = `<script>/* snapshot */window.EMBED_DATA=\${JSON.stringify(data)};<\\/script>`;
-    html = html.includes('</body>') ? html.replace('</body>', \`\${injectTag}\\n</body>\`) : (html + injectTag);
-    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    const ts   = new Date().toISOString().slice(0,19).replaceAll(':','-');
-    a.href = url; a.download = \`AvesoroRapor-\${ts}.html\`;
-    document.body.appendChild(a); a.click(); a.remove();
-    URL.revokeObjectURL(url);
-  } catch (err) {
-    console.error('Snapshot oluşturulamadı:', err);
-    alert('Kaydetme sırasında bir sorun oluştu. Konsolu kontrol edin.');
-  }
-}
+function exportSelfContainedPage(){ try{
+  const data=(window.currentData??[]); let html=document.documentElement.outerHTML;
+  const injectTag = `<script>/* snapshot */window.EMBED_DATA=${JSON.stringify(data)};<\\/script>`;
+  html = html.includes('</body>') ? html.replace('</body>', `${injectTag}\\n</body>`) : (html + injectTag);
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'}); const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); const ts=new Date().toISOString().slice(0,19).replaceAll(':','-');
+  a.href=url; a.download=`AvesoroRapor-${ts}.html`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+}catch(err){ console.error('Snapshot oluşturulamadı:',err); alert('Kaydetme sırasında bir sorun oluştu.'); } }
 document.getElementById('btnExport').onclick = exportSelfContainedPage;
-
-/* === PUBLIC/static'ten otomatik yükleme === */
+/* === public VEYA kamu'dan otomatik yükleme === */
 async function loadFromPublicStatic() {
-  try {
-    const resX = await fetch('/data.xlsx', { cache: 'no-store' });
-    if (resX.ok) {
-      const ab = await resX.arrayBuffer();
-      const wb = XLSX.read(ab, { type: 'array' });
-      RAW = normalizeRows(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' }));
-      finishLoad();
-      window.currentData = RAW;
-      return true;
-    }
-  } catch (_) {}
-
-  try {
-    const resC = await fetch('/data.csv', { cache: 'no-store' });
-    if (resC.ok) {
-      RAW = parseCSV(await resC.text());
-      finishLoad();
-      window.currentData = RAW;
-      return true;
-    }
-  } catch (_) {}
-
-  try {
-    const resJ = await fetch('/data.json', { cache: 'no-store' });
-    if (resJ.ok) {
-      RAW = await resJ.json();
-      finishLoad();
-      window.currentData = RAW;
-      return true;
-    }
-  } catch (_) {}
-
+  const tryPaths = [
+    { xlsx: '/data.xlsx',      csv: '/data.csv',      json: '/data.json' },
+    { xlsx: '/kamu/data.xlsx', csv: '/kamu/data.csv', json: '/kamu/data.json' }
+  ];
+  for (const p of tryPaths) {
+    try { const resX=await fetch(p.xlsx,{cache:'no-store'});
+      if(resX.ok){ const ab=await resX.arrayBuffer(); const wb=XLSX.read(ab,{type:'array'});
+        RAW=normalizeRows(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''})); finishLoad(); window.currentData=RAW; return true; } } catch (_){}
+    try { const resC=await fetch(p.csv,{cache:'no-store'});
+      if(resC.ok){ RAW=parseCSV(await resC.text()); finishLoad(); window.currentData=RAW; return true; } } catch (_){}
+    try { const resJ=await fetch(p.json,{cache:'no-store'});
+      if(resJ.ok){ RAW=await resJ.json(); finishLoad(); window.currentData=RAW; return true; } } catch (_){}
+  }
   return false;
 }
-
 document.addEventListener('DOMContentLoaded', async () => {
   if (window.EMBED_DATA && Array.isArray(window.EMBED_DATA) && window.EMBED_DATA.length) {
-    RAW = window.EMBED_DATA.slice();
-    finishLoad();
+    RAW = window.EMBED_DATA.slice(); finishLoad();
   } else {
     const ok = await loadFromPublicStatic();
-    if (!ok) {
-      msg('Not: /public içinde data.xlsx / data.csv / data.json bulunamadı. İsterseniz Excel/CSV yükleyin.', false);
-    }
+    if (!ok) { msg('Not: /public veya /kamu içinde data.xlsx / data.csv / data.json bulunamadı. İsterseniz Excel/CSV yükleyin.', false); }
   }
 });
 </script>
