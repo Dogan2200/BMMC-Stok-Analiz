@@ -1,0 +1,16 @@
+Donem;Depo Sınıfı;Depo;FSN Class;Mtrl Group;Üst Grup;Alt Grup;Stok Adı;Departman;Devreden Tutar;Giren Tutar;Çıkan Tutar;Kalan Tutar;Devreden Miktar;Giren Miktar;Çıkan Miktar;Kalan Miktar;Min Seviye Tutar;Maks Seviye Tutar
+2025-07;Main Warehouse;Main – Central;A;MECH;Pompa;Yedek;POMPA-100;Mekanik;12000;8000;6000;14000;12;8;6;14;5000;25000
+2025-07;Unit Warehouse;Unit – Line 1;B;ELEC;Kablo;Enerji;KABLO-XLPE-16;Elektrik;5000;6000;4000;7000;50;60;40;70;2000;12000
+2025-07;Main Warehouse;Main – Central;A;MECH;Pompa;Yedek;POMPA-200;Mekanik;8000;2000;1000;9000;8;2;1;9;4000;18000
+2025-08;Main Warehouse;Main – Central;A;MECH;Pompa;Yedek;POMPA-100;Mekanik;14000;3000;5000;12000;14;3;5;12;5000;25000
+2025-08;Goods in Transit;Goods in Transit – Port;C;LOG;Nakliye;Transit;KONTEYNER-01;Lojistik;0;10000;0;10000;0;10;0;10;0;0
+2025-08;Unit Warehouse;Unit – Line 1;B;ELEC;Kablo;Enerji;KABLO-XLPE-16;Elektrik;7000;2000;3000;6000;70;20;30;60;2000;12000
+2025-08;Unit Warehouse;Unit – Line 2;A;MECH;Conta;Sızdırmazlık;CONTA-20;Bakım;3000;1000;500;3500;30;10;5;35;1000;8000
+2025-09;Main Warehouse;Main – Central;A;MECH;Pompa;Yedek;POMPA-100;Mekanik;12000;0;0;12000;12;0;0;12;5000;25000
+2025-09;Unit Warehouse;Unit – Line 1;B;ELEC;Kablo;Enerji;KABLO-XLPE-16;Elektrik;6000;0;6000;0;60;0;60;0;2000;12000
+2025-09;Unit Warehouse;Unit – Line 2;A;MECH;Conta;Sızdırmazlık;CONTA-20;Bakım;3500;0;0;3500;35;0;0;35;1000;8000
+2025-09;Main Warehouse;Main – South;A;CHEM;Yağ;Hidrolik;HIDYAG-46;Üretim;4000;4000;1000;7000;40;40;10;70;2000;15000
+2025-08;Unit Warehouse;Unit – Line 3;D;SAFETY;PPE;Kişisel;BARET-STD;İSG;1000;500;200;1300;10;5;2;13;200;3000
+2025-07;Main Warehouse;Main – South;A;CHEM;Yağ;Hidrolik;HIDYAG-46;Üretim;2000;1000;500;2500;20;10;5;25;2000;15000
+2025-08;Main Warehouse;Main – South;A;CHEM;Yağ;Hidrolik;HIDYAG-46;Üretim;2500;2000;1000;3500;25;20;10;35;2000;15000
+2025-07;Goods in Transit;Goods in Transit – Port;C;LOG;Nakliye;Transit;KONTEYNER-02;Lojistik;0;5000;0;5000;0;5;0;5;0;0
