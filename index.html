@@ -1898,18 +1898,401 @@ body.locked main.container{
     </main>
 
     <script id="EMBED_DATA" type="application/json"></script>
-    <script>
-/* AUTH ENGINE (localStorage) */
-const USERS_KEY = 'AVESORO_USERS_V1';
-const SESSION_KEY = 'AVESORO_SESSION_V1';
-const DEFAULT_ADMIN = { user:'admin', pass:'Avesoro@123', role:'admin' };
+<script>
+(() => {
+  'use strict';
 
-/* ... auth kodlarının tamamı ... */
+  /* ===========================
+     AUTH ENGINE (localStorage)
+     =========================== */
 
-initAuth();
+  const USERS_KEY   = 'AVESORO_USERS_V1';
+  const SESSION_KEY = 'AVESORO_SESSION_V1';
+  const DEFAULT_ADMIN = { user:'admin', pass:'Avesoro@123', role:'admin' };
 
-/* ---------------- TABLO SIRALAMA + FİLTRE ---------------- */
-/* ... burada parseComparatorExpression vb. devam edecek ... */
+  const hasSubtle = !!(window.crypto && window.crypto.subtle && window.isSecureContext);
+
+  function loadUsersDb(){ /* ... senin fonksiyon ... */ }
+  function saveUsersDb(db){ /* ... */ }
+  function randSalt(len=16){ /* ... */ }
+  function hashPlain(password, saltB64){ /* ... */ }
+  async function pbkdf2HashB64(password, saltB64, iterations=120000){ /* ... */ }
+  async function hashPassword(password, saltB64, algo){ /* ... */ }
+  async function ensureDefaultAdmin(){ /* ... */ }
+  function setSession(userObj){ /* ... */ }
+  function clearSession(){ /* ... */ }
+  function getSession(){ /* ... */ }
+  function showAuthMsg(text, isErr=false){ /* ... */ }
+  function lockUI(locked){ /* ... */ }
+  async function login(username, password){ /* ... */ }
+  function openAdmin(open){ /* ... */ }
+  async function upsertUser(username, password, role){ /* ... */ }
+  async function resetPassword(username, newPass){ /* ... */ }
+  function deleteUser(username){ /* ... */ }
+  function renderAdminUsers(){ /* ... */ }
+
+  async function initAuth(){ /* ... */ }
+
+  window.addEventListener('DOMContentLoaded', initAuth);
+
+  /* ===========================
+     BURADAN SONRA: senin diğer kodların
+     (tablo sort/filter, upload, render, assistant vb.)
+     =========================== */
+
+  function parseComparatorExpression(raw){ /* ... */ }
+  function normalizeCellText(txt){ /* ... */ }
+  function enhanceTable(table){ /* ... */ }
+  function enhanceAllTables(root=document){ /* ... */ }
+
+  // ... aşağıdaki tüm mevcut kodların (renderAll, upload, assistant, shimmer, pulse vs) burada kalacak ...
+
+})();
+</script>
+  const USERS_KEY   = 'AVESORO_USERS_V1';
+  const SESSION_KEY = 'AVESORO_SESSION_V1';
+  const DEFAULT_ADMIN = { user:'admin', pass:'Avesoro@123', role:'admin' };
+
+  // HTTPS/localhost değilse (file:// gibi) WebCrypto pbkdf2 sorun çıkarabilir → fallback
+  const hasSubtle = !!(window.crypto && window.crypto.subtle && window.isSecureContext);
+
+  function loadUsersDb(){
+    try{
+      const raw = localStorage.getItem(USERS_KEY);
+      if(!raw) return {version:1, users:[]};
+      const db = JSON.parse(raw);
+      if(!db || !Array.isArray(db.users)) return {version:1, users:[]};
+      return db;
+    }catch{
+      return {version:1, users:[]};
+    }
+  }
+  function saveUsersDb(db){
+    localStorage.setItem(USERS_KEY, JSON.stringify(db));
+  }
+
+  function randSalt(len=16){
+    // getRandomValues yoksa bile çalışsın (demo)
+    const arr = new Uint8Array(len);
+    if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(arr);
+    else for(let i=0;i<len;i++) arr[i] = Math.floor(Math.random()*256);
+    return btoa(String.fromCharCode(...arr));
+  }
+
+  function hashPlain(password, saltB64){
+    // Güvenli değil ama file:// gibi ortamlarda login’i çalışır kılar
+    // (Kurumsal kullanımda mutlaka sunucu tarafı auth önerilir)
+    const s = `${password}||${saltB64}`;
+    return btoa(unescape(encodeURIComponent(s)));
+  }
+
+  async function pbkdf2HashB64(password, saltB64, iterations=120000){
+    const enc  = new TextEncoder();
+    const salt = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
+    const keyMaterial = await crypto.subtle.importKey(
+      'raw', enc.encode(password),
+      {name:'PBKDF2'}, false, ['deriveBits']
+    );
+    const bits = await crypto.subtle.deriveBits(
+      {name:'PBKDF2', salt, iterations, hash:'SHA-256'},
+      keyMaterial, 256
+    );
+    const bytes = new Uint8Array(bits);
+    return btoa(String.fromCharCode(...bytes));
+  }
+
+  async function hashPassword(password, saltB64, algo){
+    if(algo === 'pbkdf2' && hasSubtle){
+      return await pbkdf2HashB64(password, saltB64);
+    }
+    return hashPlain(password, saltB64);
+  }
+
+  async function ensureDefaultAdmin(){
+    const db = loadUsersDb();
+
+    // admin zaten varsa dokunma
+    if(db.users.some(x => x.u === DEFAULT_ADMIN.user)) return;
+
+    const salt = randSalt(16);
+    const algo = hasSubtle ? 'pbkdf2' : 'plain';
+    const hash = await hashPassword(DEFAULT_ADMIN.pass, salt, algo);
+
+    db.users.push({
+      u: DEFAULT_ADMIN.user,
+      role: 'admin',
+      salt,
+      hash,
+      algo,
+      createdAt: new Date().toISOString()
+    });
+    saveUsersDb(db);
+  }
+
+  function setSession(userObj){
+    localStorage.setItem(SESSION_KEY, JSON.stringify({
+      u: userObj.u,
+      role: userObj.role || 'viewer',
+      ts: Date.now()
+    }));
+  }
+  function clearSession(){ localStorage.removeItem(SESSION_KEY); }
+  function getSession(){
+    try{
+      const raw = localStorage.getItem(SESSION_KEY);
+      if(!raw) return null;
+      return JSON.parse(raw);
+    }catch{ return null; }
+  }
+
+  function showAuthMsg(text, isErr=false){
+    const m = document.getElementById('authMsg');
+    if(!m) return;
+    m.style.display = 'block';
+    m.classList.toggle('err', !!isErr);
+    m.textContent = text || '';
+  }
+
+  function lockUI(locked){
+    document.body.classList.toggle('locked', !!locked);
+
+    const ov = document.getElementById('authOverlay');
+    if(ov) ov.style.display = locked ? 'flex' : 'none';
+
+    const btnLogout = document.getElementById('btnLogout');
+    if(btnLogout) btnLogout.style.display = locked ? 'none' : 'inline-flex';
+
+    const sess = getSession();
+    const btnAdmin = document.getElementById('btnAdmin');
+    if(btnAdmin) btnAdmin.style.display = (!locked && sess && sess.role==='admin') ? 'inline-flex' : 'none';
+  }
+
+  async function login(username, password){
+    const db = loadUsersDb();
+    const u = (username||'').trim();
+    const p = (password||'').trim();
+
+    const userObj = db.users.find(x => (x.u||'') === u);
+    if(!userObj) return {ok:false, msg:'Kullanıcı bulunamadı.'};
+
+    const algo = userObj.algo || 'plain';
+
+    // Eğer eski kayıt pbkdf2 ama sayfa güvenli değilse uyar
+    if(algo === 'pbkdf2' && !hasSubtle){
+      return {
+        ok:false,
+        msg:'Bu sayfa HTTPS/localhost üzerinden açılmadığı için güvenli doğrulama çalışmıyor. Lütfen Vercel/HTTPS üzerinden açın (önerilir) veya kullanıcı veritabanını sıfırlayın.'
+      };
+    }
+
+    const hash = await hashPassword(p, userObj.salt, algo);
+    if(hash !== userObj.hash) return {ok:false, msg:'Parola hatalı.'};
+
+    setSession(userObj);
+    return {ok:true, msg:'Giriş başarılı.'};
+  }
+
+  function openAdmin(open){
+    const modal = document.getElementById('adminModal');
+    if(!modal) return;
+    modal.classList.toggle('open', !!open);
+    modal.setAttribute('aria-hidden', open ? 'false' : 'true');
+    if(open) renderAdminUsers();
+  }
+
+  async function upsertUser(username, password, role){
+    const db = loadUsersDb();
+    const u = (username||'').trim();
+    const p = (password||'').trim();
+    let r = (role||'viewer').trim().toLowerCase();
+    if(!u || !p) return {ok:false, msg:'Kullanıcı adı ve parola zorunlu.'};
+    if(r !== 'admin') r = 'viewer';
+
+    if(db.users.some(x => x.u === u)) return {ok:false, msg:'Bu kullanıcı adı zaten var.'};
+
+    const salt = randSalt(16);
+    const algo = hasSubtle ? 'pbkdf2' : 'plain';
+    const hash = await hashPassword(p, salt, algo);
+
+    db.users.push({u, role:r, salt, hash, algo, createdAt:new Date().toISOString()});
+    saveUsersDb(db);
+    return {ok:true, msg:'Kullanıcı eklendi.'};
+  }
+
+  async function resetPassword(username, newPass){
+    const db = loadUsersDb();
+    const u = (username||'').trim();
+    const p = (newPass||'').trim();
+    const idx = db.users.findIndex(x => x.u === u);
+    if(idx < 0) return {ok:false, msg:'Kullanıcı bulunamadı.'};
+    if(!p) return {ok:false, msg:'Yeni parola boş olamaz.'};
+
+    const salt = randSalt(16);
+    const algo = hasSubtle ? 'pbkdf2' : 'plain';
+    const hash = await hashPassword(p, salt, algo);
+
+    db.users[idx].salt = salt;
+    db.users[idx].hash = hash;
+    db.users[idx].algo = algo;
+    saveUsersDb(db);
+    return {ok:true, msg:'Parola güncellendi.'};
+  }
+
+  function deleteUser(username){
+    const db = loadUsersDb();
+    const u = (username||'').trim();
+    const sess = getSession();
+
+    if(sess && sess.u === u) return {ok:false, msg:'Kendi hesabını silemezsin.'};
+
+    const before = db.users.length;
+    db.users = db.users.filter(x => x.u !== u);
+    if(db.users.length === before) return {ok:false, msg:'Kullanıcı bulunamadı.'};
+    saveUsersDb(db);
+    return {ok:true, msg:'Kullanıcı silindi.'};
+  }
+
+  function renderAdminUsers(){
+    const mount = document.getElementById('adminUsersMount');
+    if(!mount) return;
+
+    const db = loadUsersDb();
+    if(!db.users.length){
+      mount.innerHTML = '<div class="note">Kullanıcı yok.</div>';
+      return;
+    }
+
+    mount.innerHTML = `
+      <table class="admin-mini">
+        <thead>
+          <tr>
+            <th>Kullanıcı</th>
+            <th>Rol</th>
+            <th>Oluşturma</th>
+            <th class="num">İşlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${db.users.map(x=>`
+            <tr>
+              <td><b>${x.u}</b></td>
+              <td>${x.role}</td>
+              <td>${(x.createdAt||'').slice(0,10)}</td>
+              <td class="num">
+                <div class="admin-actions-row" style="justify-content:flex-end;">
+                  <button type="button" data-act="reset" data-u="${x.u}">Şifre</button>
+                  <button type="button" class="danger" data-act="del" data-u="${x.u}">Sil</button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+
+    mount.querySelectorAll('button[data-act]').forEach(btn=>{
+      btn.addEventListener('click', async ()=>{
+        const act = btn.dataset.act;
+        const u = btn.dataset.u;
+
+        if(act === 'reset'){
+          const np = prompt(`${u} için yeni parola:`);
+          if(np == null) return;
+          const res = await resetPassword(u, np);
+          alert(res.msg);
+          renderAdminUsers();
+        }
+
+        if(act === 'del'){
+          if(!confirm(`${u} kullanıcısı silinsin mi?`)) return;
+          const res = deleteUser(u);
+          alert(res.msg);
+          renderAdminUsers();
+        }
+      });
+    });
+  }
+
+  async function initAuth(){
+    try{
+      await ensureDefaultAdmin();
+    }catch(err){
+      console.error('Auth init error:', err);
+    }
+
+    const loginForm  = document.getElementById('loginForm');
+    const loginUser  = document.getElementById('loginUser');
+    const loginPass  = document.getElementById('loginPass');
+    const btnLogout  = document.getElementById('btnLogout');
+    const btnAdmin   = document.getElementById('btnAdmin');
+    const adminClose = document.getElementById('adminClose');
+    const btnAddUser = document.getElementById('btnAddUser');
+    const btnShowInfo= document.getElementById('btnShowInfo');
+
+    btnShowInfo && btnShowInfo.addEventListener('click', ()=>{
+      const extra = hasSubtle
+        ? 'Güvenli doğrulama aktif (PBKDF2).'
+        : 'Not: Sayfa HTTPS/localhost değilse basit doğrulama çalışır (demo).';
+      showAuthMsg(`İlk kurulum: admin / Avesoro@123. ${extra}`, false);
+    });
+
+    // varsa otomatik giriş
+    const sess = getSession();
+    lockUI(!sess);
+
+    loginForm && loginForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      showAuthMsg('', false);
+
+      const res = await login(loginUser.value, loginPass.value);
+      if(!res.ok){
+        showAuthMsg(res.msg, true);
+        return;
+      }
+      loginPass.value = '';
+      lockUI(false);
+    });
+
+    btnLogout && btnLogout.addEventListener('click', ()=>{
+      clearSession();
+      lockUI(true);
+      showAuthMsg('Çıkış yapıldı.', false);
+    });
+
+    btnAdmin && btnAdmin.addEventListener('click', ()=>{
+      const s = getSession();
+      if(!s || s.role !== 'admin') return;
+      openAdmin(true);
+    });
+
+    adminClose && adminClose.addEventListener('click', ()=> openAdmin(false));
+    document.getElementById('adminModal')?.addEventListener('click', (e)=>{
+      if(e.target && e.target.id === 'adminModal') openAdmin(false);
+    });
+
+    btnAddUser && btnAddUser.addEventListener('click', async ()=>{
+      const s = getSession();
+      if(!s || s.role !== 'admin'){ alert('Yetkisiz.'); return; }
+
+      const nu = document.getElementById('newUser').value;
+      const np = document.getElementById('newPass').value;
+      const nr = document.getElementById('newRole').value;
+
+      const res = await upsertUser(nu, np, nr);
+      alert(res.msg);
+      if(res.ok){
+        document.getElementById('newUser').value='';
+        document.getElementById('newPass').value='';
+        document.getElementById('newRole').value='viewer';
+        renderAdminUsers();
+      }
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', initAuth);
+})();
+</script>
+
 </script>
 /* ===========================
    AUTH ENGINE (localStorage)
