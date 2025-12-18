@@ -1,585 +1,3250 @@
 <!DOCTYPE html>
 <html lang="tr">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>AVESORO BI – Excel Beslemeli Stok Raporu (public + kamu desteği)</title>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<style>
-:root{
-  --bg:#fbfaf6; --ink:#1f2937; --muted:#64748b; --card:#fff;
-  --chip:#eef2ff; --chip-b:#e2e8f0; --shadow:0 8px 24px rgba(15,23,42,.06);
-  --radius:14px; --brand-2:#faf6eb; --brand-3:#eaf4e6;
-  --danger:#fee2e2; --warn:#fff7da; --ok:#ecfdf5; --info:#e0f2fe;
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>AVESORO BI – Excel Beslemeli Stok Raporu + AI Asistan</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <style>
+      :root{
+        --bg:#fbfaf6;
+        --ink:#0f172a;
+        --muted:#64748b;
+        --card:#ffffff;
+        --shadow-soft:0 14px 40px rgba(15,23,42,.12);
+        --shadow-strong:0 26px 80px rgba(15,23,42,.25);
+        --radius:18px;
+
+        /* premium gold helpers */
+        --gold-1:#facc15;
+        --gold-2:#eab308;
+        --gold-3:#d4a015;
+
+        /* premium gold icon tonu */
+        --gold-icon:#b98107;
+        --gold-icon-2:#d97706;
+
+        --cream-1:rgba(255,248,231,.78);
+        --cream-2:rgba(255,253,244,.62);
+        --cream-bd:rgba(250,204,21,.35);
+
+        /* ✅ shimmer (flash) */
+        --shimmer-speed:1.05s;
+        --shimmer-opacity:.14;
+
+        /* ✅ assistant pulse */
+        --assist-pulse-speed:.9s;
+      }
+
+      *{box-sizing:border-box}
+      html,body{
+        margin:0;
+        min-height:100%;
+        background:radial-gradient(120% 160% at 0% 0%,#faf5e7,#fdfcf9 55%,#f3faf5 100%);
+        color:var(--ink);
+        font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+        overflow-x:hidden;
+      }
+
+      main.container{
+        max-width:1200px;
+        margin:24px auto 40px;
+        padding:0 16px 40px;
+      }
+
+      /* -------- PREMIUM ALTIN ÜST BAR -------- */
+      header{
+        position:sticky;
+        top:0;
+        z-index:40;
+        background:linear-gradient(90deg,var(--gold-1),var(--gold-2),var(--gold-3));
+        color:#111827;
+        box-shadow:0 10px 30px rgba(15,23,42,.35);
+      }
+      .container{max-width:1200px;margin:0 auto;padding:0 20px}
+      header .container{padding:10px 24px}
+
+      .topbar{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:18px;
+        min-height:60px;
+      }
+
+      .header-main{
+        display:flex;
+        flex-direction:column;
+        gap:2px;
+      }
+      .header-title{
+        font-size:18px;
+        margin:0;
+        font-weight:800;
+        letter-spacing:.01em;
+      }
+      .header-sub{
+        font-size:11px;
+        color:#1f2937;
+        opacity:.9;
+      }
+      .header-sub .tagline{font-weight:500;}
+      .header-sub .note{margin-left:12px;}
+
+      .right-actions{
+        display:flex;
+        gap:10px;
+        align-items:center;
+        flex-wrap:wrap;
+        justify-content:flex-end;
+      }
+
+      /* ✅ action-group krem/premium + shimmer flash (hover başına 1 kez) */
+      .action-group{
+        position:relative;
+        display:flex;
+        align-items:center;
+        gap:8px;
+        padding:6px;
+        border-radius:999px;
+        background:
+          linear-gradient(180deg,var(--cream-1),var(--cream-2)),
+          radial-gradient(120% 200% at 0% 0%,rgba(250,204,21,.22),transparent 55%),
+          rgba(255,255,255,.22);
+        border:1px solid var(--cream-bd);
+        box-shadow:
+          0 14px 28px rgba(15,23,42,.22),
+          inset 0 0 0 1px rgba(255,255,255,.35);
+        backdrop-filter:blur(12px);
+        -webkit-backdrop-filter:blur(12px);
+        overflow:hidden;
+      }
+
+      /* shimmer overlay elemanı */
+      .action-group .shimmer{
+        position:absolute;
+        inset:-55%;
+        background:
+          linear-gradient(120deg,
+            transparent 40%,
+            rgba(255,255,255,var(--shimmer-opacity)) 49%,
+            rgba(250,204,21, calc(var(--shimmer-opacity) - .06)) 53%,
+            rgba(255,255,255,var(--shimmer-opacity)) 57%,
+            transparent 70%);
+        transform:translateX(-75%) rotate(10deg);
+        pointer-events:none;
+        mix-blend-mode:soft-light;
+        opacity:0;
+        animation:none;
+        filter:blur(.2px);
+      }
+
+      @keyframes shimmerFlash{
+        0%   { transform:translateX(-78%) rotate(10deg); opacity:0; }
+        12%  { opacity:.9; }
+        50%  { transform:translateX(2%)   rotate(10deg); opacity:.85; }
+        100% { transform:translateX(78%)  rotate(10deg); opacity:0; }
+      }
+
+      /* sadece JS ile bir kez tetiklenecek */
+      .action-group.flash .shimmer{
+        opacity:1;
+        animation:shimmerFlash var(--shimmer-speed) ease-out 1;
+      }
+
+      /* hareket azaltma tercihi */
+      @media (prefers-reduced-motion: reduce){
+        .action-group .shimmer{ animation:none !important; opacity:0 !important; }
+      }
+
+      .pill-btn{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:36px;
+        padding:0 14px;
+        border-radius:999px;
+        border:1px solid rgba(15,23,42,.10);
+        background:rgba(255,255,255,.92);
+        color:#111827;
+        font-size:12px;
+        font-weight:900;
+        cursor:pointer;
+        box-shadow:0 10px 22px rgba(15,23,42,.18);
+        transition:transform .12s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+        white-space:nowrap;
+        position:relative;
+        z-index:1;
+      }
+
+      /* ikonlar premium gold */
+      .pill-btn svg{
+        width:16px;height:16px;
+        opacity:1;
+        color:var(--gold-icon);
+        filter:drop-shadow(0 0 4px rgba(250,204,21,.22));
+      }
+
+      .pill-btn:hover{
+        transform:translateY(-1px);
+        box-shadow:0 14px 30px rgba(15,23,42,.26);
+        border-color:rgba(15,23,42,.16);
+        background:rgba(255,255,255,.98);
+      }
+      .pill-btn:active{transform:translateY(0);}
+
+      .pill-btn.secondary{
+        background:rgba(255,255,255,.86);
+      }
+      .pill-btn.secondary svg{
+        color:var(--gold-icon-2);
+      }
+
+      .pill-btn.assistant{
+        border:1px solid rgba(255,255,255,.16);
+        background:linear-gradient(180deg,#0b1220,#0f172a);
+        color:#ffffff;
+        box-shadow:0 16px 34px rgba(2,6,23,.52);
+        position:relative;
+        overflow:hidden;
+      }
+      .pill-btn.assistant svg{
+        color:var(--gold-1);
+        filter:drop-shadow(0 0 10px rgba(250,204,21,.55));
+      }
+      .pill-btn.assistant:hover{
+        box-shadow:0 22px 46px rgba(2,6,23,.62);
+        border-color:rgba(250,204,21,.35);
+      }
+      .pill-btn.assistant.active{
+        outline:2px solid rgba(250,204,21,.55);
+        box-shadow:0 26px 60px rgba(2,6,23,.66);
+      }
+
+      /* ✅ Assistant gold pulse (hover başına 1 kez, JS tetikler) */
+      .pill-btn.assistant::before{
+        content:'';
+        position:absolute;
+        inset:-6px;
+        border-radius:999px;
+        background:
+          radial-gradient(circle at 20% 20%, rgba(250,204,21,.42), transparent 55%),
+          radial-gradient(circle at 80% 60%, rgba(255,255,255,.22), transparent 62%);
+        opacity:0;
+        transform:scale(.985);
+        pointer-events:none;
+        mix-blend-mode:screen;
+        filter:blur(.2px);
+      }
+      @keyframes assistPulse{
+        0%   { opacity:0; transform:scale(.985); }
+        18%  { opacity:.9; }
+        55%  { opacity:.65; transform:scale(1.015); }
+        100% { opacity:0; transform:scale(1.03); }
+      }
+      .pill-btn.assistant.pulse-once::before{
+        opacity:1;
+        animation:assistPulse var(--assist-pulse-speed) ease-out 1;
+      }
+      @media (prefers-reduced-motion: reduce){
+        .pill-btn.assistant.pulse-once::before{ animation:none !important; opacity:0 !important; }
+      }
+
+      @media(max-width:720px){
+        .topbar{flex-direction:column;align-items:flex-start;}
+        .right-actions{align-self:flex-end;}
+      }
+
+      .note{font-size:12px;color:var(--muted)}
+      h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.01em}
+
+      /* ======= PREMIUM TABS (sadece görünüm) ======= */
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-top:18px;
+  flex-wrap:wrap;
+
+  /* premium grup kapsülü */
+  padding:8px;
+  border-radius:999px;
+  background:
+    radial-gradient(140% 220% at 0% 0%, rgba(255,255,255,.78), transparent 58%),
+    radial-gradient(140% 220% at 100% 120%, rgba(254,249,195,.42), transparent 58%),
+    rgba(255,255,255,.45);
+  border:1px solid rgba(250,204,21,.28);
+  box-shadow:
+    0 18px 46px rgba(15,23,42,.10),
+    inset 0 0 0 1px rgba(255,255,255,.38);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
 }
-*{box-sizing:border-box}
-html,body{margin:0;background:linear-gradient(180deg,var(--bg),#fff);color:var(--ink);
-  font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial}
-header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.9);
-  backdrop-filter:saturate(160%) blur(8px);border-bottom:1px solid #eee}
-.container{max-width:1200px;margin:0 auto;padding:18px 20px}
-h1{font-size:18px;margin:0;font-weight:800} .note{font-size:12px;color:var(--muted)}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.right-actions{display:flex;gap:8px}
-.filters{
-  display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:12px;
-  position:relative;padding:14px;background:
-    radial-gradient(1200px 200px at 20% -40%, rgba(250,246,235,.65), transparent 60%),
-    radial-gradient(1200px 200px at 80% 140%, rgba(234,244,230,.55), transparent 60%),
-    #fff;
-  border:1px solid #eceef2;border-radius:18px;box-shadow:var(--shadow);
+
+.tab{
+  position:relative;
+  border-radius:999px;
+  padding:9px 14px;
+  cursor:pointer;
+
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.01em;
+  color:#475569;
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(248,250,252,.86));
+  border:1px solid rgba(226,232,240,.95);
+
+  box-shadow:
+    0 10px 26px rgba(15,23,42,.08),
+    inset 0 0 0 1px rgba(255,255,255,.40);
+
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+
+  transition:
+    transform .14s ease,
+    box-shadow .18s ease,
+    border-color .18s ease,
+    color .18s ease,
+    background .18s ease;
+  user-select:none;
+  overflow:hidden;
 }
-@media(max-width:1040px){.filters{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:640px){.filters{grid-template-columns:repeat(2,1fr)}}
-.ddbox{position:relative}
-.ddbox>button,.btn{
-  width:100%;padding:10px 12px;border:1px solid #e6e8ec;background:linear-gradient(180deg,#fff,#fafafa);
-  border-radius:12px;box-shadow:0 1px 0 rgba(15,23,42,.02), var(--shadow);
-  text-align:left;cursor:pointer;transition:border-color .18s ease, box-shadow .18s ease, transform .06s ease;
+
+/* hafif “shine” */
+.tab::before{
+  content:"";
+  position:absolute;
+  inset:-60%;
+  background:linear-gradient(120deg,
+    transparent 44%,
+    rgba(255,255,255,.28) 52%,
+    rgba(250,204,21,.14) 56%,
+    transparent 66%);
+  transform:translateX(-70%) rotate(10deg);
+  opacity:0;
+  pointer-events:none;
+  mix-blend-mode:soft-light;
+  transition:opacity .18s ease, transform .55s ease;
 }
-.ddbox>button:hover,.btn:hover{box-shadow:0 12px 28px rgba(15,23,42,.08), var(--shadow);transform:translateY(-1px)}
-.ddbox>button:active,.btn:active{transform:translateY(0);box-shadow:0 6px 18px rgba(15,23,42,.06)}
-.ddbox>button:focus-visible,.btn:focus-visible{outline:0;box-shadow:0 0 0 3px rgba(59,130,246,.12), 0 8px 24px rgba(15,23,42,.06)}
-.ddbox>button{position:relative;padding-right:36px}
-.ddbox>button::after{content:'';position:absolute;right:12px;top:50%;width:8px;height:8px;margin-top:-4px;
-  border-right:2px solid #94a3b8;border-bottom:2px solid #94a3b8;transform:rotate(45deg);opacity:.85;transition:.2s}
-.ddbox.open>button::after{transform:rotate(-135deg);opacity:1}
-.ddbox>button b{font-size:12px;letter-spacing:.02em;color:var(--muted)}
-.ddbox>button .lab{font-weight:600;color:#334155}
-.dd{position:absolute;left:0;top:calc(100% + 6px);z-index:10;background:#fff;border:1px solid #e5e7eb;
-  border-radius:12px;box-shadow:var(--shadow);min-width:260px;max-height:320px;overflow:auto;display:none}
-.ddbox.open .dd{display:block}
-.dd .row{display:flex;gap:8px;align-items:center;padding:6px 8px;border-radius:8px}
-.dd .row:hover{background:#f9fafb}
-.ghost{border:1px solid #e5e7eb;background:linear-gradient(180deg,#f8fafc,#f3f4f6)}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}
-.kpi{border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;background:linear-gradient(135deg,#fff7da,#fff)}
-.kpi .title{font-size:12px;color:var(--muted);text-transform:uppercase}
-.kpi .value{font-size:22px;font-weight:800}
-.kpi .sub{font-size:12px;color:var(--muted)}
-.tabs{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
-.tab{border-radius:12px;padding:10px 14px;background:var(--brand-2);border:1px solid #eee;font-weight:700;cursor:pointer}
-.tab.active{background:var(--brand-3)}
-.panel{display:none;margin-top:12px}
-.panel.active{display:block}
-.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:14px;overflow-x:visible}
-.card h3{margin:0 0 10px;font-size:16px}
-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;table-layout:auto}
-thead th{position:sticky;top:0;background:linear-gradient(180deg,#fff,var(--brand-2));text-align:left;
-  padding:10px;border-bottom:1px solid #eee;white-space:nowrap}
-tbody td,tfoot td{padding:10px;border-bottom:1px solid #f2f4f7}
-tbody tr:hover{background:rgba(250,240,180,.25)}
-td.num,th.num{text-align:right}
-tfoot td{border-top:2px solid #e5e7eb;font-weight:700;background:#fffef7}
-.badge{display:inline-flex;align-items:center;gap:6px;background:var(--chip);border:1px solid var(--chip-b);
-  padding:6px 10px;border-radius:999px;font-size:12px}
-.err{color:#b91c1c;background:#fee2e2;border-color:#fecaca}
-.ok{color:#065f46;background:#ecfdf5;border-color:#a7f3d0}
-textarea{width:100%;min-height:110px;padding:10px;border:1px solid #e5e7eb;border-radius:10px}
-.small{font-size:12px;color:var(--muted)}
-.ai-header{display:flex;gap:8px;align-items:center;justify-content:space-between}
-.status-dot{width:8px;height:8px;border-radius:50%;background:#bbb;display:inline-block;margin-right:6px}
-.status-ok{background:#10b981}.status-warn{background:#f59e0b}.status-err{background:#ef4444}
-.chips{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
-.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;border:1px solid #e5e7eb;cursor:pointer}
-.chip .dot{width:8px;height:8px;border-radius:50%}
-.chip[data-cat="ex"]{background:var(--danger)}
-.chip[data-cat="so"]{background:var(--warn)}
-.chip[data-cat="idle"]{background:#f1f5f9}
-.chip[data-cat="min"],.chip[data-cat="max"]{background:#dbeafe}
-.chip.active{outline:2px solid #334155}
-.group{border:1px solid #e5e7eb;border-radius:10px;margin:10px 0}
-.group>summary{padding:10px 12px;font-weight:700;cursor:pointer;background:#f9fafb;border-radius:10px}
-.sub{margin:6px 14px;border-left:3px solid #eee;padding-left:10px}
-.seg{display:inline-flex;gap:0;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);
-  background:linear-gradient(180deg,#f7faf7,#fff);padding:4px}
-.seg button{padding:10px 14px;border:0;background:transparent;cursor:pointer;font-weight:700;border-radius:10px;transition:background .18s ease, box-shadow .18s ease}
-.seg button:hover{filter:brightness(98%)}
-.seg button.active{background:linear-gradient(180deg,var(--brand-3),#fff);box-shadow:inset 0 0 0 1px #dbe4d8, 0 6px 16px rgba(16,185,129,.06)}
-@media (min-width:1041px){#modeSwitch{grid-column:6/7; grid-row:2; justify-self:end;}}
-</style>
-</head>
-<body>
-<header>
-  <div class="container">
-    <div class="topbar">
-      <div>
-        <h1> 🄰 AVESORO BI – BMMC Stok Raporu</h1>
-        <div id="msg" class="note"></div>
-      </div>
-      <div class="right-actions">
-        <button class="btn" id="btnApi">API Anahtarı</button>
-        <button class="btn" id="btnExport">Kaydet / Tek Dosya Paylaş</button>
-      </div>
-    </div>
-  </div>
-</header>
 
-<main class="container">
-  <div class="filters" id="filters">
-    <div class="seg" id="modeSwitch">
-      <button data-mode="tutar" class="active">Tutarsal Olarak Analiz</button>
-      <button data-mode="miktar">Miktarsal Olarak Analiz</button>
-    </div>
-    <div class="ddbox" data-key="Donem"><button><b>Dönem (Ay)</b> — <span class="lab">(yok)</span></button><div class="dd"></div></div>
-    <div class="ddbox" data-key="DepoSinifi"><button><b>Depo Sınıfı</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
-    <div class="ddbox" data-key="Depo"><button><b>Depo Adı</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
-    <div class="ddbox" data-key="FSN"><button><b>FSN Class</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
-    <div class="ddbox" data-key="MTRL"><button><b>Mtrl Group</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
-    <div class="ddbox" data-key="UstGrup"><button><b>Üst Grup</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
-    <div class="ddbox" data-key="AltGrup"><button><b>Alt Grup</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
-    <div><input id="file" type="file" accept=".xlsx,.xls,.csv" style="display:none" />
-      <button class="btn" id="btnUpload">Excel/CSV yükle</button></div>
-    <div><button class="btn ghost" id="btnClear">Filtreleri temizle</button></div>
-  </div>
+.tab:hover{
+  transform:translateY(-1px);
+  border-color:rgba(148,163,184,.55);
+  box-shadow:
+    0 16px 40px rgba(15,23,42,.14),
+    inset 0 0 0 1px rgba(255,255,255,.42);
+  color:#0f172a;
+}
 
-  <div class="kpis">
-    <div class="kpi"><div class="title">TOPLAM KALAN (<span id="kpi-month">—</span>)</div><div class="value" id="kpi-total">—</div><div class="sub" id="kpi-total-sub">—</div></div>
-    <div class="kpi"><div class="title">MAIN WAREHOUSE</div><div class="value" id="kpi-main">—</div><div class="sub">Kalan</div></div>
-    <div class="kpi"><div class="title">GOODS IN TRANSIT</div><div class="value" id="kpi-git">—</div><div class="sub" id="kpi-git-sub">Pay: —</div></div>
-    <div class="kpi"><div class="title">UNIT WAREHOUSE</div><div class="value" id="kpi-unit">—</div><div class="sub">Kalan</div></div>
-  </div>
+.tab:hover::before{
+  opacity:1;
+  transform:translateX(45%) rotate(10deg);
+}
 
-  <div class="tabs" id="tabs">
-    <div class="tab active" data-tab="overview">Aylık Özet</div>
-    <div class="tab" data-tab="compare">Karşılaştırmalar (FSN/Depo/MTRL/Departman)</div>
-    <div class="tab" data-tab="pareto">Pareto 80/20</div>
-    <div class="tab" data-tab="ai">AI Asistan</div>
-  </div>
+.tab:active{
+  transform:translateY(0);
+  box-shadow:
+    0 12px 30px rgba(15,23,42,.12),
+    inset 0 0 0 1px rgba(255,255,255,.38);
+}
 
-  <section class="panel active" id="panel-overview">
-    <div class="card"><h3>Depo Sınıfı Karşılaştırma (Özet)</h3><div id="tbl-class-mini"></div></div>
-    <div class="card"><h3>Depo Karşılaştırma (Özet)</h3><div id="tbl-ware-mini"></div></div>
-    <div class="card"><h3>FSN Karşılaştırma (Özet)</h3><div id="tbl-fsn-mini"></div></div>
-  </section>
+/* erişilebilir odak */
+.tab:focus-visible{
+  outline:none;
+  border-color:rgba(250,204,21,.60);
+  box-shadow:
+    0 0 0 4px rgba(250,204,21,.18),
+    0 16px 40px rgba(15,23,42,.14);
+}
 
-  <section class="panel" id="panel-compare">
-    <div class="card"><h3>Depo Sınıfı – Detay (Min/Maks Tutar ile)</h3><div id="tbl-class"></div></div>
-    <div class="card"><h3>Depo – Detay (Min/Maks Tutar ile)</h3><div id="tbl-ware"></div></div>
-    <div class="card"><h3>MTRL Group – Detay (Min/Maks Tutar ile)</h3><div id="tbl-mtrl"></div></div>
-    <div class="card"><h3>Departman – Detay (Min/Maks Tutar ile)</h3><div id="tbl-dept"></div></div>
-  </section>
+.tab.active{
+  color:#111827;
+  border-color:rgba(250,204,21,.65);
 
-  <section class="panel" id="panel-pareto">
-    <div class="card"><h3 id="paretoDepHdr">Pareto 80/20 — Departman Özeti (Çıkan Tutar)</h3><div id="tbl-pareto-dept"></div></div>
-    <div class="card"><h3 id="paretoItemHdr">Pareto 80/20 — Çıkan Tutar bazlı (Depo + Stok Adı)</h3><div id="tbl-pareto"></div></div>
-  </section>
+  background:
+    radial-gradient(120% 160% at 0% 0%, rgba(255,255,255,.55), transparent 55%),
+    linear-gradient(135deg, #facc15, #fde68a);
 
-  <section class="panel" id="panel-ai">
-    <div class="card">
-      <div class="ai-header">
-        <h3>Otomatik Özet & Uyarılar</h3>
-        <div class="small"><span id="aiStatusDot" class="status-dot"></span><span id="aiStatusText">LLM kapalı (kural tabanlı)</span></div>
-      </div>
+  box-shadow:
+    0 18px 46px rgba(250,204,21,.18),
+    0 16px 38px rgba(15,23,42,.14),
+    inset 0 0 0 1px rgba(255,255,255,.38);
+}
 
-      <div class="chips">
-        <div class="chip" data-cat="all" onclick="setAIFilter('all')"><span class="dot" style="background:#334155"></span>Tümü</div>
-        <div class="chip active" data-cat="ex"  onclick="setAIFilter('ex')"><span class="dot" style="background:#b91c1c"></span>Aşırı Stok <b id="exCount">0</b></div>
-        <div class="chip" data-cat="so"  onclick="setAIFilter('so')"><span class="dot" style="background:#f59e0b"></span>Stokout Riski <b id="soCount">0</b></div>
-        <div class="chip" data-cat="idle"onclick="setAIFilter('idle')"><span class="dot" style="background:#334155"></span>Hareketsiz <b id="idleCount">0</b></div>
-        <div class="chip" data-cat="min" onclick="setAIFilter('min')"><span class="dot" style="background:#2563eb"></span>Min Altı <b id="belowCount">0</b></div>
-        <div class="chip" data-cat="max" onclick="setAIFilter('max')"><span class="dot" style="background:#2563eb"></span>Max Üstü <b id="aboveCount">0</b></div>
-      </div>
+/* aktif sekmede “premium ring” */
+.tab.active::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.42);
+  pointer-events:none;
+}
 
-      <div id="aiAuto" class="note" style="margin-bottom:10px">Veri yükleyin.</div>
-      <button class="btn" id="btnAuto">Özet ve Uyarıları Oluştur</button>
+@media (prefers-reduced-motion: reduce){
+  .tab, .tab::before{ transition:none !important; }
+  .tab::before{ opacity:0 !important; }
+}
 
-      <details class="group" open id="grpAEx"><summary>🟥 Aşırı Stok — kapsam &gt; 6 ay veya Max seviyesinin üstü</summary>
-        <div class="sub"><pre style="white-space:pre-wrap" id="aiExcessTxt">-</pre></div>
-        <div class="sub"><div id="tblExcess"></div></div>
-      </details>
 
-      <details class="group" open id="grpASo"><summary>🟨 Stokout Riski — kapsam &lt; 0.5 ay</summary>
-        <div class="sub"><pre style="white-space:pre-wrap" id="aiStockoutTxt">-</pre></div>
-        <div class="sub"><div id="tblStockout"></div></div>
-      </details>
+      .btn,
+      .ddbox>button{
+        width:100%;
+        padding:10px 12px;
+        border-radius:12px;
+        border:1px solid rgba(226,232,240,.9);
+        background:linear-gradient(180deg,#ffffff,#f9fafb);
+        cursor:pointer;
+        font-size:13px;
+        text-align:left;
+        box-shadow:0 10px 30px rgba(15,23,42,.08);
+        transition:box-shadow .18s ease, transform .08s ease, border-color .18s ease, background .18s ease;
+      }
+      .btn:hover,
+      .ddbox>button:hover{
+        box-shadow:0 18px 50px rgba(15,23,42,.16);
+        transform:translateY(-1px);
+      }
+      .btn:active,
+      .ddbox>button:active{
+        transform:translateY(0);
+        box-shadow:0 10px 26px rgba(15,23,42,.12);
+      }
+      .ddbox>button b{
+        font-size:11px;
+        letter-spacing:.09em;
+        text-transform:uppercase;
+        color:#94a3b8;
+      }
+      .ddbox>button .lab{
+        font-weight:600;
+        color:#111827;
+      }
 
-      <details class="group" open id="grpIdle"><summary>⬛ Hareketsiz Kalemler — son dönemde çıkış yok</summary>
-        <div class="sub"><pre style="white-space:pre-wrap" id="aiIdleTxt">-</pre></div>
-        <div class="sub"><div id="tblIdle"></div></div>
-      </details>
+      /* FİLTRE ALANI premium + küçük yazı */
+      .filters{
+        display:grid;
+        grid-template-columns:repeat(6,1fr);
+        gap:8px;
+        margin-top:18px;
+        padding:14px 14px 14px;
+        border-radius:26px;
+        background:
+          radial-gradient(160% 220% at 0% 0%,rgba(250,245,222,.92),transparent 60%),
+          radial-gradient(180% 260% at 100% 140%,rgba(209,250,229,.92),transparent 55%),
+          rgba(255,255,255,.965);
+        border:1px solid rgba(226,232,240,.96);
+        box-shadow:0 24px 80px rgba(15,23,42,.22);
+        position:relative;
+        overflow:visible;
+      }
+      .filters::before{
+        content:'';
+        position:absolute;
+        inset:-40%;
+        background:
+          linear-gradient(120deg,rgba(255,255,255,.35),transparent 55%),
+          radial-gradient(circle at 0% 0%,rgba(255,255,255,.9),transparent 50%);
+        opacity:.55;
+        pointer-events:none;
+      }
+      .filters>*{position:relative;z-index:1}
 
-      <details class="group" open id="grpMinMax"><summary>🔵 Seviye İhlali — Min altında & Max üstünde</summary>
-        <div class="sub"><pre style="white-space:pre-wrap" id="aiLevelsTxt">-</pre></div>
-        <div class="sub">
-          <details class="group" open><summary>Min Altı</summary><div class="sub"><div id="tblBelow"></div></div></details>
-          <details class="group" open><summary>Max Üstü</summary><div class="sub"><div id="tblAbove"></div></div></details>
+      @media(max-width:1040px){.filters{grid-template-columns:repeat(3,1fr)}}
+      @media(max-width:640px){.filters{grid-template-columns:repeat(2,1fr)}}
+
+      .filters .btn,
+      .filters .ddbox>button{
+        padding:9px 10px;
+        border-radius:14px;
+        font-size:11px;
+        box-shadow:0 12px 34px rgba(15,23,42,.10);
+      }
+      .filters .ddbox>button b{
+        font-size:10px;
+        letter-spacing:.12em;
+        color:#94a3b8;
+      }
+      .filters .ddbox>button .lab{font-size:11px;}
+
+      .ddbox{position:relative}
+      .ddbox>button{position:relative;padding-right:30px}
+      .ddbox>button::after{
+        content:'';
+        position:absolute;
+        right:10px;
+        top:50%;
+        width:8px;
+        height:8px;
+        margin-top:-4px;
+        border-right:2px solid #94a3b8;
+        border-bottom:2px solid #94a3b8;
+        transform:rotate(45deg);
+        transition:transform .18s ease,opacity .18s ease;
+        opacity:.85;
+      }
+      .ddbox.open>button::after{transform:rotate(-135deg);opacity:1}
+
+      .dd{
+        position:absolute;
+        left:0;
+        top:calc(100% + 6px);
+        z-index:30;
+        min-width:260px;
+        max-height:320px;
+        background:#ffffff;
+        border-radius:16px;
+        box-shadow:0 22px 60px rgba(15,23,42,.24);
+        border:1px solid rgba(226,232,240,.96);
+        overflow:auto;
+        padding:6px;
+        display:none;
+      }
+      .ddbox.open .dd{display:block}
+      .dd .row{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        padding:6px 8px;
+        border-radius:8px;
+        font-size:12px;
+      }
+      .dd .row:hover{background:#f9fafb}
+
+      .ghost{background:linear-gradient(180deg,#f9fafb,#eef2ff);}
+
+      .seg{
+        display:inline-flex;
+        gap:4px;
+        border-radius:999px;
+        padding:4px;
+        border:1px solid rgba(203,213,225,.9);
+        background:linear-gradient(135deg,rgba(248,250,252,.95),rgba(241,245,249,.95));
+        box-shadow:0 10px 30px rgba(15,23,42,.14);
+      }
+      .seg button{
+        border:0;
+        background:transparent;
+        font-size:10.5px;
+        font-weight:800;
+        padding:7px 10px;
+        border-radius:999px;
+        cursor:pointer;
+        color:#64748b;
+      }
+      .seg button.active{
+        background:linear-gradient(135deg,#22c55e,#a3e635);
+        color:#0f172a;
+        box-shadow:0 10px 24px rgba(34,197,94,.45);
+      }
+      @media(min-width:1041px){
+        #modeSwitch{grid-column:6/7;grid-row:2;justify-self:end}
+      }
+
+      .kpis{
+        margin-top:22px;
+        display:grid;
+        grid-template-columns:repeat(4,minmax(0,1fr));
+        gap:16px;
+      }
+      @media(max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr));}}
+      @media(max-width:640px){.kpis{grid-template-columns:1fr;}}
+
+      .kpi{
+        position:relative;
+        padding:18px 18px 14px;
+        border-radius:22px;
+        background:
+          radial-gradient(circle at 0% 0%,rgba(250,250,249,.9),transparent 60%),
+          radial-gradient(140% 200% at 100% 120%,rgba(253,230,138,.55),transparent 55%),
+          rgba(255,255,255,.98);
+        border:1px solid rgba(226,232,240,.95);
+        box-shadow:0 20px 60px rgba(15,23,42,.22);
+        overflow:hidden;
+      }
+      .kpi::before{
+        content:'';
+        position:absolute;
+        inset:0;
+        background:linear-gradient(120deg,rgba(255,255,255,.25),transparent 50%);
+        mix-blend-mode:screen;
+        opacity:.7;
+        pointer-events:none;
+      }
+      .kpi .title{
+        font-size:11px;
+        text-transform:uppercase;
+        letter-spacing:.12em;
+        color:#9ca3af;
+        margin-bottom:6px;
+      }
+      .kpi .value{
+        font-size:22px;
+        font-weight:800;
+        letter-spacing:.02em;
+        color:#111827;
+      }
+      .kpi .sub{
+        margin-top:4px;
+        font-size:12px;
+        color:#6b7280;
+      }
+
+      #panel-overview{
+        margin-top:20px;
+        padding:20px 20px 18px;
+        border-radius:30px;
+        background:
+          radial-gradient(180% 220% at 0% 0%,rgba(250,245,222,.9),transparent 60%),
+          radial-gradient(220% 260% at 100% 140%,rgba(187,247,208,.9),transparent 55%),
+          rgba(255,255,255,.96);
+        border:1px solid rgba(226,232,240,.95);
+        box-shadow:var(--shadow-strong);
+        position:relative;
+        overflow:hidden;
+      }
+      #panel-overview::before{
+        content:'';
+        position:absolute;
+        inset:-40%;
+        background:
+          linear-gradient(120deg,rgba(255,255,255,.35),transparent 40%),
+          radial-gradient(circle at 80% 0%,rgba(255,255,255,.75),transparent 55%);
+        opacity:.68;
+        pointer-events:none;
+      }
+      #panel-overview>*{position:relative;z-index:1}
+
+      .panel{display:none;margin-top:12px}
+      .panel.active{display:block}
+
+      .card{
+        background:var(--card);
+        border-radius:var(--radius);
+        box-shadow:0 14px 36px rgba(15,23,42,.16);
+        padding:16px;
+        margin-bottom:14px;
+        overflow-x:auto;
+        border:1px solid rgba(226,232,240,.9);
+      }
+
+      #panel-overview .card{
+        border-radius:24px;
+        background:rgba(255,255,255,.92);
+        backdrop-filter:blur(14px);
+        -webkit-backdrop-filter:blur(14px);
+      }
+
+      /* Yönetici Özeti – kaydırma yok, grid ile sığar */
+      .mgmt-summary-card{
+        margin-top:4px !important;
+        padding:18px 18px 12px !important;
+        border-radius:26px !important;
+        background:
+          radial-gradient(120% 220% at 0% 0%,rgba(250,250,249,.6),transparent 55%),
+          radial-gradient(160% 200% at 100% 140%,rgba(253,230,138,.7),transparent 60%),
+          rgba(255,255,255,.95) !important;
+        border:1px solid rgba(250,204,21,.5) !important;
+        box-shadow:0 22px 60px rgba(15,23,42,.28) !important;
+        position:relative;
+        overflow:hidden !important;
+      }
+      .mgmt-summary-card::before{
+        content:'';
+        position:absolute;
+        inset:-20%;
+        background:
+          linear-gradient(135deg,rgba(255,255,255,.5),transparent 55%),
+          radial-gradient(circle at 100% 0%,rgba(254,249,195,.7),transparent 55%);
+        opacity:.9;
+        mix-blend-mode:screen;
+        pointer-events:none;
+      }
+      .mgmt-summary-card>*{position:relative;z-index:1}
+
+      .mgmt-header{
+        font-size:13.5px;
+        font-weight:900;
+        margin-bottom:10px;
+        letter-spacing:.08em;
+        text-transform:uppercase;
+        color:#0f172a;
+      }
+
+      .mgmt-row{
+        display:grid;
+        grid-template-columns:repeat(5,minmax(0,1fr));
+        gap:10px;
+        overflow:hidden;
+      }
+      @media(max-width:1100px){.mgmt-row{grid-template-columns:repeat(3,minmax(0,1fr));}}
+      @media(max-width:720px){.mgmt-row{grid-template-columns:repeat(2,minmax(0,1fr));}}
+      @media(max-width:520px){.mgmt-row{grid-template-columns:1fr;}}
+
+      .mgmt-box{
+        min-width:0;
+        padding:12px 12px 8px;
+        border-radius:18px;
+        border:1px solid rgba(226,232,240,.9);
+        background:rgba(255,255,255,.9);
+        box-shadow:0 12px 34px rgba(15,23,42,.16);
+        backdrop-filter:blur(10px);
+        -webkit-backdrop-filter:blur(10px);
+        transition:transform .16s ease,box-shadow .2s ease;
+      }
+      .mgmt-box:hover{
+        transform:translateY(-2px);
+        box-shadow:0 18px 48px rgba(15,23,42,.24);
+      }
+      .mgmt-label{
+        font-size:9.5px;
+        color:#9ca3af;
+        text-transform:uppercase;
+        letter-spacing:.14em;
+        margin-bottom:2px;
+        font-weight:800;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .mgmt-value{
+        font-size:18px;
+        font-weight:900;
+        display:flex;
+        align-items:baseline;
+        gap:4px;
+        min-width:0;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .mgmt-sub{
+        margin-top:2px;
+        font-size:11px;
+        color:#6b7280;
+        display:-webkit-box;
+        -webkit-line-clamp:2;
+        -webkit-box-orient:vertical;
+        overflow:hidden;
+      }
+
+      .mgmt-box.primary{
+        background:linear-gradient(135deg,rgba(254,249,195,.85),rgba(255,255,255,.96));
+        border-color:rgba(250,204,21,.55);
+      }
+      .mgmt-box.neutral{
+        background:linear-gradient(135deg,rgba(220,252,231,.9),rgba(255,255,255,.95));
+      }
+      .mgmt-box.danger{
+        background:linear-gradient(135deg,rgba(254,226,226,.9),rgba(255,255,255,.96));
+        border-color:rgba(248,113,113,.6);
+      }
+      .mgmt-box.warn{
+        background:linear-gradient(135deg,rgba(254,243,199,.9),rgba(255,255,255,.96));
+        border-color:rgba(234,179,8,.5);
+      }
+      .mgmt-box.info{
+        background:linear-gradient(135deg,rgba(219,234,254,.9),rgba(255,255,255,.96));
+        border-color:rgba(129,140,248,.6);
+      }
+
+      .overview-card{
+        padding:16px 16px 14px;
+        border-radius:22px;
+        background:
+          radial-gradient(130% 220% at 0% 0%,rgba(255,255,255,.85),transparent 55%),
+          radial-gradient(130% 200% at 100% 140%,rgba(209,250,230,.8),transparent 60%),
+          rgba(255,255,255,.97);
+        border:1px solid rgba(226,232,240,.96);
+        box-shadow:0 18px 56px rgba(15,23,42,.22);
+      }
+
+      .ov-header{
+        display:flex;
+        justify-content:space-between;
+        align-items:flex-start;
+        gap:12px;
+        margin-bottom:10px;
+      }
+      .ov-label{
+        font-size:10px;
+        text-transform:uppercase;
+        letter-spacing:.16em;
+        color:#9ca3af;
+        margin-bottom:4px;
+      }
+      .ov-header h3{
+        margin:0;
+        font-size:14px;
+        font-weight:700;
+        color:#020617;
+      }
+      .ov-chips{
+        display:flex;
+        flex-wrap:wrap;
+        gap:6px;
+        justify-content:flex-end;
+      }
+      .ov-chip{
+        font-size:11px;
+        padding:4px 9px;
+        border-radius:999px;
+        border:1px solid rgba(226,232,240,.95);
+        background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(248,250,252,.98));
+        color:#6b7280;
+        white-space:nowrap;
+      }
+
+      .ov-mini-wrap{
+        display:grid;
+        grid-template-columns:minmax(240px,320px) minmax(0,1fr);
+        gap:18px;
+        align-items:flex-start;
+      }
+      @media(max-width:960px){.ov-mini-wrap{grid-template-columns:1fr;}}
+
+      .ov-mini{
+        width:100%;
+        border-collapse:separate;
+        border-spacing:0;
+        font-size:12px;
+        background:rgba(255,255,255,.96);
+        border-radius:16px;
+        box-shadow:0 10px 28px rgba(15,23,42,.16);
+        overflow:hidden;
+      }
+      .ov-mini thead th{
+        padding:8px 10px;
+        background:linear-gradient(180deg,#f9fafb,#fefce8);
+        border-bottom:1px solid #e5e7eb;
+        text-align:left;
+      }
+      .ov-mini tbody td{
+        padding:7px 10px;
+        border-bottom:1px solid #f1f5f9;
+      }
+      .ov-mini tbody tr:last-child td{border-bottom:0;}
+      .ov-mini .num{text-align:right}
+
+      .ov-description{
+        padding:12px 16px;
+        border-radius:18px;
+        background:
+          radial-gradient(120% 220% at 0% 0%,rgba(255,255,255,.95),transparent 55%),
+          radial-gradient(160% 240% at 100% 100%,rgba(220,252,231,.86),transparent 55%),
+          rgba(255,255,255,.97);
+        border:1px solid rgba(226,232,240,.96);
+        box-shadow:0 14px 40px rgba(15,23,42,.18);
+        font-size:12px;
+        color:#111827;
+      }
+      .ov-section-title{
+        font-size:11px;
+        text-transform:uppercase;
+        letter-spacing:.12em;
+        color:#64748b;
+        margin:6px 0 3px;
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+      }
+      .ov-section-title::before{
+        content:'';
+        width:10px;
+        height:10px;
+        border-radius:999px;
+        background:linear-gradient(135deg,#facc15,#f97316);
+        box-shadow:0 0 0 3px rgba(250,204,21,.28);
+      }
+      .ov-section-title[data-type="risk"]::before{
+        background:linear-gradient(135deg,#fb7185,#f97316);
+      }
+      .ov-section-title[data-type="action"]::before{
+        background:linear-gradient(135deg,#4ade80,#22c55e);
+      }
+      .ov-description ul{margin:4px 0 6px 16px;padding:0;}
+      .ov-description li{margin-bottom:2px;color:#4b5563;}
+      .ov-description strong{color:#111827}
+
+      table{
+        width:100%;
+        border-collapse:separate;
+        border-spacing:0;
+        font-size:13px;
+      }
+      thead th{
+        position:sticky;
+        top:0;
+        background:linear-gradient(180deg,#ffffff,#f9fafb);
+        text-align:left;
+        padding:9px 10px;
+        border-bottom:1px solid #e2e8f0;
+        white-space:nowrap;
+        z-index:2;
+      }
+      tbody td,tfoot td{
+        padding:8px 10px;
+        border-bottom:1px solid #f1f5f9;
+      }
+      tbody tr:hover{background:rgba(250,249,195,.25)}
+      td.num,th.num{text-align:right}
+      tfoot td{
+        border-top:2px solid #e5e7eb;
+        font-weight:700;
+        background:#fffbeb;
+      }
+
+      .badge{
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+        padding:4px 9px;
+        border-radius:999px;
+        border:1px solid #e5e7eb;
+        background:#f9fafb;
+      }
+      .err{color:#b91c1c;background:#fee2e2;border-color:#fecaca}
+      .ok{color:#065f46;background:#ecfdf5;border-color:#a7f3d0}
+
+      /* ===========================
+         ✅ TABLO BAŞLIKTA SIRALAMA + FİLTRE (YAMA)
+         =========================== */
+      table[data-sf="1"] thead tr.sf-head th{
+        cursor:pointer;
+        user-select:none;
+      }
+      table[data-sf="1"] thead tr.sf-head th .sf-label{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+      }
+      table[data-sf="1"] thead tr.sf-head th .sf-ind{
+        font-size:11px;
+        color:#94a3b8;
+        font-weight:900;
+        letter-spacing:.02em;
+      }
+      table[data-sf="1"] thead tr.sf-head th[data-sort="asc"] .sf-ind{ color:#0f172a; }
+      table[data-sf="1"] thead tr.sf-head th[data-sort="desc"] .sf-ind{ color:#0f172a; }
+
+      table[data-sf="1"] thead tr.sf-filter th{
+        position:sticky;
+        top:34px; /* 1. başlık satırı yüksekliği için */
+        z-index:1;
+        background:linear-gradient(180deg,#f9fafb,#ffffff);
+        padding:6px 10px;
+        border-bottom:1px solid #e2e8f0;
+      }
+      table[data-sf="1"] thead tr.sf-filter th input{
+        width:100%;
+        border-radius:10px;
+        border:1px solid rgba(226,232,240,.95);
+        padding:7px 9px;
+        font-size:11px;
+        outline:none;
+        background:rgba(255,255,255,.92);
+        box-shadow:0 8px 20px rgba(15,23,42,.06);
+      }
+      table[data-sf="1"] thead tr.sf-filter th input:focus{
+        border-color:rgba(250,204,21,.65);
+        box-shadow:0 0 0 4px rgba(250,204,21,.16);
+      }
+
+      /* ======= AKILLI ASİSTAN (premium) ======= */
+      .assist-panel{
+        position:fixed;
+        right:16px;
+        bottom:16px;
+        width:380px;
+        max-height:540px;
+        display:none;
+        flex-direction:column;
+        border-radius:20px;
+        z-index:60;
+        overflow:hidden;
+        border:1px solid rgba(250,204,21,.35);
+        background:rgba(255,255,255,.78);
+        backdrop-filter:blur(16px);
+        -webkit-backdrop-filter:blur(16px);
+        box-shadow:0 28px 90px rgba(15,23,42,.42);
+        opacity:0;
+        transform:translateY(8px) scale(.985);
+        transition:opacity .18s ease, transform .18s ease;
+      }
+      .assist-panel.open{
+        display:flex;
+        opacity:1;
+        transform:translateY(0) scale(1);
+      }
+      .assist-header{
+        padding:10px 12px;
+        background:linear-gradient(90deg,var(--gold-1),var(--gold-2),var(--gold-3));
+        color:#111827;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:8px;
+        box-shadow:0 12px 30px rgba(15,23,42,.20);
+      }
+      .assist-title{font-size:13px;font-weight:900;letter-spacing:.02em;}
+      .assist-sub{font-size:11px;opacity:.95;color:#1f2937;}
+      .assist-close{
+        border:none;
+        background:rgba(255,255,255,.45);
+        color:#111827;
+        border-radius:999px;
+        padding:5px 10px;
+        font-size:11px;
+        font-weight:800;
+        cursor:pointer;
+        white-space:nowrap;
+        transition:transform .12s ease, background .18s ease;
+      }
+      .assist-close:hover{background:rgba(255,255,255,.7);transform:translateY(-1px);}
+      .assist-body{
+        padding:10px 10px 6px;
+        flex:1;
+        overflow-y:auto;
+        background:
+          radial-gradient(120% 140% at 0% 0%, rgba(254,249,195,.65), transparent 55%),
+          radial-gradient(120% 140% at 100% 120%, rgba(187,247,208,.55), transparent 55%),
+          rgba(255,255,255,.55);
+      }
+      .assist-msg{margin-bottom:8px;display:flex;}
+      .assist-msg.user{justify-content:flex-end;}
+      .assist-msg.bot{justify-content:flex-start;}
+      .assist-bubble{
+        max-width:88%;
+        padding:8px 10px;
+        border-radius:16px;
+        font-size:12px;
+        line-height:1.45;
+        box-shadow:0 10px 22px rgba(15,23,42,.16);
+        border:1px solid rgba(226,232,240,.85);
+      }
+      .assist-msg.user .assist-bubble{
+        background:linear-gradient(135deg, rgba(34,197,94,.20), rgba(250,204,21,.18));
+        color:#0f172a;
+        border-bottom-right-radius:6px;
+      }
+      .assist-msg.bot .assist-bubble{
+        background:rgba(255,255,255,.92);
+        color:#111827;
+        border-bottom-left-radius:6px;
+      }
+      .assist-quick{
+        padding:8px 10px 6px;
+        display:flex;
+        flex-wrap:wrap;
+        gap:6px;
+        background:rgba(255,255,255,.72);
+        border-top:1px solid rgba(226,232,240,.85);
+        backdrop-filter:blur(12px);
+        -webkit-backdrop-filter:blur(12px);
+      }
+      .assist-quick button{
+        border:1px solid rgba(250,204,21,.35);
+        border-radius:999px;
+        padding:5px 10px;
+        font-size:11px;
+        font-weight:800;
+        cursor:pointer;
+        background:linear-gradient(135deg, rgba(255,255,255,.88), rgba(254,249,195,.75));
+        color:#111827;
+        white-space:nowrap;
+        box-shadow:0 10px 18px rgba(15,23,42,.10);
+        transition:transform .12s ease, box-shadow .18s ease;
+      }
+      .assist-quick button:hover{transform:translateY(-1px);box-shadow:0 14px 24px rgba(15,23,42,.14);}
+      .assist-input-row{
+        display:flex;
+        padding:8px 10px 10px;
+        gap:8px;
+        border-top:1px solid rgba(226,232,240,.85);
+        background:rgba(255,255,255,.78);
+        backdrop-filter:blur(12px);
+        -webkit-backdrop-filter:blur(12px);
+      }
+      .assist-input-row input{
+        flex:1;
+        border-radius:999px;
+        border:1px solid rgba(226,232,240,.95);
+        padding:8px 12px;
+        font-size:12px;
+        outline:none;
+        background:rgba(255,255,255,.92);
+        transition:box-shadow .18s ease, border-color .18s ease;
+      }
+      .assist-input-row input:focus{
+        border-color:rgba(250,204,21,.65);
+        box-shadow:0 0 0 4px rgba(250,204,21,.18);
+      }
+      .assist-input-row button{
+        border-radius:999px;
+        border:none;
+        padding:8px 14px;
+        font-size:12px;
+        font-weight:900;
+        cursor:pointer;
+        background:linear-gradient(90deg,var(--gold-1),var(--gold-2),var(--gold-3));
+        color:#111827;
+        box-shadow:0 14px 28px rgba(15,23,42,.18);
+        transition:transform .12s ease, box-shadow .18s ease;
+      }
+      .assist-input-row button:hover{transform:translateY(-1px);box-shadow:0 18px 34px rgba(15,23,42,.22);}
+      .assist-input-row button:active{transform:translateY(0)}
+      @media(max-width:520px){
+        .assist-panel{right:8px;left:8px;width:auto;bottom:8px;}
+      }
+
+      /* ============ ✅ RISK PAGES (premium) ============ */
+      .risk-title{
+        font-size:13px;
+        font-weight:900;
+        letter-spacing:.08em;
+        text-transform:uppercase;
+        margin:0 0 6px;
+        color:#0f172a;
+      }
+      .risk-sub{
+        font-size:12px;
+        color:#64748b;
+        margin:0 0 10px;
+      }
+
+      .risk-controls{
+        display:flex;
+        gap:10px;
+        align-items:stretch;
+        justify-content:space-between;
+        flex-wrap:wrap;
+        padding:10px 10px;
+        border-radius:18px;
+        border:1px solid rgba(226,232,240,.92);
+        background:
+          radial-gradient(140% 240% at 0% 0%,rgba(254,249,195,.55),transparent 58%),
+          radial-gradient(140% 240% at 100% 120%,rgba(187,247,208,.45),transparent 58%),
+          rgba(255,255,255,.88);
+        box-shadow:0 16px 44px rgba(15,23,42,.12);
+        margin:8px 0 10px;
+      }
+      .risk-controls .left{flex:1; min-width:240px;}
+      .risk-controls .right{
+        display:flex;
+        gap:10px;
+        align-items:flex-end;
+        justify-content:flex-end;
+        flex-wrap:wrap;
+      }
+      .risk-controls .cap{
+        display:block;
+        font-size:10px;
+        letter-spacing:.14em;
+        text-transform:uppercase;
+        color:#94a3b8;
+        font-weight:900;
+        margin:0 0 4px 2px;
+      }
+      .risk-controls input{
+        width:100%;
+        border-radius:14px;
+        border:1px solid rgba(226,232,240,.95);
+        padding:10px 12px;
+        font-size:12px;
+        outline:none;
+        background:rgba(255,255,255,.92);
+        box-shadow:0 10px 24px rgba(15,23,42,.08);
+        transition:box-shadow .18s ease, border-color .18s ease;
+      }
+      .risk-controls input:focus{
+        border-color:rgba(250,204,21,.65);
+        box-shadow:0 0 0 4px rgba(250,204,21,.18), 0 16px 30px rgba(15,23,42,.12);
+      }
+      .risk-controls select{
+        border-radius:14px;
+        border:1px solid rgba(226,232,240,.95);
+        padding:10px 12px;
+        font-size:12px;
+        outline:none;
+        background:rgba(255,255,255,.92);
+        box-shadow:0 10px 24px rgba(15,23,42,.08);
+      }
+      .risk-controls .hint{
+        width:100%;
+        font-size:11px;
+        color:#64748b;
+        margin-top:4px;
+      }
+
+      .risk-group{
+        border:1px solid rgba(226,232,240,.92);
+        border-radius:14px;
+        margin:10px 0;
+        background:rgba(255,255,255,.92);
+        box-shadow:0 14px 40px rgba(15,23,42,.12);
+        overflow:hidden;
+      }
+      .risk-group > summary{
+        padding:12px 12px;
+        cursor:pointer;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        background:
+          linear-gradient(180deg,rgba(255,255,255,.98),rgba(248,250,252,.92));
+      }
+      .risk-group > summary::-webkit-details-marker{display:none;}
+      .risk-body{
+        padding:12px 12px 10px;
+        border-top:1px solid rgba(226,232,240,.9);
+        background:
+          radial-gradient(160% 220% at 0% 0%,rgba(254,249,195,.35),transparent 60%),
+          rgba(255,255,255,.9);
+      }
+
+      .risk-pill{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        padding:6px 10px;
+        border-radius:999px;
+        font-size:12px;
+        font-weight:900;
+        border:1px solid rgba(226,232,240,.92);
+        background:#fff;
+        box-shadow:0 10px 24px rgba(15,23,42,.10);
+      }
+      .risk-pill .dot{
+        width:10px;height:10px;border-radius:999px;
+        box-shadow:0 0 0 4px rgba(250,204,21,.20);
+      }
+      .risk-pill.crit{border-color:rgba(248,113,113,.45); background:linear-gradient(135deg,rgba(254,226,226,.75),rgba(255,255,255,.92));}
+      .risk-pill.crit .dot{background:linear-gradient(135deg,#fb7185,#ef4444); box-shadow:0 0 0 4px rgba(248,113,113,.18);}
+      .risk-pill.mid{border-color:rgba(234,179,8,.45); background:linear-gradient(135deg,rgba(254,243,199,.78),rgba(255,255,255,.92));}
+      .risk-pill.mid .dot{background:linear-gradient(135deg,#f59e0b,#facc15); box-shadow:0 0 0 4px rgba(234,179,8,.18);}
+      .risk-pill.low{border-color:rgba(34,197,94,.35); background:linear-gradient(135deg,rgba(220,252,231,.78),rgba(255,255,255,.92));}
+      .risk-pill.low .dot{background:linear-gradient(135deg,#4ade80,#22c55e); box-shadow:0 0 0 4px rgba(34,197,94,.16);}
+
+      .risk-chip{
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+        padding:5px 9px;
+        border-radius:999px;
+        font-size:11px;
+        border:1px solid rgba(226,232,240,.92);
+        background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(248,250,252,.98));
+        color:#64748b;
+        white-space:nowrap;
+      }
+      .risk-chip b{color:#0f172a}
+
+      .risk-table{
+        width:100%;
+        border-collapse:separate;
+        border-spacing:0;
+        font-size:12px;
+        background:rgba(255,255,255,.95);
+        border-radius:14px;
+        overflow:hidden;
+        box-shadow:0 10px 28px rgba(15,23,42,.12);
+        border:1px solid rgba(226,232,240,.92);
+      }
+      .risk-table thead th{
+        background:linear-gradient(180deg,#ffffff,#fefce8);
+        border-bottom:1px solid rgba(226,232,240,.95);
+        padding:9px 10px;
+        position:sticky;
+        top:0;
+        z-index:2;
+      }
+      .risk-table tbody td{
+        padding:8px 10px;
+        border-bottom:1px solid #f1f5f9;
+        vertical-align:top;
+      }
+      .risk-table tbody tr:hover{background:rgba(250,249,195,.22);}
+      .risk-empty{
+        padding:12px 10px;
+        border-radius:14px;
+        border:1px dashed rgba(226,232,240,.95);
+        background:rgba(248,250,252,.8);
+        color:#64748b;
+        font-size:12px;
+      }
+
+      /* ✅ Risk KPI bar + iç grup seg */
+      .risk-kpis{
+        display:grid;
+        grid-template-columns:repeat(4,minmax(0,1fr));
+        gap:10px;
+        margin:8px 0 12px;
+      }
+      @media(max-width:980px){ .risk-kpis{grid-template-columns:repeat(2,minmax(0,1fr));} }
+      @media(max-width:520px){ .risk-kpis{grid-template-columns:1fr;} }
+
+      .risk-kpi{
+        padding:10px 12px;
+        border-radius:18px;
+        border:1px solid rgba(226,232,240,.92);
+        background:rgba(255,255,255,.88);
+        box-shadow:0 14px 34px rgba(15,23,42,.10);
+        overflow:hidden;
+      }
+      .risk-kpi .cap{
+        font-size:10px;
+        letter-spacing:.14em;
+        text-transform:uppercase;
+        color:#94a3b8;
+        font-weight:900;
+        margin-bottom:4px;
+      }
+      .risk-kpi .val{
+        font-size:14px;
+        font-weight:900;
+        color:#0f172a;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .risk-kpi .sub{
+        margin-top:2px;
+        font-size:11px;
+        color:#64748b;
+        display:-webkit-box;
+        -webkit-line-clamp:2;
+        -webkit-box-orient:vertical;
+        overflow:hidden;
+      }
+
+      .risk-innerseg{
+        display:inline-flex;
+        gap:4px;
+        border-radius:999px;
+        padding:4px;
+        border:1px solid rgba(203,213,225,.9);
+        background:linear-gradient(135deg,rgba(248,250,252,.95),rgba(241,245,249,.95));
+        box-shadow:0 10px 26px rgba(15,23,42,.10);
+      }
+      .risk-innerseg button{
+        border:0;
+        background:transparent;
+        font-size:10.5px;
+        font-weight:900;
+        padding:7px 10px;
+        border-radius:999px;
+        cursor:pointer;
+        color:#64748b;
+        white-space:nowrap;
+      }
+      .risk-innerseg button.active{
+        background:linear-gradient(135deg,#facc15,#fde68a);
+        color:#0f172a;
+        box-shadow:0 10px 22px rgba(250,204,21,.32);
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="container">
+        <div class="topbar">
+          <div class="header-main">
+            <div class="header-title">AVESORO BI – BMMC Stok Yönetimi</div>
+            <div class="header-sub">
+              <span class="tagline">Aylık Stok Analizi • KPI • Risk • Yönetim Özeti • AI Destekli Raporlama</span>
+            </div>
+          </div>
+
+          <div class="right-actions">
+            <div class="action-group" id="actionGroup">
+              <span class="shimmer" aria-hidden="true"></span>
+
+              <button class="pill-btn" id="btnUpload" title="Excel veya CSV yükleyin">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M3.5 6.8c0-1 0.8-1.8 1.8-1.8h4.2c.5 0 1 .2 1.3.6l1 1.1c.3.3.8.5 1.2.5h5c1 0 1.8.8 1.8 1.8v8.8c0 1-.8 1.8-1.8 1.8H5.3c-1 0-1.8-.8-1.8-1.8V6.8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                </svg>
+                Excel / CSV Yükle
+              </button>
+
+              <button class="pill-btn secondary" id="btnSave" title="Tek dosya HTML olarak kaydet">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 4.8h11.2L19.2 7.8V19c0 1-.8 1.8-1.8 1.8H6.8C5.8 20.8 5 20 5 19V4.8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                  <path d="M8 4.8V9h8V4.8" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                  <path d="M8 20.8v-6.2h8v6.2" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                </svg>
+                HTML Kaydet
+              </button>
+            </div>
+
+            <button class="pill-btn assistant" id="btnHelp" title="Akıllı Stok Asistanı">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3l1.2 3.2L16.5 7.4l-3.3 1.2L12 11.9l-1.2-3.3L7.5 7.4l3.3-1.2L12 3z" fill="currentColor"/>
+                <path d="M19 11l.8 2.1L22 14l-2.2.8L19 17l-.8-2.2L16 14l2.2-.9L19 11z" fill="currentColor"/>
+                <path d="M6 12l.9 2.4L9.5 15l-2.6.9L6 18.5l-.9-2.6L2.5 15l2.6-.6L6 12z" fill="currentColor"/>
+              </svg>
+              Akıllı Stok Asistanı
+            </button>
+          </div>
         </div>
-      </details>
 
-      <details class="group" open id="grpDepot"><summary>🏷️ Depo Bazlı Özet</summary>
-        <div class="sub"><pre class="note" style="white-space:pre-wrap" id="aiDepot">-</pre></div>
-      </details>
+        <div class="header-sub">
+          <div class="note"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- AKILLI STOK ASİSTANI -->
+    <div id="assistantPanel" class="assist-panel">
+      <div class="assist-header">
+        <div>
+          <div class="assist-title">Akıllı Stok Asistanı</div>
+          <div class="assist-sub">Seçili filtre + seçili ay üzerinden yanıt üretir</div>
+        </div>
+        <button id="assistClose" class="assist-close">Kapat ✕</button>
+      </div>
+
+      <div class="assist-body" id="assistMessages">
+        <div class="assist-msg bot">
+          <div class="assist-bubble">
+            <strong>Örnek:</strong><br>
+            • “Bu ay en yüksek kalan hangi depoda?”<br>
+            • “Aşırı stoklar hangileri?”<br>
+            • “Hareketsiz kalemleri özetle”
+          </div>
+        </div>
+      </div>
+
+      <div class="assist-quick">
+        <button data-q="Genel özet ver.">Genel özet</button>
+        <button data-q="Aşırı stoklar hangileri?">Aşırı stok</button>
+        <button data-q="Min altı olanlar hangileri?">Min altı</button>
+        <button data-q="Hareketsiz stokları göster.">Hareketsiz</button>
+      </div>
+
+      <form class="assist-input-row" id="assistForm">
+        <input id="assistInput" type="text" placeholder="Sorunuzu buraya yazın..." />
+        <button type="submit">Gönder</button>
+      </form>
     </div>
-  </section>
 
-  <p class="note">© AVESORO BI </p>
-</main>
+    <main class="container">
+      <input id="file" type="file" accept=".xlsx,.xls,.xlsm,.xlsb,.csv" style="display:none" />
 
-<script>
-const MONEY = n => (n==null || isNaN(n) ? '—' : '$' + Math.round(n).toLocaleString('tr-TR'));
-const QTY   = n => (n==null || isNaN(n) ? '—' : Math.round(n).toLocaleString('tr-TR'));
-const PCT = x => (x==null || isNaN(x) ? '—' : (Math.round(x) + ' %'));
-const msg = (html, ok=true) => { const el=document.getElementById('msg'); if(!el) return; el.innerHTML=html; el.className='note badge ' + (ok?'ok':'err'); };
-const deaccent = (s='') => s.replaceAll('İ','I').replaceAll('ı','i').normalize('NFD').replace(/\\p{Diacritic}/gu,'').toLowerCase();
-const monthMap={ ocak:1,oca:1, subat:2,sub:2, mart:3,mar:3, nisan:4,nis:4, mayis:5,may:5, haziran:6,haz:6,
-  temmuz:7,tem:7, agustos:8,agu:8, agust:8, eylul:9,eyl:9, ekim:10,eki:10, kasim:11,kas:11, aralik:12,ara:12 };
-function normMonth(v){
-  if (v==null||v==='') return '';
-  if (typeof v==='number'){ if (v>40000 && v<60000){ const base=Date.UTC(1899,11,30);
-    const ms=base+Math.round(v)*24*3600*1000; const d=new Date(ms);
-    return `${d.getUTCFullYear()}-${('0'+(d.getUTCMonth()+1)).slice(-2)}`; } }
-  let s=deaccent(String(v).trim()); let m=s.match(/(20\\d{2})\\D+([01]?\\d)\\b/); if(m) return `${m[1]}-${('0'+m[2]).slice(-2)}`;
-  m=s.match(/(20\\d{2})([01]\\d)\\b/); if(m) return `${m[1]}-${m[2]}`; const y=(s.match(/(20\\d{2})/)||[])[1];
-  for(const k of Object.keys(monthMap)){ if(s.includes(k)) return (y?y:'0000')+'-'+('0'+monthMap[k]).slice(-2); }
-  return s;
-}
-const STATE_KEY='AVESORO_BI_STATE'; let ANALYSIS_MODE='tutar';
-function saveState(){ try{ const s={filters:FILTERS, aiFilter:AI_FILTER, analysis:ANALYSIS_MODE}; localStorage.setItem(STATE_KEY, JSON.stringify(s)); }catch(e){} }
-function loadState(){ try{ const raw=localStorage.getItem(STATE_KEY); if(!raw) return; const s=JSON.parse(raw);
-  if(s&&s.filters){ FILTERS=Object.assign({Donem:[],DepoSinifi:[],Depo:[],FSN:[],MTRL:[],UstGrup:[],AltGrup:[]}, s.filters); }
-  if(s&&s.aiFilter) AI_FILTER=s.aiFilter; if(s&&s.analysis) ANALYSIS_MODE=s.analysis; initAnalysisUI(); }catch(e){} }
-let RAW=[];
-let FILTERS={Donem:[], DepoSinifi:[], Depo:[], FSN:[], MTRL:[], UstGrup:[], AltGrup:[]};
-let ALL   ={Donem:[], DepoSinifi:[], Depo:[], FSN:[], MTRL:[], UstGrup:[], AltGrup:[]};
-let ACTIVE_MONTH=null;
-const msEls=[...document.querySelectorAll('.ddbox')];
-msEls.forEach(ms=>{ ms.querySelector('button').addEventListener('click',()=>{ msEls.forEach(x=>{if(x!==ms)x.classList.remove('open');}); ms.classList.toggle('open');});});
-document.body.addEventListener('click',e=>{ if(!e.target.closest('.ddbox')) msEls.forEach(x=>x.classList.remove('open')); });
-function buildMS(){
-  const uniq = arr => [...new Set(arr.filter(Boolean))].sort();
-  ALL = {
-    Donem: uniq(RAW.map(x=>x.Donem)), DepoSinifi: uniq(RAW.map(x=>x.DepoSinifi)), Depo: uniq(RAW.map(x=>x.Depo)),
-    FSN: uniq(RAW.map(x=>x.FSN)), MTRL: uniq(RAW.map(x=>x.MTRL)), UstGrup: uniq(RAW.map(x=>x.UstGrup)), AltGrup: uniq(RAW.map(x=>x.AltGrup)),
-  };
-  msEls.forEach(ms=>{
-    const key=ms.dataset.key, box=ms.querySelector('.dd'); box.innerHTML='';
-    const list=ALL[key]||[];
-    const top=document.createElement('div'); top.className='row';
-    top.innerHTML=`<input type="checkbox" data-all="1" ${(!FILTERS[key]||FILTERS[key].length===0)?'checked':''}/> <strong>Tümü</strong>`;
-    box.appendChild(top);
-    list.forEach(v=>{ const row=document.createElement('div'); row.className='row';
-      const checked=FILTERS[key]&&FILTERS[key].includes(v);
-      row.innerHTML=`<input type="checkbox" ${checked?'checked':''} data-val="${v}"/> <span>${v}</span>`; box.appendChild(row); });
-    box.onchange = ev=>{
-      const inp=ev.target; if(!inp||inp.tagName!=='INPUT') return;
-      if(inp.dataset.all){ FILTERS[key]=[]; [...box.querySelectorAll('input[type=checkbox]')].forEach(i=>{if(!i.dataset.all)i.checked=false;});}
-      else{ const val=inp.dataset.val; FILTERS[key]=FILTERS[key]||[];
-        if(inp.checked) FILTERS[key].push(val); else FILTERS[key]=FILTERS[key].filter(x=>x!==val);
-        box.querySelector('input[data-all]').checked=(FILTERS[key].length===0); }
-      updateMSLabels(); renderAll(); saveState();
-    };
-  }); updateMSLabels();
-}
-function updateMSLabels(){
-  msEls.forEach(ms=>{ const key=ms.dataset.key, sel=FILTERS[key]||[], lab=ms.querySelector('.lab');
-    if(!lab) return; if(!sel.length) lab.textContent='Tümü'; else if(sel.length===1) lab.textContent=sel[0]; else lab.textContent=`${sel.length} seçili`;});
-}
-document.getElementById('btnUpload').onclick = ()=> document.getElementById('file').click();
-document.getElementById('btnClear').onclick  = ()=>{ FILTERS={Donem:[], DepoSinifi:[], Depo:[], FSN:[], MTRL:[], UstGrup:[], AltGrup:[]}; buildMS(); renderAll(); saveState(); };
-document.getElementById('file').addEventListener('change', async e=>{
-  const f=e.target.files[0]; if(!f) return;
-  try{
-    const ext=(f.name.split('.').pop()||'').toLowerCase();
-    if(ext==='csv'){ RAW=parseCSV(await f.text()); }
-    else{
-      if(typeof XLSX==='undefined'){ msg('XLSX kütüphanesi yok. CSV yükleyin.',false); return; }
-      const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});
-      RAW=normalizeRows(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''}));
-    }
-    finishLoad();
-  }catch(err){ console.error(err); msg('Dosya okunamadı: '+(err.message||err),false); }
-  finally{ e.target.value=''; }
-});
-function parseCSV(text){
-  const head=text.split(/\\r?\\n/)[0]||''; const sep=(head.match(/;/g)||[]).length>=(head.match(/,/g)||[]).length?';':',';
-  const rows=text.split(/\\r?\\n/).filter(x=>x.trim().length).map(line=>{
-    const out=[]; let cur='',q=false; for(let i=0;i<line.length;i++){const ch=line[i];
-      if(ch=='"'){q=!q;continue} if(ch===sep&&!q){out.push(cur);cur='';} else cur+=ch;} out.push(cur); return out;});
-  const headers=rows[0]; const data=rows.slice(1).map(arr=>{const o={}; headers.forEach((h,i)=>o[h]=arr[i]??''}); return o;});
-  return normalizeRows(data);
-}
-function toNum(val){
-  if (val==null||val==='') return 0; if (typeof val==='number') return val;
-  let s=String(val).trim(); const neg=/^\\(.*\\)$/.test(s); if(neg) s=s.replace(/[()]/g,'');
-  s=s.replace(/[^\\d.,-]/g,''); if(s.includes('.')&&s.includes(',')) s=s.replace(/\\./g,'').replace(',','.');
-  else if(s.includes(',')&&!s.includes('.')) s=s.replace(',','.');
-  let n=parseFloat(s); if(isNaN(n)) n=0; return neg?-Math.abs(n):n;
-}
-function normalizeRows(arr){
-  if(!arr.length) return [];
-  const map={};
-  Object.keys(arr[0]).forEach(h=>{
-    const k=deaccent(h);
-    if(k.includes('donem')) map[h]='Donem';
-    else if(k.startsWith('depo sinif')) map[h]='DepoSinifi';
-    else if(k==='depo') map[h]='Depo';
-    else if(k.startsWith('ust grup')) map[h]='UstGrup';
-    else if(k.startsWith('alt grup')) map[h]='AltGrup';
-    else if(k.startsWith('stok adi')) map[h]='StokAdi';
-    else if(k.startsWith('mtrl')) map[h]='MTRL';
-    else if(k.startsWith('fsn')) map[h]='FSN';
-    else if(k.includes('son islem departman')) map[h]='Departman';
-    else if(k.includes('devreden tutar')) map[h]='Devreden';
-    else if(k.includes('giren tutar')) map[h]='Giren';
-    else if(k.includes('cikan tutar')) map[h]='Cikan';
-    else if(k.includes('kalan tutar')) map[h]='Kalan';
-    else if(k.includes('devreden miktar')) map[h]='DevredenM';
-    else if(k.includes('giren miktar')) map[h]='GirenM';
-    else if(k.includes('cikan miktar')) map[h]='CikanM';
-    else if(k.includes('kalan miktar')) map[h]='KalanM';
-    else if(k.includes('min')&&k.includes('seviye')&&k.includes('tutar')) map[h]='MinTutar';
-    else if((k.includes('maks')||k.includes('max'))&&k.includes('seviye')&&k.includes('tutar')) map[h]='MaxTutar';
-  });
-  const out=[];
-  for(const r of arr){
-    const o={Donem:'',DepoSinifi:'',Depo:'',UstGrup:'',AltGrup:'',StokAdi:'',MTRL:'',FSN:'',Departman:'',
-             Devreden:0,Giren:0,Cikan:0,Kalan:0,DevredenM:0,GirenM:0,CikanM:0,KalanM:0,MinTutar:0,MaxTutar:0};
-    for(const h of Object.keys(r)){
-      const k=map[h]; if(!k) continue;
-      if(k==='Donem') o.Donem=normMonth(r[h]);
-      else if(['Devreden','Giren','Cikan','Kalan','DevredenM','GirenM','CikanM','KalanM','MinTutar','MaxTutar'].includes(k)) o[k]=toNum(r[h]);
-      else o[k]=String(r[h]||'').trim();
-    }
-    if(o.Donem) out.push(o);
-  }
-  return out;
-}
-function finishLoad(){
-  if(!RAW.length){ msg('Veri bulunamadı. Başlıkları kontrol edin.',false); return; }
-  const months=[...new Set(RAW.map(r=>r.Donem))].sort(); ACTIVE_MONTH=months[months.length-1]||null;
-  window.currentData = RAW; loadState(); buildMS(); renderAll();
-  msg(`Veri yüklendi. Satır: <b>${RAW.length.toLocaleString('tr-TR')}</b>.`,true);
-}
-function getCols(){ return ANALYSIS_MODE==='tutar'
-  ? {dev:'Devreden',gir:'Giren',cik:'Cikan',kal:'Kalan',min:'MinTutar',max:'MaxTutar'}
-  : {dev:'DevredenM',gir:'GirenM',cik:'CikanM',kal:'KalanM',min:null,max:null}; }
-const FMT = (n)=> (ANALYSIS_MODE==='tutar'?MONEY(n):QTY(n));
-function formatMinMax(v){ return (ANALYSIS_MODE==='tutar'?MONEY(v):'—'); }
-function applyFilters(){
-  const f=FILTERS; const ok=(key,val)=>{const s=f[key]; if(!s||!s.length) return true; return s.includes(val);};
-  return RAW.filter(r=> ok('Donem',r.Donem)&&ok('DepoSinifi',r.DepoSinifi)&&ok('Depo',r.Depo)&& ok('FSN',r.FSN)&&ok('MTRL',r.MTRL)&&ok('UstGrup',r.UstGrup)&&ok('AltGrup',r.AltGrup));
-}
-const sum=(arr,key)=> arr.reduce((a,b)=>a+(b[key]||0),0);
-function groupMonthly(rows, byKey, curMonth){
-  const cols=getCols(); const map=new Map();
-  rows.filter(x=>x.Donem===curMonth).forEach(r=>{
-    const key = r[byKey] || 'Belirtilmemiş';
-    if(!map.has(key)) map.set(key,{Ad:key,dev:0,gir:0,cik:0,kal:0,min:0,max:0});
-    const g=map.get(key);
-    g.dev+=r[cols.dev]||0; g.gir+=r[cols.gir]||0; g.cik+=r[cols.cik]||0; g.kal+=r[cols.kal]||0;
-    if(cols.min) g.min+=r[cols.min]||0;
-    if(cols.max) g.max+=r[cols.max]||0;
-  });
-  const rowsOut=[...map.values()].sort((a,b)=> b.kal-a.kal);
-  const footer={Ad:'Alt Toplam',dev:sum(rowsOut,'dev'),gir:sum(rowsOut,'gir'),cik:sum(rowsOut,'cik'),kal:sum(rowsOut,'kal'),min:sum(rowsOut,'min'),max:sum(rowsOut,'max')};
-  return {rows:rowsOut,footer};
-}
-function renderTableSimple(mountId, headers, rows, footer){
-  const el=document.getElementById(mountId); const tbl=document.createElement('table');
-  tbl.innerHTML=`<thead><tr>${headers.map(h=>`<th class="${h.num?'num':''}">${h.t}</th>`).join('')}</tr></thead>
-    <tbody>${rows.map(r=>`<tr><td>${r.Ad}</td><td class="num">${FMT(r.dev)}</td><td class="num">${FMT(r.gir)}</td><td class="num">${FMT(r.cik)}</td><td class="num">${FMT(r.kal)}</td></tr>`).join('')}</tbody>
-    <tfoot><tr><td><b>${footer.Ad}</b></td><td class="num"><b>${FMT(footer.dev)}</b></td><td class="num"><b>${FMT(footer.gir)}</b></td><td class="num"><b>${FMT(footer.cik)}</b></td><td class="num"><b>${FMT(footer.kal)}</b></td></tr></tfoot>`;
-  el.innerHTML=''; el.appendChild(tbl);
-}
-function renderTableMinMax(mountId, rows, footer){
-  const el=document.getElementById(mountId); const tbl=document.createElement('table');
-  const headers=[{t:'Ad'},{t:'Devreden',num:1},{t:'Giren',num:1},{t:'Çıkan',num:1},{t:'Kalan',num:1},{t:'Min Tutar',num:1},{t:'Maks Tutar',num:1}];
-  tbl.innerHTML=`<thead><tr>${headers.map(h=>`<th class="${h.num?'num':''}">${h.t}</th>`).join('')}</tr></thead>
-    <tbody>${rows.map(r=>`<tr><td>${r.Ad}</td><td class="num">${FMT(r.dev)}</td><td class="num">${FMT(r.gir)}</td><td class="num">${FMT(r.cik)}</td><td class="num">${FMT(r.kal)}</td><td class="num">${formatMinMax(r.min)}</td><td class="num">${formatMinMax(r.max)}</td></tr>`).join('')}</tbody>
-    <tfoot><tr><td><b>${footer.Ad}</b></td><td class="num"><b>${FMT(footer.dev)}</b></td><td class="num"><b>${FMT(footer.gir)}</b></td><td class="num"><b>${FMT(footer.cik)}</b></td><td class="num"><b>${FMT(footer.kal)}</b></td><td class="num"><b>${formatMinMax(footer.min)}</b></td><td class="num"><b>${formatMinMax(footer.max)}</b></td></tr></tfoot>`;
-  el.innerHTML=''; el.appendChild(tbl);
-}
-let AI_FILTER='ex';
-function setAIFilter(cat){ AI_FILTER = cat; [...document.querySelectorAll('.chip')].forEach(c=>{ c.classList.toggle('active', c.dataset.cat===AI_FILTER); });
-  const all=(AI_FILTER==='all');
-  document.getElementById('grpAEx').style.display = (all||AI_FILTER==='ex')?'':'none';
-  document.getElementById('grpASo').style.display = (all||AI_FILTER==='so')?'':'none';
-  document.getElementById('grpIdle').style.display= (all||AI_FILTER==='idle')?'':'none';
-  document.getElementById('grpMinMax').style.display=(all||AI_FILTER==='min'||AI_FILTER==='max')?'':'none';
-  saveState();
-}
-function buildConsumptionContext(){
-  const rows=applyFilters(); if(!rows.length) return {cur:'',items:[],months:[]};
-  const months=[...new Set(rows.map(r=>r.Donem))].sort();
-  const curMonth=(FILTERS.Donem.length===1?FILTERS.Donem[0]:(ACTIVE_MONTH||months.at(-1)));
-  const cols=getCols(); const byItem=new Map();
-  for(const r of rows){
-    const key=(r.StokAdi||'')+' | '+(r.Depo||'');
-    if(!byItem.has(key)) byItem.set(key,{Ad:key,Depo:r.Depo||'',DepoSinifi:r.DepoSinifi||'',UstGrup:r.UstGrup||'',Stok:r.StokAdi||'',months:new Map(),min:r[cols.min]||0,max:r[cols.max]||0});
-    const g=byItem.get(key); const exit =(r[cols.cik]||0); const bal  =(r[cols.kal]||0);
-    if(!g.months.has(r.Donem)) g.months.set(r.Donem,{exit:0,bal:0,dev:0,gir:0,cik:0,kal:0});
-    const m=g.months.get(r.Donem); m.exit+=exit; m.bal+=bal; m.dev+=(r[cols.dev]||0); m.gir+=(r[cols.gir]||0); m.cik+=(r[cols.cik]||0); m.kal+=(r[cols.kal]||0);
-  }
-  return {cur:curMonth,items:[...byItem.values()],months};
-}
-function heuristicBlocksDeep(){
-  const ctx=buildConsumptionContext(); if(!ctx.items.length) return {summary:'Veri yok.',excess:[],stockout:[],idle:[],below:[],above:[],depotBullets:''};
-  const monthsAll=[...new Set(ctx.items.flatMap(it=>[...it.months.keys()]))].sort(); const last=ctx.cur; const lastIdx=monthsAll.indexOf(last);
-  const prevs= monthsAll.slice(Math.max(0,lastIdx-3), lastIdx);
-  const excess=[], stockout=[], idle=[], below=[], above=[]; const depotAgg=new Map();
-  for(const it of ctx.items){
-    const cur=it.months.get(last)||{exit:0,bal:0,dev:0,gir:0,cik:0,kal:0};
-    const avgExit = prevs.length ? (prevs.reduce((a,m)=>a+((it.months.get(m)||{exit:0}).exit),0)/prevs.length) : (cur.exit||0);
-    const cov = avgExit>0 ? cur.kal/avgExit : (cur.kal>0?Infinity:0);
-    const dkey=it.Depo||'Belirtilmemiş';
-    if(!depotAgg.has(dkey)) depotAgg.set(dkey,{dev:0,gir:0,cik:0,kal:0});
-    depotAgg.get(dkey).dev+=cur.dev; depotAgg.get(dkey).gir+=cur.gir; depotAgg.get(dkey).cik+=cur.cik; depotAgg.get(dkey).kal+=cur.kal;
-    const minv = it.min||0, maxv = it.max||0;
-    if(avgExit===0 && cur.kal>0)  idle.push({Ad:it.Stok,Depo:it.Depo,kal:cur.kal,cov});
-    if(cov>6 || (maxv>0 && cur.kal>maxv)) excess.push({Ad:it.Stok,Depo:it.Depo,kal:cur.kal,cov});
-    if(cov>0 && cov<0.5) stockout.push({Ad:it.Stok,Depo:it.Depo,kal:cur.kal,cov});
-    if(minv>0 && cur.kal<minv) below.push({Ad:it.Stok,Depo:it.Depo,kal:cur.kal,cov});
-    if(maxv>0 && cur.kal>maxv) above.push({Ad:it.Stok,Depo:it.Depo,kal:cur.kal,cov});
-  }
-  const top10=(arr)=> arr.sort((a,b)=>b.kal-a.kal).slice(0,10);
-  const ex10=top10(excess), so10=top10(stockout), idle10=top10(idle);
-  const depBul=[...depotAgg.entries()].sort((a,b)=>b[1].kal-a[1].kal).map(([k,v])=>`${k} — Dev ${FMT(v.dev)}, Gir ${FMT(v.gir)}, Çık ${FMT(v.cik)}, Kal ${FMT(v.kal)}`).join(' | ');
-  const summary = `Seçili ay: ${ctx.cur} | Aşırı stok: ${excess.length} | Stokout riski: ${stockout.length} | Hareketsiz: ${idle.length} | Min altı: ${below.length} | Max üstü: ${above.length}`;
-  return {summary,excess:ex10,stockout:so10,idle:idle10,below:top10(below),above:top10(above),depotBullets:depBul};
-}
-function renderHierarchy(mountId, list){
-  const el=document.getElementById(mountId);
-  if(!list || !list.length){ el.innerHTML='<div class="note">Kayıt yok.</div>'; return; }
-  const dmap=new Map(); list.forEach(x=>{ const d=x.Depo||'Belirtilmemiş'; if(!dmap.has(d)) dmap.set(d,[]); dmap.get(d).push(x); });
-  const wrap=document.createElement('div');
-  [...dmap.entries()].forEach(([dep,arr])=>{
-    const dDetails=document.createElement('details'); dDetails.className='group'; dDetails.open=true;
-    dDetails.innerHTML=`<summary>${dep} — ${arr.length} kalem</summary>`;
-    const sdiv=document.createElement('div'); sdiv.className='sub';
-    const tbl=document.createElement('table');
-    tbl.innerHTML=`<thead><tr><th>Stok Adı</th><th class="num">Devreden</th><th class="num">Giren</th><th class="num">Çıkan</th><th class="num">Kalan</th><th class="num">Kapsam (ay)</th></tr></thead>
-      <tbody>${arr.map(r=>`<tr><td>${r.Ad}</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">${FMT(r.kal)}</td><td class="num">${isFinite(r.cov)?r.cov.toFixed(1):'∞'}</td></tr>`).join('')}</tbody>`;
-    sdiv.appendChild(tbl); dDetails.appendChild(sdiv); wrap.appendChild(dDetails);
-  });
-  el.innerHTML=''; el.appendChild(wrap);
-}
-function getApiKey(){ return localStorage.getItem('OPENAI_API_KEY')||''; }
-function setApiKey(k){ localStorage.setItem('OPENAI_API_KEY',k||''); refreshAIStatus(); }
-function refreshAIStatus(){ const k=getApiKey(), dot=document.getElementById('aiStatusDot'), tx=document.getElementById('aiStatusText');
-  if(k){ dot.classList.add('status-ok'); dot.classList.remove('status-warn','status-err'); tx.textContent='LLM açık (ChatGPT-4 uyumlu)'; }
-  else{ dot.classList.add('status-warn'); dot.classList.remove('status-ok','status-err'); tx.textContent='LLM kapalı (kural tabanlı)'; } }
-document.getElementById('btnApi').onclick=()=>{ const cur=getApiKey(); const k=prompt('OpenAI API anahtarınızı girin (sk-...):',cur||''); if(k!==null){ setApiKey(k.trim()); alert('Kaydedildi.'); } };
-refreshAIStatus();
-function refreshAI(){
-  const out = heuristicBlocksDeep();
-  document.getElementById('aiAuto').textContent   = out.summary;
-  document.getElementById('aiDepot').innerHTML    = out.depotBullets || '—';
-  const top = arr => (arr.slice(0,10).map((x,i)=>`${i+1}. ${x.Ad} — ${x.Depo} | Kal ${FMT(x.kal)} | Kapsam ${isFinite(x.cov)?x.cov.toFixed(1):'∞'} ay`).join('\\n')) || '-';
-  document.getElementById('aiExcessTxt').textContent   = top(out.excess);
-  document.getElementById('aiStockoutTxt').textContent = top(out.stockout);
-  document.getElementById('aiIdleTxt').textContent     = top(out.idle);
-  document.getElementById('aiLevelsTxt').textContent   = `Min altı: ${out.below.length} | Max üstü: ${out.above.length}`;
-  renderHierarchy('tblExcess',out.excess); renderHierarchy('tblStockout',out.stockout); renderHierarchy('tblIdle',out.idle);
-  renderHierarchy('tblBelow',out.below); renderHierarchy('tblAbove',out.above);
-  document.getElementById('exCount').textContent=out.excess.length;
-  document.getElementById('soCount').textContent=out.stockout.length;
-  document.getElementById('idleCount').textContent=out.idle.length;
-  document.getElementById('belowCount').textContent=out.below.length;
-  document.getElementById('aboveCount').textContent=out.above.length;
-  setAIFilter(AI_FILTER);
-}
-document.getElementById('btnAuto').onclick = refreshAI;
-document.getElementById('tabs').addEventListener('click',e=>{
-  const t=e.target.closest('.tab'); if(!t) return;
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
-  t.classList.add('active'); document.getElementById('panel-'+t.dataset.tab).classList.add('active');
-});
-function initAnalysisUI(){ const sw=document.getElementById('modeSwitch'); if(!sw) return; [...sw.querySelectorAll('button')].forEach(btn=>{ btn.classList.toggle('active', btn.dataset.mode===ANALYSIS_MODE); }); }
-document.getElementById('modeSwitch').addEventListener('click', (e)=>{ const btn=e.target.closest('button[data-mode]'); if(!btn) return;
-  ANALYSIS_MODE = btn.dataset.mode; initAnalysisUI(); renderAll(); saveState(); });
-function renderAll(){
-  const rows=applyFilters(); const cols=getCols();
-  const depHdr=document.getElementById('paretoDepHdr'); const itmHdr=document.getElementById('paretoItemHdr');
-  if(depHdr) depHdr.textContent = (ANALYSIS_MODE==='tutar' ? 'Pareto 80/20 — Departman Özeti (Çıkan Tutar)' : 'Pareto 80/20 — Departman Özeti (Çıkan Miktar)');
-  if(itmHdr) itmHdr.textContent = (ANALYSIS_MODE==='tutar' ? 'Pareto 80/20 — Çıkan Tutar bazlı (Depo + Stok Adı)' : 'Pareto 80/20 — Çıkan Miktar bazlı (Depo + Stok Adı)');
-  if(!rows.length){
-    ['kpi-total','kpi-main','kpi-git','kpi-unit','kpi-month','kpi-total-sub','kpi-git-sub'].forEach(id=>document.getElementById(id).textContent='—');
-    ['tbl-class-mini','tbl-ware-mini','tbl-fsn-mini','tbl-class','tbl-ware','tbl-mtrl','tbl-dept','tbl-pareto','tbl-pareto-dept']
-      .forEach(id=>document.getElementById(id).innerHTML='<div class="note">Veri yok.</div>');
-    document.getElementById('aiAuto').textContent='Veri yok.'; saveState(); return;
-  }
-  const months=[...new Set(rows.map(x=>x.Donem))].sort(); const cur = FILTERS.Donem.length===1 ? FILTERS.Donem[0] : (ACTIVE_MONTH||months[months.length-1]);
-  document.getElementById('kpi-month').textContent=cur;
-  const curRows=rows.filter(x=>x.Donem===cur); const totalCur=sum(curRows,cols.kal);
-  document.getElementById('kpi-total').textContent=FMT(totalCur);
-  document.getElementById('kpi-total-sub').textContent='Aylık fark: —';
-  const main=sum(curRows.filter(x=>(x.DepoSinifi||'')==='Main Warehouse'),cols.kal);
-  const unit=sum(curRows.filter(x=>(x.DepoSinifi||'')==='Unit Warehouse'),cols.kal);
-  const git =sum(curRows.filter(x=>deaccent(x.Depo||'').includes('goods in transit')),cols.kal);
-  document.getElementById('kpi-main').textContent=FMT(main);
-  document.getElementById('kpi-unit').textContent=FMT(unit);
-  document.getElementById('kpi-git').textContent=FMT(git);
-  document.getElementById('kpi-git-sub').textContent=`Pay: ${PCT(totalCur?(git/totalCur*100):0)}`;
-  const headersSimple=[{t:'Ad'},{t:'Devreden',num:1},{t:'Giren',num:1},{t:'Çıkan',num:1},{t:'Kalan',num:1}];
-  const gClass=groupMonthly(rows,'DepoSinifi',cur); renderTableSimple('tbl-class-mini',headersSimple,gClass.rows,gClass.footer);
-  const gWare =groupMonthly(rows,'Depo',cur); renderTableSimple('tbl-ware-mini',headersSimple,gWare.rows,gWare.footer);
-  const gFSN  =groupMonthly(rows,'FSN',cur);  renderTableSimple('tbl-fsn-mini',headersSimple,gFSN.rows,gFSN.footer);
-  renderTableMinMax('tbl-class', gClass.rows, gClass.footer);
-  renderTableMinMax('tbl-ware',  gWare.rows,  gWare.footer);
-  const gMtrl=groupMonthly(rows,'MTRL',cur); renderTableMinMax('tbl-mtrl', gMtrl.rows, gMtrl.footer);
-  const gDept=groupMonthly(rows,'Departman',cur); renderTableMinMax('tbl-dept', gDept.rows, gDept.footer);
-  /* Pareto */
-  const byItem=new Map(); curRows.forEach(r=>{ const key=(r.StokAdi||'')+' | '+(r.Depo||''); if(!byItem.has(key)) byItem.set(key,{Ad:key,dev:0,gir:0,cik:0,kal:0,Departman:r.Departman||''});
-    const g=byItem.get(key); g.dev+=r[cols.dev]||0; g.gir+=r[cols.gir]||0; g.cik+=r[cols.cik]||0; g.kal+=r[cols.kal]||0; });
-  const list=[...byItem.values()].sort((a,b)=>b.cik-a.cik); const totalCik=sum(list,'cik')||1; let cum=0; const top=[];
-  for(const r of list){ cum+=r.cik; top.push(r); if(cum/totalCik>=.8) break; }
-  const depMap=new Map(); top.forEach(r=>{ const k=r.Departman||'Belirtilmemiş'; if(!depMap.has(k)) depMap.set(k,{Ad:k,dev:0,gir:0,cik:0,kal:0}); });
-  for(const r of top){ const g=depMap.get(r.Departman||'Belirtilmemiş'); g.dev+=r.dev; g.gir+=r.gir; g.cik+=r.cik; g.kal+=r.kal; }
-  const depRows=[...depMap.values()].sort((a,b)=>b.cik-a.cik); const depFooter={Ad:'Alt Toplam',dev:sum(depRows,'dev'),gir:sum(depRows,'gir'),cik:sum(depRows,'cik'),kal:sum(depRows,'kal')};
-  renderTableSimple('tbl-pareto-dept', headersSimple, depRows, depFooter);
-  const paretoFooter={Ad:'Alt Toplam',dev:sum(top,'dev'),gir:sum(top,'gir'),cik:sum(top,'cik'),kal:sum(top,'kal')};
-  renderTableSimple('tbl-pareto', headersSimple, top, paretoFooter);
-  refreshAI(); saveState();
-}
-function firstMsg(){ const modeText=(ANALYSIS_MODE==='tutar'?'Tutarsal':'Miktarsal'); msg('Otomatik yükleme aktif (public/ veya kamu/). Analiz modu: <b>'+modeText+'</b>.', true); }
-initAnalysisUI(); firstMsg();
-window.addEventListener('message', async (e)=>{ const data=e.data||{}; if(!data||!data.type) return; try{
-  switch(data.type){
-    case 'setMode':{ const m=(data.payload==='miktar'?'miktar':'tutar'); ANALYSIS_MODE=m; initAnalysisUI(); renderAll(); saveState(); e.source&&e.source.postMessage({type:'ack',cmd:'setMode',ok:true},'*'); break; }
-    case 'clearFilters':{ FILTERS={Donem:[], DepoSinifi:[], Depo:[], FSN:[], MTRL:[], UstGrup:[], AltGrup:[]}; buildMS(); renderAll(); saveState(); e.source&&e.source.postMessage({type:'ack',cmd:'clearFilters',ok:true},'*'); break; }
-    case 'setFilters':{ const f=data.payload||{}; FILTERS=Object.assign({Donem:[], DepoSinifi:[], Depo:[], FSN:[], MTRL:[], UstGrup:[], AltGrup:[]}, f); buildMS(); renderAll(); saveState(); e.source&&e.source.postMessage({type:'ack',cmd:'setFilters',ok:true},'*'); break; }
-    case 'focusTab':{ const tab=String(data.payload||'overview'); const t=document.querySelector(`.tab[data-tab="${tab}"]`); if(t){ t.click(); e.source&&e.source.postMessage({type:'ack',cmd:'focusTab',ok:true},'*'); } break; }
-    case 'loadCSV':{ const url=String(data.payload||'').trim(); if(!url) throw new Error('URL boş'); const res=await fetch(url); const txt=await res.text(); RAW=parseCSV(txt); finishLoad(); e.source&&e.source.postMessage({type:'ack',cmd:'loadCSV',ok:true,rows:RAW.length},'*'); break; }
-    case 'getState':{ e.source&&e.source.postMessage({type:'state',payload:{filters: FILTERS, analysis: ANALYSIS_MODE}},'*'); break; }
-    default: break;
-  } }catch(err){ e.source && e.source.postMessage({type:'error',message:String(err)}, '*'); } });
-try{ window.parent && window.parent !== window && window.parent.postMessage({type:'ready', payload:true}, '*'); }catch{}
-function exportSelfContainedPage(){ try{
-  const data=(window.currentData??[]); let html=document.documentElement.outerHTML;
-  const injectTag = `<script>/* snapshot */window.EMBED_DATA=${JSON.stringify(data)};<\\/script>`;
-  html = html.includes('</body>') ? html.replace('</body>', `${injectTag}\\n</body>`) : (html + injectTag);
-  const blob=new Blob([html],{type:'text/html;charset=utf-8'}); const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); const ts=new Date().toISOString().slice(0,19).replaceAll(':','-');
-  a.href=url; a.download=`AvesoroRapor-${ts}.html`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-}catch(err){ console.error('Snapshot oluşturulamadı:',err); alert('Kaydetme sırasında bir sorun oluştu.'); } }
-document.getElementById('btnExport').onclick = exportSelfContainedPage;
-/* === public VEYA kamu'dan otomatik yükleme === */
-async function loadFromPublicStatic() {
-  const tryPaths = [
-    { xlsx: '/data.xlsx',      csv: '/data.csv',      json: '/data.json' },
-    { xlsx: '/kamu/data.xlsx', csv: '/kamu/data.csv', json: '/kamu/data.json' }
+      <!-- FİLTRELER -->
+      <div class="filters" id="filters">
+        <div class="seg" id="modeSwitch">
+          <button data-mode="tutar" class="active">Tutarsal Analiz</button>
+          <button data-mode="miktar">Miktarsal Analiz</button>
+        </div>
+
+        <div class="ddbox" data-key="Donem"><button><b>Dönem (Ay)</b> — <span class="lab">(yok)</span></button><div class="dd"></div></div>
+        <div class="ddbox" data-key="DepoSinifi"><button><b>Depo Sınıfı</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
+        <div class="ddbox" data-key="Depo"><button><b>Depo Adı</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
+        <div class="ddbox" data-key="FSN"><button><b>FSN Class</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
+        <div class="ddbox" data-key="MTRL"><button><b>Mtrl Group</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
+        <div class="ddbox" data-key="UstGrup"><button><b>Üst Grup</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
+        <div class="ddbox" data-key="AltGrup"><button><b>Alt Grup</b> — <span class="lab">Tümü</span></button><div class="dd"></div></div>
+
+        <div><button class="btn ghost" id="btnClear">Filtreleri temizle</button></div>
+      </div>
+
+      <!-- KPI -->
+      <div class="kpis">
+        <div class="kpi">
+          <div class="title">Toplam Kalan (<span id="kpi-month">—</span>)</div>
+          <div class="value" id="kpi-total">—</div>
+          <div class="sub" id="kpi-total-sub">—</div>
+        </div>
+        <div class="kpi">
+          <div class="title">Main Warehouse</div>
+          <div class="value" id="kpi-main">—</div>
+          <div class="sub">Kalan</div>
+        </div>
+        <div class="kpi">
+          <div class="title">Goods In Transit</div>
+          <div class="value" id="kpi-git">—</div>
+          <div class="sub" id="kpi-git-sub">Pay: —</div>
+        </div>
+        <div class="kpi">
+          <div class="title">Unit Warehouse</div>
+          <div class="value" id="kpi-unit">—</div>
+          <div class="sub">Kalan</div>
+        </div>
+      </div>
+
+      <!-- SEKME -->
+      <div class="tabs" id="tabs">
+        <div class="tab active" data-tab="overview">Aylık Özet</div>
+        <div class="tab" data-tab="compare">Karşılaştırmalar</div>
+        <div class="tab" data-tab="nomove">Hiç Hareket Görmeyenler</div>
+        <div class="tab" data-tab="min">Min Altı</div>
+        <div class="tab" data-tab="max">Max Üstü</div>
+        <div class="tab" data-tab="excess">Aşırı Stoklar</div>
+        <div class="tab" data-tab="pareto">Pareto 80/20</div>
+        <div class="tab" data-tab="ai">AI Asistan</div>
+      </div>
+
+      <!-- AYLIK ÖZET -->
+      <section class="panel active" id="panel-overview">
+        <div class="card mgmt-summary-card" id="mgmt-summary"></div>
+        <div class="card overview-card" id="ov-card-class"></div>
+        <div class="card overview-card" id="ov-card-depo"></div>
+        <div class="card overview-card" id="ov-card-fsn"></div>
+      </section>
+
+      <!-- KARŞILAŞTIRMALAR -->
+      <section class="panel" id="panel-compare">
+        <div class="card"><h3>Depo Sınıfı – Detay</h3><div id="tbl-class"></div></div>
+        <div class="card"><h3>Depo – Detay</h3><div id="tbl-ware"></div></div>
+        <div class="card"><h3>MTRL Group – Detay</h3><div id="tbl-mtrl"></div></div>
+        <div class="card"><h3>Departman – Detay</h3><div id="tbl-dept"></div></div>
+      </section>
+
+      <!-- HAREKETSİZ (premium risk groups) -->
+      <section class="panel" id="panel-nomove">
+        <div class="card">
+          <h3>Hiç Hareket Görmeyenler — Stok Bazlı Risk Grupları (Goods in Transit Hariç)</h3>
+          <div id="riskNoMove"></div>
+          <p class="note">Analiz, seçili ayda giriş=0 ve çıkış=0 olan kalemleri (GIT hariç) tutar/miktar moduna göre risk derecesiyle gruplar.</p>
+        </div>
+      </section>
+
+      <!-- MIN (premium risk groups) -->
+      <section class="panel" id="panel-min">
+        <div class="card">
+          <h3>Min Altı — Risk Grupları (Seçili Ay)</h3>
+          <div id="riskMin"></div>
+          <p class="note">Min altı: Kalan &lt; Min seviyesi. Etki = (Min - Kalan).</p>
+        </div>
+      </section>
+
+      <!-- MAX (premium risk groups) -->
+      <section class="panel" id="panel-max">
+        <div class="card">
+          <h3>Max Üstü — Risk Grupları (Seçili Ay)</h3>
+          <div id="riskMax"></div>
+          <p class="note">Max üstü: Kalan &gt; Max seviyesi. Etki = (Kalan - Max).</p>
+        </div>
+      </section>
+
+      <!-- EXCESS (premium risk groups) -->
+      <section class="panel" id="panel-excess">
+        <div class="card">
+          <h3>Aşırı Stoklar — Risk Grupları (Seçili Ay)</h3>
+          <div id="riskExcess"></div>
+          <p class="note">Aşırı stok: Max üstü listesinin “sermaye bağlama” odaklı premium görünümüdür (aynı veri, farklı aksiyon metni).</p>
+        </div>
+      </section>
+
+      <!-- PARETO (premium) -->
+      <section class="panel" id="panel-pareto">
+        <div class="card">
+          <h3>Pareto 80/20 — Departman Özeti (Çıkan)</h3>
+          <div id="paretoDeptPremium"></div>
+        </div>
+        <div class="card">
+          <h3>Pareto 80/20 — Depo • Stok (Çıkan)</h3>
+          <div id="paretoItemPremium"></div>
+        </div>
+      </section>
+
+      <!-- AI PANEL -->
+      <section class="panel" id="panel-ai">
+        <div class="card">
+          <h3>AI Asistan (Kural Tabanlı Premium Özet)</h3>
+          <div class="note" id="aiAuto">Veri yükleyin.</div>
+          <button class="btn" id="btnAuto">Özet ve Uyarıları Oluştur</button>
+          <div style="height:10px"></div>
+          <div id="aiOut" class="ov-description">—</div>
+        </div>
+      </section>
+
+      <p class="note">© AVESORO BI</p>
+    </main>
+
+    <script id="EMBED_DATA" type="application/json"></script>
+
+    <script>
+      /* ----------------------AMA: TABLOLARDA SIRALAMA + FİLTRE ----------------
+         - Başlık satırına tıklayınca sıralar
+         - Başlığın altında kolon bazlı filtre inputları
+         - Tüm tablolar için otomatik uygulanır
+      ------------------------------------------------------------------------- */
+      function parseComparatorExpression(raw){
+        const s = (raw||'').trim();
+        if(!s) return null;
+        const m = s.match(/^(\>=|\<=|!=|=|>|<)\s*(.+)$/);
+        if(m) return {op:m[1], rhs:m[2].trim()};
+        return {op:'contains', rhs:s};
+      }
+
+      function normalizeCellText(txt){
+        return (txt==null?'':String(txt)).trim().replace(/\s+/g,' ');
+      }
+
+      function getCellValueForSort(cellText, isNumeric){
+        const t = normalizeCellText(cellText);
+        if(t==='—' || t==='-' || t==='') return isNumeric ? 0 : '';
+        if(isNumeric) return toNum(t);
+        return deaccent(t);
+      }
+
+      function cellMatchesFilter(cellText, expr, isNumeric){
+        if(!expr || !expr.rhs) return true;
+        const txt = normalizeCellText(cellText);
+
+        if(expr.op === 'contains'){
+          return deaccent(txt).includes(deaccent(expr.rhs));
+        }
+
+        const left = toNum(txt);
+        const right = toNum(expr.rhs);
+
+        switch(expr.op){
+          case '>': return left > right;
+          case '<': return left < right;
+          case '>=': return left >= right;
+          case '<=': return left <= right;
+          case '=': return left === right;
+          case '!=': return left !== right;
+          default:
+            return deaccent(txt).includes(deaccent(expr.rhs));
+        }
+      }
+
+      function enhanceTable(table){
+        if(!table || table.dataset.sfApplied === '1') return;
+        const thead = table.querySelector('thead');
+        const tbody = table.querySelector('tbody');
+        if(!thead || !tbody) return;
+
+        table.dataset.sfApplied = '1';
+        table.dataset.sf = '1';
+
+        const headRow = thead.querySelector('tr');
+        if(!headRow) return;
+
+        headRow.classList.add('sf-head');
+
+        const headThs = Array.from(headRow.children).filter(x=>x && x.tagName==='TH');
+        headThs.forEach((th, idx)=>{
+          if(th.dataset.sfReady==='1') return;
+          th.dataset.sfReady='1';
+          th.dataset.colIndex = String(idx);
+          const current = th.innerHTML;
+          th.innerHTML = `<span class="sf-label">${current}<span class="sf-ind">↕</span></span>`;
+        });
+
+        const filterRow = document.createElement('tr');
+        filterRow.className = 'sf-filter';
+
+        headThs.forEach((th, idx)=>{
+          const fth = document.createElement('th');
+          if(th.classList.contains('num')) fth.classList.add('num');
+          fth.innerHTML = `<input type="text" placeholder="Filtre..." data-col="${idx}" />`;
+          filterRow.appendChild(fth);
+        });
+
+        thead.appendChild(filterRow);
+
+        const getAllBodyRows = ()=> Array.from(tbody.querySelectorAll('tr')).filter(r=>r.parentElement===tbody);
+
+        function applyFiltersAndVisibility(){
+          const inputs = Array.from(filterRow.querySelectorAll('input[data-col]'));
+          const exprs = inputs.map(inp=>{
+            const col = parseInt(inp.dataset.col,10);
+            const th = headThs[col];
+            const isNumeric = !!(th && th.classList.contains('num'));
+            const expr = parseComparatorExpression(inp.value || '');
+            return {col,isNumeric,expr};
+          });
+
+          getAllBodyRows().forEach(tr=>{
+            const tds = Array.from(tr.children).filter(x=>x && x.tagName==='TD');
+            let ok = true;
+            for(const e of exprs){
+              if(!e.expr) continue;
+              const cell = tds[e.col];
+              const txt = cell ? cell.textContent : '';
+              if(!cellMatchesFilter(txt, e.expr, e.isNumeric)){ ok=false; break; }
+            }
+            tr.style.display = ok ? '' : 'none';
+          });
+        }
+
+        filterRow.addEventListener('input', (ev)=>{
+          const inp = ev.target;
+          if(!inp || inp.tagName!=='INPUT') return;
+          applyFiltersAndVisibility();
+        });
+
+        function sortByColumn(colIndex, dir){
+          const rows = getAllBodyRows();
+          const th = headThs[colIndex];
+          const isNumeric = !!(th && th.classList.contains('num'));
+
+          const rowsWithKey = rows.map(r=>{
+            const tds = Array.from(r.children).filter(x=>x && x.tagName==='TD');
+            const txt = tds[colIndex] ? tds[colIndex].textContent : '';
+            return {r, key:getCellValueForSort(txt, isNumeric), txt};
+          });
+
+          rowsWithKey.sort((a,b)=>{
+            if(isNumeric){
+              const av = (typeof a.key==='number') ? a.key : toNum(a.txt);
+              const bv = (typeof b.key==='number') ? b.key : toNum(b.txt);
+              return dir==='asc' ? (av-bv) : (bv-av);
+            }
+            const av = String(a.key||'');
+            const bv = String(b.key||'');
+            if(av<bv) return dir==='asc' ? -1 : 1;
+            if(av>bv) return dir==='asc' ? 1 : -1;
+            return 0;
+          });
+
+          const frag = document.createDocumentFragment();
+          rowsWithKey.forEach(x=>frag.appendChild(x.r));
+          tbody.appendChild(frag);
+
+          applyFiltersAndVisibility();
+        }
+
+        headRow.addEventListener('click', (ev)=>{
+          if(ev.target && (ev.target.tagName==='INPUT' || ev.target.closest('input'))) return;
+
+          const th = ev.target.closest('th');
+          if(!th || !th.dataset.colIndex) return;
+
+          const colIndex = parseInt(th.dataset.colIndex,10);
+          if(isNaN(colIndex)) return;
+
+          headThs.forEach(x=>{
+            if(x!==th){
+              delete x.dataset.sort;
+              const ind = x.querySelector('.sf-ind');
+              if(ind) ind.textContent = '↕';
+            }
+          });
+
+          const cur = th.dataset.sort || '';
+          const next = (cur==='asc') ? 'desc' : 'asc';
+          th.dataset.sort = next;
+
+          const ind = th.querySelector('.sf-ind');
+          if(ind) ind.textContent = (next==='asc') ? '↑' : '↓';
+
+          sortByColumn(colIndex, next);
+        });
+
+        applyFiltersAndVisibility();
+      }
+
+      function enhanceAllTables(root=document){
+        const tables = Array.from(root.querySelectorAll('table'));
+        tables.forEach(t=> enhanceTable(t));
+      }
+
+      /* ---------------------- Helpers ---------------------- */
+      const MONEY = n => (n==null||isNaN(n)?'—':'$'+Math.round(n).toLocaleString('tr-TR'));
+      const QTY   = n => (n==null||isNaN(n)?'—':Math.round(n).toLocaleString('tr-TR'));
+
+      const msg = (html,ok=true)=>{
+        let el=document.getElementById('msg');
+        if(!el){
+          el = document.createElement('div');
+          el.id='msg';
+          document.querySelector('header .note').appendChild(el);
+        }
+        el.innerHTML=html;
+        el.className='note badge '+(ok?'ok':'err');
+      };
+      const PCT = n => {
+  if (n == null || isNaN(n)) return '—';
+  const v = Math.round(n * 10) / 10; // 1 ondalık
+  return v.toLocaleString('tr-TR', { maximumFractionDigits: 1 }) + ' %';
+};
+      const deaccent = (s='') => s.replaceAll('İ','I').replaceAll('ı','i')
+        .normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase();
+
+      const toNum = val=>{
+        if(val==null||val==='')return 0;
+        if(typeof val==='number')return val;
+        let s=String(val).trim();
+        const neg=/^\(.*\)$/.test(s); if(neg)s=s.replace(/[()]/g,'');
+        s=s.replace(/[^\d.,-]/g,'');
+        if(s.includes('.')&&s.includes(','))s=s.replace(/\./g,'').replace(',','.');
+        else if(s.includes(',')&&!s.includes('.'))s=s.replace(',','.');
+        let n=parseFloat(s); if(isNaN(n))n=0;
+        return neg?-Math.abs(n):Math.abs(n);
+      };
+
+      const monthMap={ocak:1,oca:1,subat:2,sub:2,mart:3,mar:3,nisan:4,nis:4,mayis:5,may:5,
+        haziran:6,haz:6,temmuz:7,tem:7,agustos:8,agu:8,eylul:9,eyl:9,ekim:10,eki:10,kasim:11,kas:11,aralik:12,ara:12};
+
+      function normMonth(v){
+        if(v==null||v==='')return'';
+        if(typeof v==='number'){
+          if(v>40000&&v<60000){
+            const base=Date.UTC(1899,11,30);
+            const ms=base+Math.round(v)*86400000;
+            const d=new Date(ms);
+            return `${d.getUTCFullYear()}-${('0' + (d.getUTCMonth() + 1)).slice(-2)}`;
+          }
+        }
+        let s=deaccent(String(v).trim());
+        let m=s.match(/(20\d{2})\D+([01]?\d)\b/); if(m)return`${m[1]}-${('0' + m[2]).slice(-2)}`;
+        m=s.match(/(20\d{2})([01]\d)\b/); if(m)return`${m[1]}-${m[2]}`;
+        const y=(s.match(/(20\d{2})/)||[])[1];
+        for(const k of Object.keys(monthMap)){
+          if(s.includes(k))return(y?y:'0000')+'-'+('0'+monthMap[k]).slice(-2);
+        }
+        return s;
+      }
+
+      function isGoodsInTransitRow(r){
+        if(!r)return false;
+        if(r.DepoSinifi && deaccent(r.DepoSinifi).includes('goods in transit'))return true;
+        return deaccent(r.Depo||'').includes('goods in transit');
+      }
+
+      function percentile(values, p){
+        if(!values || !values.length) return 0;
+        const arr=values.slice().sort((a,b)=>a-b);
+        const idx=(arr.length-1)*p;
+        const lo=Math.floor(idx), hi=Math.ceil(idx);
+        if(lo===hi) return arr[lo];
+        const w=idx-lo;
+        return arr[lo]*(1-w) + arr[hi]*w;
+      }
+
+      const STATE_KEY='AVESORO_BI_STATE';
+      let ANALYSIS_MODE='tutar';
+      let FILTERS={Donem:[],DepoSinifi:[],Depo:[],FSN:[],MTRL:[],UstGrup:[],AltGrup:[]};
+      let ALL={Donem:[],DepoSinifi:[],Depo:[],FSN:[],MTRL:[],UstGrup:[],AltGrup:[]};
+      let RAW=[];
+      let ACTIVE_MONTH=null;
+      let FROM_EMBED=false;
+
+      let RISK_UI = {
+        nomove:{ q:'', n:150, inner:'FSN' },
+        min:{ q:'', n:150, inner:'FSN' },
+        max:{ q:'', n:150, inner:'FSN' },
+        excess:{ q:'', n:150, inner:'FSN' },
+        pareto:{ n:120 }
+      };
+
+      const MONTH_LABELS_TR=['','Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+      function fmtMonthLabel(ym){
+        if(!ym)return'(dönem yok)';
+        const [y,m]=ym.split('-');
+        const n=parseInt(m,10)||0;
+        const name=MONTH_LABELS_TR[n]||m;
+        return `${name} ${y}`;
+      }
+
+      function saveState(){
+        try{
+          localStorage.setItem(STATE_KEY, JSON.stringify({
+            filters:FILTERS,
+            analysis:ANALYSIS_MODE,
+            risk:RISK_UI
+          }));
+        }catch(e){}
+      }
+      function loadState(){
+        try{
+          const raw=localStorage.getItem(STATE_KEY);
+          if(!raw)return;
+          const s=JSON.parse(raw);
+          if(s&&s.filters)FILTERS=Object.assign({Donem:[],DepoSinifi:[],Depo:[],FSN:[],MTRL:[],UstGrup:[],AltGrup:[]},s.filters);
+          if(s&&s.analysis)ANALYSIS_MODE=s.analysis;
+          if(s&&s.risk) RISK_UI = Object.assign(RISK_UI, s.risk);
+          initAnalysisUI();
+        }catch(e){}
+      }
+
+      function getCols(){
+        return (ANALYSIS_MODE==='tutar')
+          ? {dev:'Devreden',gir:'Giren',cik:'Cikan',kal:'Kalan',minKey:'MinTutar',maxKey:'MaxTutar'}
+          : {dev:'DevredenM',gir:'GirenM',cik:'CikanM',kal:'KalanM',minKey:'MinMiktar',maxKey:'MaxMiktar'};
+      }
+      const FMT=n=>(ANALYSIS_MODE==='tutar'?MONEY(n):QTY(n));
+      const formatMinMax=v=>((v==null||isNaN(v)||v===0)?'—':FMT(v));
+      function balanceOfRow(r,cols){
+        const d=r[cols.dev]||0,g=r[cols.gir]||0,c=r[cols.cik]||0,k=r[cols.kal]||0;
+        return (d||g||c)?(d+g-c):k;
+      }
+      function thresholdsFromRow(r){
+        const c=getCols();return{min:r[c.minKey]||0,max:r[c.maxKey]||0};
+      }
+
+      function normalizeRows(arr){
+        const map={};
+        Object.keys(arr[0]||{}).forEach(h=>{
+          const k=deaccent(h);
+          if(k.includes('donem'))map[h]='Donem';
+          else if(k.startsWith('depo sinif'))map[h]='DepoSinifi';
+          else if(k==='depo'||k.includes('depo adi'))map[h]='Depo';
+          else if(k.startsWith('ust grup'))map[h]='UstGrup';
+          else if(k.startsWith('alt grup'))map[h]='AltGrup';
+          else if(k.startsWith('stok adi')||k==='stok')map[h]='StokAdi';
+          else if(k.startsWith('mtrl'))map[h]='MTRL';
+          else if(k.startsWith('fsn')||k.includes('fsn class')||k.includes('abc class'))map[h]='FSN';
+          else if(k.includes('departman'))map[h]='Departman';
+          else if(k.includes('devreden tutar'))map[h]='Devreden';
+          else if(k.includes('giren tutar'))map[h]='Giren';
+          else if(k.includes('cikan tutar'))map[h]='Cikan';
+          else if(k.includes('kalan tutar'))map[h]='Kalan';
+          else if(k.includes('devreden miktar')||k.includes('opening qty'))map[h]='DevredenM';
+          else if(k.includes('giren miktar')||k.includes('in qty'))map[h]='GirenM';
+          else if(k.includes('cikan miktar')||k.includes('out qty'))map[h]='CikanM';
+          else if(k.includes('kalan miktar')||k.includes('balance qty'))map[h]='KalanM';
+          else if(k.includes('min')&&k.includes('seviye')&&(k.includes('miktar')||k.includes('qty')))map[h]='MinMiktar';
+          else if((k.includes('maks')||k.includes('max'))&&k.includes('seviye')&&(k.includes('miktar')||k.includes('qty')))map[h]='MaxMiktar';
+          else if(k.includes('min')&&k.includes('seviye')&&k.includes('tutar'))map[h]='MinTutar';
+          else if((k.includes('maks')||k.includes('max'))&&k.includes('seviye')&&k.includes('tutar'))map[h]='MaxTutar';
+        });
+
+        const out=[];
+        for(const r of arr){
+          const o={
+            Donem:'',DepoSinifi:'',Depo:'',UstGrup:'',AltGrup:'',StokAdi:'',MTRL:'',FSN:'',Departman:'',
+            Devreden:0,Giren:0,Cikan:0,Kalan:0,DevredenM:0,GirenM:0,CikanM:0,KalanM:0,
+            MinTutar:0,MaxTutar:0,MinMiktar:0,MaxMiktar:0
+          };
+          for(const h of Object.keys(r)){
+            const k=map[h];if(!k)continue;
+            if(k==='Donem')o.Donem=normMonth(r[h]);
+            else if(['Devreden','Giren','Cikan','Kalan','DevredenM','GirenM','CikanM','KalanM','MinTutar','MaxTutar','MinMiktar','MaxMiktar'].includes(k))
+              o[k]=toNum(r[h]);
+            else o[k]=String(r[h]||'').trim();
+          }
+          if(!o.DepoSinifi){
+            const d=deaccent(o.Depo||'');
+            if(d.includes('goods in transit'))o.DepoSinifi='Goods In Transit';
+            else if(d.includes('unit'))o.DepoSinifi='Unit Warehouse';
+            else if(d.includes('main')||d.includes('ana depo'))o.DepoSinifi='Main Warehouse';
+            else o.DepoSinifi='Belirtilmemiş';
+          }
+          if(o.Donem)out.push(o);
+        }
+        return out;
+      }
+
+      function parseCSV(text){
+        const head=text.split(/\r?\n/)[0]||'';
+        const sep=(head.match(/;/g)||[]).length>=(head.match(/,/g)||[]).length?';':',';
+        const rows=text.split(/\r?\n/).filter(x=>x.trim().length).map(line=>{
+          const out=[];let cur='',q=false;
+          for(let i=0;i<line.length; i++){
+            const ch=line[i];
+            if(ch==='"'){q = !q;continue;}
+            if(ch===sep&&!q){out.push(cur);cur='';}
+            else cur+=ch;
+          }
+          out.push(cur);return out;
+        });
+        const headers=rows[0];
+        const data=rows.slice(1).map(arr=>{
+          const o={};headers.forEach((h,i)=>o[h]=arr[i]??'');
+          return o;
+        });
+        return normalizeRows(data);
+      }
+
+      function buildMS(){
+        const uniq=arr=>[...new Set(arr.filter(Boolean))].sort();
+        ALL={
+          Donem:uniq(RAW.map(x=>x.Donem)),
+          DepoSinifi:uniq(RAW.map(x=>x.DepoSinifi)),
+          Depo:uniq(RAW.map(x=>x.Depo)),
+          FSN:uniq(RAW.map(x=>x.FSN)),
+          MTRL:uniq(RAW.map(x=>x.MTRL)),
+          UstGrup:uniq(RAW.map(x=>x.UstGrup)),
+          AltGrup:uniq(RAW.map(x=>x.AltGrup)),
+        };
+
+        const msEls=[...document.querySelectorAll('.ddbox')];
+        msEls.forEach(ms=>{
+          const key=ms.dataset.key, box=ms.querySelector('.dd'); box.innerHTML='';
+          const list=ALL[key]||[];
+
+          const top=document.createElement('div');top.className='row';
+          top.innerHTML=`<input type="checkbox" data-all="1" ${(!FILTERS[key] || FILTERS[key].length === 0) ? 'checked' : ''} /> <strong>Tümü</strong>`;
+          box.appendChild(top);
+
+          list.forEach(v=>{
+            const row=document.createElement('div');row.className='row';
+            const checked=FILTERS[key]&&FILTERS[key].includes(v);
+            row.innerHTML=`<input type="checkbox" ${checked ? 'checked' : ''} data-val="${String(v).replaceAll('"','&quot;')}" /> <span>${v}</span>`;
+            box.appendChild(row);
+          });
+
+          box.onchange=ev=>{
+            const inp=ev.target;if(!inp||inp.tagName!=='INPUT')return;
+            if(inp.dataset.all){
+              FILTERS[key]=[];
+              [...box.querySelectorAll('input[type=checkbox]')].forEach(i=>{if(!i.dataset.all)i.checked=false;});
+            }else{
+              const val=inp.dataset.val; FILTERS[key]=FILTERS[key]||[];
+              if(inp.checked)FILTERS[key].push(val);
+              else FILTERS[key]=FILTERS[key].filter(x=>x!==val);
+              box.querySelector('input[data-all]').checked=(FILTERS[key].length===0);
+            }
+            updateMSLabels(); renderAll(); saveState();
+          };
+        });
+
+        updateMSLabels();
+      }
+
+      function updateMSLabels(){
+        [...document.querySelectorAll('.ddbox')].forEach(ms=>{
+          const key=ms.dataset.key;
+          const sel=FILTERS[key]||[];
+          const lab=ms.querySelector('.lab');
+          if(!lab)return;
+          lab.textContent=(!sel.length?'Tümü':(sel.length===1?sel[0]:`${sel.length} seçili`));
+        });
+      }
+
+      function applyFilters(rows){
+        const f=FILTERS;
+        const ok=(key,val)=>{const s=f[key]; if(!s||!s.length)return true; return s.includes(val);};
+        return rows.filter(r=>
+          ok('Donem',r.Donem)&&ok('DepoSinifi',r.DepoSinifi)&&ok('Depo',r.Depo)&&
+          ok('FSN',r.FSN)&&ok('MTRL',r.MTRL)&&ok('UstGrup',r.UstGrup)&&ok('AltGrup',r.AltGrup)
+        );
+      }
+
+      const sum=(arr,key)=>arr.reduce((a,b)=>a+(b[key]||0),0);
+
+      function groupMonthly(rows,byKey,curMonth){
+        const cols=getCols();
+        const map=new Map();
+        rows.filter(x=>x.Donem===curMonth).forEach(r=>{
+          const key=r[byKey]||'Belirtilmemiş';
+          if(!map.has(key))map.set(key,{Ad:key,dev:0,gir:0,cik:0,kal:0,min:0,max:0});
+          const g=map.get(key);
+          const bal=balanceOfRow(r,cols);
+          g.dev+=r[cols.dev]||0;
+          g.gir+=r[cols.gir]||0;
+          g.cik+=r[cols.cik]||0;
+          g.kal+=bal;
+          const th=thresholdsFromRow(r);
+          g.min+=th.min||0;
+          g.max+=th.max||0;
+        });
+        const rowsOut=[...map.values()].sort((a,b)=>b.kal-a.kal);
+        const footer={Ad:'Alt Toplam',dev:sum(rowsOut,'dev'),gir:sum(rowsOut,'gir'),
+          cik:sum(rowsOut,'cik'),kal:sum(rowsOut,'kal'),min:sum(rowsOut,'min'),max:sum(rowsOut,'max')};
+        return{rows:rowsOut,footer};
+      }
+
+      function renderTableMinMax(mountId,rows,footer){
+        const el=document.getElementById(mountId); if(!el)return;
+        if(!rows||!rows.length){el.innerHTML='<div class="note">Kayıt yok.</div>';return;}
+        const tbl=document.createElement('table');
+        tbl.innerHTML=`
+          <thead><tr>
+            <th>Ad</th><th class="num">Devreden</th><th class="num">Giren</th><th class="num">Çıkan</th><th class="num">Kalan</th>
+            <th class="num">Min</th><th class="num">Max</th>
+          </tr></thead>
+          <tbody>${rows.map(r=>`
+            <tr>
+              <td>${r.Ad}</td>
+              <td class="num">${FMT(r.dev)}</td>
+              <td class="num">${FMT(r.gir)}</td>
+              <td class="num">${FMT(r.cik)}</td>
+              <td class="num">${FMT(r.kal)}</td>
+              <td class="num">${formatMinMax(r.min)}</td>
+              <td class="num">${formatMinMax(r.max)}</td>
+            </tr>`).join('')}</tbody>
+          <tfoot><tr>
+            <td><b>${footer.Ad}</b></td>
+            <td class="num"><b>${FMT(footer.dev)}</b></td>
+            <td class="num"><b>${FMT(footer.gir)}</b></td>
+            <td class="num"><b>${FMT(footer.cik)}</b></td>
+            <td class="num"><b>${FMT(footer.kal)}</b></td>
+            <td class="num"><b>${formatMinMax(footer.min)}</b></td>
+            <td class="num"><b>${formatMinMax(footer.max)}</b></td>
+          </tr></tfoot>`;
+        el.innerHTML=''; el.appendChild(tbl);
+        enhanceTable(tbl);
+      }
+
+      function currentMonthFromFilters(){
+        if(FILTERS.Donem && FILTERS.Donem.length===1) return FILTERS.Donem[0];
+        if(FILTERS.Donem && FILTERS.Donem.length>1) return FILTERS.Donem[0];
+        return ACTIVE_MONTH;
+      }
+
+      function renderKPI(rows,curMonth){
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+        const total=monthRows.reduce((a,r)=>a+balanceOfRow(r,cols),0);
+
+        const main=monthRows.filter(r=>!isGoodsInTransitRow(r) && deaccent(r.DepoSinifi).includes('main')).reduce((a,r)=>a+balanceOfRow(r,cols),0);
+        const git =monthRows.filter(r=>isGoodsInTransitRow(r)).reduce((a,r)=>a+balanceOfRow(r,cols),0);
+        const unit=monthRows.filter(r=>!isGoodsInTransitRow(r) && deaccent(r.DepoSinifi).includes('unit')).reduce((a,r)=>a+balanceOfRow(r,cols),0);
+
+        document.getElementById('kpi-month').textContent=fmtMonthLabel(curMonth);
+        document.getElementById('kpi-total').textContent=FMT(total);
+        document.getElementById('kpi-total-sub').textContent=`Satır: ${monthRows.length.toLocaleString('tr-TR')}`;
+        document.getElementById('kpi-main').textContent=FMT(main);
+        document.getElementById('kpi-git').textContent=FMT(git);
+        document.getElementById('kpi-unit').textContent=FMT(unit);
+
+        const share = total ? (git/total*100) : 0;
+        document.getElementById('kpi-git-sub').textContent=`Pay: ${Math.round(share)} %`;
+      }
+
+      function renderMgmtSummary(rows,curMonth){
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+        const total=monthRows.reduce((a,r)=>a+balanceOfRow(r,cols),0);
+        const out=monthRows.reduce((a,r)=>a+(r[cols.cik]||0),0);
+        const inw=monthRows.reduce((a,r)=>a+(r[cols.gir]||0),0);
+
+        const belowMin = monthRows.filter(r=>{
+          const bal=balanceOfRow(r,cols);
+          const th=thresholdsFromRow(r);
+          return th.min>0 && bal < th.min;
+        });
+        const aboveMax = monthRows.filter(r=>{
+          const bal=balanceOfRow(r,cols);
+          const th=thresholdsFromRow(r);
+          return th.max>0 && bal > th.max;
+        });
+
+        const noMove = monthRows.filter(r=>{
+          const gi=r[cols.gir]||0, co=r[cols.cik]||0;
+          return gi===0 && co===0 && !isGoodsInTransitRow(r);
+        });
+
+        const riskScore = Math.min(100,
+          Math.round(
+            (belowMin.length?35:0) +
+            (aboveMax.length?25:0) +
+            (noMove.length?20:0) +
+            (total===0?20:0)
+          )
+        );
+
+        const html=`
+          <div class="mgmt-header">Yönetici Özeti & Risk Dağılımı (Seçili Ay)</div>
+          <div class="mgmt-row">
+            <div class="mgmt-box info">
+              <div class="mgmt-label">Seçili Ay</div>
+              <div class="mgmt-value">${fmtMonthLabel(curMonth)}</div>
+              <div class="mgmt-sub">Filtrelere göre hesaplanır</div>
+            </div>
+
+            <div class="mgmt-box primary">
+              <div class="mgmt-label">Toplam Kalan</div>
+              <div class="mgmt-value">${FMT(total)}</div>
+              <div class="mgmt-sub">Satır: ${monthRows.length.toLocaleString('tr-TR')}</div>
+            </div>
+
+            <div class="mgmt-box neutral">
+              <div class="mgmt-label">Giren / Çıkan</div>
+              <div class="mgmt-value">${FMT(inw)} <span class="note">/</span> ${FMT(out)}</div>
+              <div class="mgmt-sub">Akış göstergesi (ay içi)</div>
+            </div>
+
+            <div class="mgmt-box warn">
+              <div class="mgmt-label">Min Altı</div>
+              <div class="mgmt-value">${belowMin.length.toLocaleString('tr-TR')}</div>
+              <div class="mgmt-sub">Stokout riski barındırır</div>
+            </div>
+
+            <div class="mgmt-box danger">
+              <div class="mgmt-label">Genel Risk Skoru</div>
+              <div class="mgmt-value">${riskScore}<span class="note">/100</span></div>
+              <div class="mgmt-sub">Min/Max + hareketsiz + boş veri</div>
+            </div>
+          </div>
+        `;
+        document.getElementById('mgmt-summary').innerHTML=html;
+      }
+
+      function renderOverviewCard(elId, title, groupBy, rows, curMonth, options = {}) {
+  const { rows: gr, footer } = groupMonthly(rows, groupBy, curMonth);
+
+  // ✅ limit: default 6, limit<=0 ise hepsini göster
+  const limit = (typeof options.limit === 'number') ? options.limit : 6;
+  const list = (limit > 0) ? gr.slice(0, limit) : gr;
+
+  const totalKal = footer.kal || 0;
+
+  const chips = [
+    `Grup: ${gr.length.toLocaleString('tr-TR')}`,
+    `Toplam: ${FMT(footer.kal)}`
   ];
-  for (const p of tryPaths) {
-    try { const resX=await fetch(p.xlsx,{cache:'no-store'});
-      if(resX.ok){ const ab=await resX.arrayBuffer(); const wb=XLSX.read(ab,{type:'array'});
-        RAW=normalizeRows(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''})); finishLoad(); window.currentData=RAW; return true; } } catch (_){}
-    try { const resC=await fetch(p.csv,{cache:'no-store'});
-      if(resC.ok){ RAW=parseCSV(await resC.text()); finishLoad(); window.currentData=RAW; return true; } } catch (_){}
-    try { const resJ=await fetch(p.json,{cache:'no-store'});
-      if(resJ.ok){ RAW=await resJ.json(); finishLoad(); window.currentData=RAW; return true; } } catch (_){}
-  }
-  return false;
+
+  const mini = `
+    <table class="ov-mini">
+      <thead>
+        <tr>
+          <th>${title}</th>
+          <th class="num">Kalan</th>
+          <th class="num">Pay %</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${list.map(x => {
+          const pct = totalKal ? (x.kal / totalKal * 100) : 0;
+          return `
+            <tr>
+              <td>${x.Ad}</td>
+              <td class="num">${FMT(x.kal)}</td>
+              <td class="num">${PCT(pct)}</td>
+            </tr>
+          `;
+        }).join('')}
+      </tbody>
+    </table>
+  `;
+
+  const risk = gr.length ? gr.filter(x => x.kal <= 0).length : 0;
+
+  const top3 = gr.slice(0, 3);
+  const text = `
+    <div class="ov-section-title" data-type="trend">Okuma</div>
+    <ul>
+      <li><strong>Top 3</strong>: ${top3.map(x => x.Ad).join(', ') || '—'}</li>
+      <li><strong>Riskli grup sayısı</strong> (kalan ≤ 0): ${risk}</li>
+    </ul>
+    <div class="ov-section-title" data-type="action">Aksiyon</div>
+    <ul>
+      <li>Top gruplarda tüketim/çıkan analizi ile sipariş planı doğrulayın.</li>
+      <li>Min/Max ihlali olan gruplarda min-max parametrelerini gözden geçirin.</li>
+    </ul>
+  `;
+
+  document.getElementById(elId).innerHTML = `
+    <div class="ov-header">
+      <div>
+        <div class="ov-label">${fmtMonthLabel(curMonth)}</div>
+        <h3>${title} — Özet</h3>
+      </div>
+      <div class="ov-chips">${chips.map(c => `<span class="ov-chip">${c}</span>`).join('')}</div>
+    </div>
+    <div class="ov-mini-wrap">
+      ${mini}
+      <div class="ov-description">${text}</div>
+    </div>
+  `;
+
+  const t = document.getElementById(elId).querySelector('table');
+  if (t) enhanceTable(t);
 }
-document.addEventListener('DOMContentLoaded', async () => {
-  if (window.EMBED_DATA && Array.isArray(window.EMBED_DATA) && window.EMBED_DATA.length) {
-    RAW = window.EMBED_DATA.slice(); finishLoad();
-  } else {
-    const ok = await loadFromPublicStatic();
-    if (!ok) { msg('Not: /public veya /kamu içinde data.xlsx / data.csv / data.json bulunamadı. İsterseniz Excel/CSV yükleyin.', false); }
-  }
-});
-</script>
-</body>
+      function renderCompare(rows,curMonth){
+        const a=groupMonthly(rows,'DepoSinifi',curMonth); renderTableMinMax('tbl-class', a.rows, a.footer);
+        const b=groupMonthly(rows,'Depo',curMonth);      renderTableMinMax('tbl-ware',  b.rows, b.footer);
+        const c=groupMonthly(rows,'MTRL',curMonth);      renderTableMinMax('tbl-mtrl',  c.rows, c.footer);
+        const d=groupMonthly(rows,'Departman',curMonth); renderTableMinMax('tbl-dept',  d.rows, d.footer);
+      }
+
+      /* ============ ✅ Risk Packs + Premium Render ============ */
+      function smartCommentNoMove(x){
+        const fsn = deaccent(x.FSN||'');
+        const bal = Math.abs(x.Bal||0);
+        if(fsn.includes('non')) return `Non-moving sınıfında birikim var; ${FMT(bal)} seviyesinde sermaye bağlanıyor. Tasfiye/konsolidasyon veya satın alma durdurma aksiyonu değerlendirilebilir.`;
+        if(fsn.includes('slow')) return `Slow-moving kalem; ${FMT(bal)} seviyesinde stok tutuluyor. Tüketim planı ve transfer/alternatif kullanım senaryosu kontrol edilmeli.`;
+        if(fsn.includes('fast')) return `Fast-moving ama bu ay hareket yok. ${FMT(bal)} seviyesinde stok var; talep/sipariş planı ile uyumu doğrulayın.`;
+        return `Tüm dönem boyunca giriş/çıkış yok; ${FMT(bal)} seviyesinde stok sermayeyi bağlıyor. Kullanım planı veya tasfiye opsiyonu gözden geçirilmeli.`;
+      }
+      function smartCommentMin(x){
+        const gap = Math.abs(x.Gap||0);
+        return `Min altı. Açık: ${FMT(gap)}. Stokout riskini azaltmak için iç transfer / acil tedarik ve tüketim trend kontrolü önerilir.`;
+      }
+      function smartCommentMax(x){
+        const gap = Math.abs(x.Gap||0);
+        return `Max üstü. Fazla: ${FMT(gap)}. Sermaye bağlama riskini azaltmak için tüketim planı / konsolidasyon / iade opsiyonlarını değerlendirin.`;
+      }
+
+      function tierizeByImpact(rows){
+        const impacts = rows.map(r=>Math.abs(r.Impact||0)).filter(v=>v>0);
+        const p95 = percentile(impacts, .95);
+        const p80 = percentile(impacts, .80);
+        const total = impacts.reduce((a,b)=>a+b,0) || 1;
+
+        const crit = [];
+        const mid  = [];
+        const low  = [];
+
+        rows.forEach(r=>{
+          const imp = Math.abs(r.Impact||0);
+          const share = (imp/total)*100;
+          r.PayPct = share;
+          if(imp >= p95 || share >= 5) crit.push(r);
+          else if(imp >= p80 || share >= 1) mid.push(r);
+          else low.push(r);
+        });
+
+        const srt = (a,b)=>Math.abs(b.Impact||0)-Math.abs(a.Impact||0);
+        crit.sort(srt); mid.sort(srt); low.sort(srt);
+
+        const totalAbs = rows.reduce((a,r)=>a+Math.abs(r.Impact||0),0) || 1;
+
+        return {
+          totalAbs,
+          groups:[
+            { key:'crit', tier:'crit', title:'Kritik Düzey', rows:crit },
+            { key:'mid',  tier:'mid',  title:'Orta Düzey',  rows:mid  },
+            { key:'low',  tier:'low',  title:'Düşük Düzey', rows:low  },
+          ]
+        };
+      }
+
+      function buildNoMovePack(rows,curMonth){
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+        const nm = monthRows
+          .filter(r=>!isGoodsInTransitRow(r))
+          .filter(r=>(r[cols.gir]||0)===0 && (r[cols.cik]||0)===0)
+          .map(r=>{
+            const bal = balanceOfRow(r,cols);
+            return {
+              Depo:r.Depo||'—',
+              StokAdi:r.StokAdi||'—',
+              UstGrup:r.UstGrup||'—',
+              FSN:r.FSN||'—',
+              Bal:bal,
+              Impact:Math.abs(bal),
+              PayPct:0,
+              Smart:smartCommentNoMove({FSN:r.FSN,Bal:bal})
+            };
+          });
+
+        return tierizeByImpact(nm);
+      }
+
+      function buildMinPack(rows,curMonth){
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+        const arr = monthRows
+          .map(r=>{
+            const bal = balanceOfRow(r,cols);
+            const th = thresholdsFromRow(r);
+            const gap = (th.min>0 && bal<th.min) ? (th.min - bal) : 0;
+            return { r, bal, th, gap };
+          })
+          .filter(x=>x.gap>0)
+          .map(x=>({
+            Depo:x.r.Depo||'—',
+            StokAdi:x.r.StokAdi||'—',
+            UstGrup:x.r.UstGrup||'—',
+            FSN:x.r.FSN||'—',
+            Bal:x.bal,
+            Min:x.th.min,
+            Gap:x.gap,
+            Impact:Math.abs(x.gap),
+            PayPct:0,
+            Smart:smartCommentMin({Gap:x.gap})
+          }));
+
+        return tierizeByImpact(arr);
+      }
+
+      function buildMaxPack(rows,curMonth){
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+        const arr = monthRows
+          .map(r=>{
+            const bal = balanceOfRow(r,cols);
+            const th = thresholdsFromRow(r);
+            const gap = (th.max>0 && bal>th.max) ? (bal - th.max) : 0;
+            return { r, bal, th, gap };
+          })
+          .filter(x=>x.gap>0)
+          .map(x=>({
+            Depo:x.r.Depo||'—',
+            StokAdi:x.r.StokAdi||'—',
+            UstGrup:x.r.UstGrup||'—',
+            FSN:x.r.FSN||'—',
+            Bal:x.bal,
+            Max:x.th.max,
+            Gap:x.gap,
+            Impact:Math.abs(x.gap),
+            PayPct:0,
+            Smart:smartCommentMax({Gap:x.gap})
+          }));
+
+        return tierizeByImpact(arr);
+      }
+
+      function buildExcessPack(rows,curMonth){
+        return buildMaxPack(rows,curMonth);
+      }
+
+      function rerenderRiskOnly(){
+        if(!RAW.length) return;
+        const rows = applyFilters(RAW);
+        const curMonth = currentMonthFromFilters();
+        renderRiskPages(rows,curMonth);
+        renderParetoPremium(rows,curMonth);
+        enhanceAllTables(document);
+        saveState();
+      }
+
+      function renderRiskWrap(mountId, title, sub, pack, uiKey, columns){
+        const el=document.getElementById(mountId);
+        if(!el) return;
+
+        const ui = RISK_UI[uiKey] || { q:'', n:150, inner:'FSN' };
+        const q = ui.q || '';
+        const n = ui.n || 150;
+        const innerKey = ui.inner || 'FSN';
+
+        const filterSearch = (arr)=>{
+          const qq = deaccent(q).trim();
+          if(!qq) return arr;
+          return arr.filter(x=>{
+            const blob = deaccent([x.Depo,x.StokAdi,x.UstGrup,x.FSN].join(' '));
+            return blob.includes(qq);
+          });
+        };
+
+        const impactVal = (x)=> Math.abs((x.Impact!=null?x.Impact:(x.Gap!=null?x.Gap:x.Bal))||0);
+
+        if(!pack || !pack.groups || !pack.groups.length){
+          el.innerHTML = `
+            <div class="risk-title">${title}</div>
+            <div class="risk-sub">${sub}</div>
+            <div class="risk-empty">Bu sayfada gösterilecek kayıt yok.</div>
+          `;
+          return;
+        }
+
+        const allRows = pack.groups.flatMap(g=>g.rows || []);
+        const allRowsFiltered = filterSearch(allRows);
+        const totalImpact = allRowsFiltered.reduce((s,x)=>s+impactVal(x),0) || 0;
+        const totalCount = allRowsFiltered.length;
+
+        const critCount = filterSearch((pack.groups.find(g=>g.key==='crit')||{}).rows||[]).length;
+        const midCount  = filterSearch((pack.groups.find(g=>g.key==='mid')||{}).rows||[]).length;
+        const lowCount  = filterSearch((pack.groups.find(g=>g.key==='low')||{}).rows||[]).length;
+
+        const topItem = allRowsFiltered.slice().sort((a,b)=>impactVal(b)-impactVal(a))[0];
+        const topItemText = topItem ? `${(topItem.StokAdi||'—').slice(0,38)} • ${(topItem.Depo||'—').slice(0,24)}` : '—';
+
+        const actionText = (uiKey==='min')
+          ? 'Min altı → iç transfer / acil tedarik / tüketim trendi kontrol'
+          : (uiKey==='max' || uiKey==='excess')
+            ? 'Max üstü → tüketim artırma / konsolidasyon / iade / hedef revizyon'
+            : 'Hareketsiz → kullanım planı / tasfiye / proje eşleştirme / iç transfer';
+
+        const controls = `
+          <div class="risk-title">${title}</div>
+          <div class="risk-sub">${sub}</div>
+
+          <div class="risk-kpis">
+            <div class="risk-kpi">
+              <div class="cap">Kayıt Sayısı</div>
+              <div class="val">${totalCount.toLocaleString('tr-TR')}</div>
+              <div class="sub">Kritik: ${critCount} • Orta: ${midCount} • Düşük: ${lowCount}</div>
+            </div>
+            <div class="risk-kpi">
+              <div class="cap">Toplam Etki</div>
+              <div class="val">${FMT(totalImpact)}</div>
+              <div class="sub">Arama+filtre sonrası toplam</div>
+            </div>
+            <div class="risk-kpi">
+              <div class="cap">En Yüksek Etki</div>
+              <div class="val">${topItemText}</div>
+              <div class="sub">Etki: ${topItem ? FMT(impactVal(topItem)) : '—'}</div>
+            </div>
+            <div class="risk-kpi">
+              <div class="cap">Önerilen Aksiyon</div>
+              <div class="val">Hızlı Müdahale</div>
+              <div class="sub">${actionText}</div>
+            </div>
+          </div>
+
+          <div class="risk-controls" data-risk="${uiKey}">
+            <div class="left">
+              <span class="cap">Arama</span>
+              <input type="text" value="${String(q).replaceAll('"','&quot;')}" placeholder="Depo / Stok / Üst Grup / FSN içinde ara..." data-role="q" />
+            </div>
+
+            <div class="right">
+              <div>
+                <span class="cap">Satır</span>
+                <select data-role="n">
+                  ${[50,100,150,300,500].map(v=>`<option value="${v}" ${v===n?'selected':''}>${v}</option>`).join('')}
+                </select>
+              </div>
+
+              <div>
+                <span class="cap">İç Grup</span>
+                <div class="risk-innerseg" data-role="inner">
+                  <button type="button" data-inner="FSN" ${innerKey==='FSN'?'class="active"':''}>FSN</button>
+                  <button type="button" data-inner="UstGrup" ${innerKey==='UstGrup'?'class="active"':''}>Üst Grup</button>
+                  <button type="button" data-inner="Depo" ${innerKey==='Depo'?'class="active"':''}>Depo</button>
+                </div>
+                <div class="hint">Her iç grup için limit</div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        const makeTable = (arr)=>{
+          const show = arr.slice(0,n);
+          return `
+            <table class="risk-table">
+              <thead>
+                <tr>
+                  ${columns.map(c=>`<th class="${c.num?'num':''}">${c.t}</th>`).join('')}
+                </tr>
+              </thead>
+              <tbody>
+                ${show.map(x=>`
+                  <tr>
+                    ${columns.map(c=>{
+                      const v = c.f ? c.f(x) : (x[c.k]??'—');
+                      return `<td class="${c.num?'num':''}">${v}</td>`;
+                    }).join('')}
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+            ${arr.length>show.length ? `<div class="note" style="margin:8px 2px 2px;">Not: ${arr.length.toLocaleString('tr-TR')} kayıt var. İlk ${show.length} gösteriliyor.</div>`:''}
+          `;
+        };
+
+        const innerGroup = (rows)=>{
+          const m = new Map();
+          rows.forEach(x=>{
+            const k = (x[innerKey] || 'Belirtilmemiş');
+            if(!m.has(k)) m.set(k, []);
+            m.get(k).push(x);
+          });
+          return [...m.entries()]
+            .map(([k,arr])=>({ k, arr:arr.slice().sort((a,b)=>impactVal(b)-impactVal(a)) }))
+            .sort((a,b)=> b.arr.reduce((s,x)=>s+impactVal(x),0) - a.arr.reduce((s,x)=>s+impactVal(x),0));
+        };
+
+        const groupsHtml = pack.groups.map((g,idx)=>{
+          const rowsFiltered = filterSearch(g.rows);
+          const groupAbs = rowsFiltered.reduce((s,x)=>s+impactVal(x),0);
+
+          const pillClass = g.tier==='crit'?'crit':(g.tier==='mid'?'mid':'low');
+          const pillText  = g.title;
+
+          const open = (idx===0) ? 'open' : '';
+          const chipCount = `${rowsFiltered.length.toLocaleString('tr-TR')} kalem`;
+          const chipTotal = `Toplam: ${FMT(groupAbs)}`;
+
+          const inner = innerGroup(rowsFiltered);
+          const innerHtml = inner.length ? inner.map((ig,ii)=>{
+            const igAbs = ig.arr.reduce((s,x)=>s+impactVal(x),0);
+            const igOpen = (ii===0) ? 'open' : '';
+            return `
+              <details class="risk-group" ${igOpen} style="margin:10px 0;border-radius:12px;">
+                <summary style="padding:10px 10px;">
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                    <span class="risk-chip"><b>${innerKey==='UstGrup'?'Üst Grup':(innerKey==='Depo'?'Depo':'FSN')}</b>: ${ig.k}</span>
+                    <span class="risk-chip">${ig.arr.length.toLocaleString('tr-TR')} kalem</span>
+                  </div>
+                  <span class="risk-chip">${FMT(igAbs)}</span>
+                </summary>
+                <div class="risk-body" style="padding:10px 10px 6px;">
+                  ${ig.arr.length ? makeTable(ig.arr) : `<div class="risk-empty">Kayıt yok.</div>`}
+                </div>
+              </details>
+            `;
+          }).join('') : `<div class="risk-empty">İç grup için kayıt yok.</div>`;
+
+          return `
+            <details class="risk-group" ${open}>
+              <summary>
+                <div style="display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap;">
+                  <span class="risk-pill ${pillClass}"><span class="dot"></span>${pillText}</span>
+                  <span class="risk-chip">${chipCount}</span>
+                </div>
+                <span class="risk-chip">${chipTotal}</span>
+              </summary>
+              <div class="risk-body">
+                ${rowsFiltered.length ? innerHtml : `<div class="risk-empty">Arama kriterine göre kayıt yok.</div>`}
+              </div>
+            </details>
+          `;
+        }).join('');
+
+        el.innerHTML = controls + groupsHtml;
+
+        const ctrl = el.querySelector('.risk-controls');
+        if(ctrl){
+          const inp = ctrl.querySelector('input[data-role="q"]');
+          const sel = ctrl.querySelector('select[data-role="n"]');
+          const innerSeg = ctrl.querySelector('[data-role="inner"]');
+
+          inp && inp.addEventListener('input', (e)=>{
+            RISK_UI[uiKey].q = e.target.value || '';
+            saveState();
+            rerenderRiskOnly();
+          });
+
+          sel && sel.addEventListener('change', (e)=>{
+            RISK_UI[uiKey].n = parseInt(e.target.value,10) || 150;
+            saveState();
+            rerenderRiskOnly();
+          });
+
+          innerSeg && innerSeg.addEventListener('click', (e)=>{
+            const b = e.target.closest('button[data-inner]');
+            if(!b) return;
+            const v = b.dataset.inner;
+            RISK_UI[uiKey].inner = v;
+            innerSeg.querySelectorAll('button').forEach(x=>x.classList.toggle('active', x.dataset.inner===v));
+            saveState();
+            rerenderRiskOnly();
+          });
+        }
+
+        enhanceAllTables(el);
+      }
+
+      function renderRiskPages(rows,curMonth){
+        const packNoMove = buildNoMovePack(rows,curMonth);
+        const packMin    = buildMinPack(rows,curMonth);
+        const packMax    = buildMaxPack(rows,curMonth);
+        const packExcess = buildExcessPack(rows,curMonth);
+
+        renderRiskWrap(
+          'riskNoMove',
+          'Hiç Hareket Görmeyenler',
+          `${fmtMonthLabel(curMonth)} • GIT hariç • Tutarsal/Miktarsal moda göre`,
+          packNoMove,
+          'nomove',
+          [
+            {t:'Stok Adı',k:'StokAdi'},
+            {t:'Depo',k:'Depo'},
+            {t:'Üst Grup',k:'UstGrup'},
+            {t:'FSN',k:'FSN'},
+            {t:'Kalan',k:'Bal',num:1,f:(x)=>FMT(x.Bal)},
+            {t:'Toplam Pay',k:'PayPct',num:1,f:(x)=>`${Math.round(x.PayPct||0)} %`},
+            {t:'Akıllı Yorum',k:'Smart',f:(x)=>x.Smart||'—'},
+          ]
+        );
+
+        renderRiskWrap(
+          'riskMin',
+          'Min Altı',
+          `${fmtMonthLabel(curMonth)} • Etki=(Min-Kalan) • Stokout odağı`,
+          packMin,
+          'min',
+          [
+            {t:'Stok Adı',k:'StokAdi'},
+            {t:'Depo',k:'Depo'},
+            {t:'Üst Grup',k:'UstGrup'},
+            {t:'FSN',k:'FSN'},
+            {t:'Kalan',k:'Bal',num:1,f:(x)=>FMT(x.Bal)},
+            {t:'Min',k:'Min',num:1,f:(x)=>formatMinMax(x.Min)},
+            {t:'Açık (Min-Kalan)',k:'Gap',num:1,f:(x)=>FMT(x.Gap)},
+            {t:'Akıllı Yorum',k:'Smart',f:(x)=>x.Smart||'—'},
+          ]
+        );
+
+        renderRiskWrap(
+          'riskMax',
+          'Max Üstü',
+          `${fmtMonthLabel(curMonth)} • Etki=(Kalan-Max) • Aşırı stok odağı`,
+          packMax,
+          'max',
+          [
+            {t:'Stok Adı',k:'StokAdi'},
+            {t:'Depo',k:'Depo'},
+            {t:'Üst Grup',k:'UstGrup'},
+            {t:'FSN',k:'FSN'},
+            {t:'Kalan',k:'Bal',num:1,f:(x)=>FMT(x.Bal)},
+            {t:'Max',k:'Max',num:1,f:(x)=>formatMinMax(x.Max)},
+            {t:'Fazla (Kalan-Max)',k:'Gap',num:1,f:(x)=>FMT(x.Gap)},
+            {t:'Akıllı Yorum',k:'Smart',f:(x)=>x.Smart||'—'},
+          ]
+        );
+
+        renderRiskWrap(
+          'riskExcess',
+          'Aşırı Stoklar',
+          `${fmtMonthLabel(curMonth)} • Max üstü verisinden türetilir • Sermaye bağlama odağı`,
+          packExcess,
+          'excess',
+          [
+            {t:'Stok Adı',k:'StokAdi'},
+            {t:'Depo',k:'Depo'},
+            {t:'Üst Grup',k:'UstGrup'},
+            {t:'FSN',k:'FSN'},
+            {t:'Kalan',k:'Bal',num:1,f:(x)=>FMT(x.Bal)},
+            {t:'Max',k:'Max',num:1,f:(x)=>formatMinMax(x.Max)},
+            {t:'Aşırı (Kalan-Max)',k:'Gap',num:1,f:(x)=>FMT(x.Gap)},
+            {t:'Akıllı Yorum',k:'Smart',f:(x)=>x.Smart||'—'},
+          ]
+        );
+      }
+
+      /* ============ ✅ Pareto Premium ============ */
+      function paretoListFromAgg(aggRows){
+        const arr = aggRows.slice().sort((a,b)=> (b.cik||0) - (a.cik||0));
+        const totalOut = arr.reduce((s,x)=>s+(x.cik||0),0) || 1;
+        let run = 0;
+        return arr.map((x,i)=>{
+          run += (x.cik||0);
+          return Object.assign({}, x, {
+            Sira: i+1,
+            OutPayPct: ((x.cik||0)/totalOut)*100,
+            KumPct: (run/totalOut)*100
+          });
+        });
+      }
+
+      function splitPareto80(list){
+        const top=[], tail=[];
+        for(const x of list){
+          if((x.KumPct||0) <= 80) top.push(x);
+          else tail.push(x);
+        }
+        if(!top.length && list.length) top.push(list[0]);
+        const topLast = top[top.length-1];
+        const cutPct = topLast ? (topLast.KumPct||0) : 0;
+        return { top, tail, cutPct };
+      }
+
+      function renderParetoPremium(rows,curMonth){
+        const cols = getCols();
+        const monthRows = rows.filter(r=>r.Donem===curMonth);
+
+        const mapD = new Map();
+        monthRows.forEach(r=>{
+          const k = r.Departman || 'Belirtilmemiş';
+          if(!mapD.has(k)) mapD.set(k, {Ad:k, dev:0, gir:0, cik:0, kal:0});
+          const g=mapD.get(k);
+          g.dev += r[cols.dev]||0;
+          g.gir += r[cols.gir]||0;
+          g.cik += r[cols.cik]||0;
+          g.kal += balanceOfRow(r,cols);
+        });
+        const deptList = paretoListFromAgg([...mapD.values()]);
+        const deptSplit = splitPareto80(deptList);
+
+        const mapS = new Map();
+        monthRows.forEach(r=>{
+          const k = `${r.Depo||'—'} • ${r.StokAdi||'—'}`;
+          if(!mapS.has(k)) mapS.set(k, {Ad:k, dev:0, gir:0, cik:0, kal:0});
+          const g=mapS.get(k);
+          g.dev += r[cols.dev]||0;
+          g.gir += r[cols.gir]||0;
+          g.cik += r[cols.cik]||0;
+          g.kal += balanceOfRow(r,cols);
+        });
+        const itemList = paretoListFromAgg([...mapS.values()]);
+        const itemSplit = splitPareto80(itemList);
+
+        const n = (RISK_UI.pareto && RISK_UI.pareto.n) ? RISK_UI.pareto.n : 120;
+
+        const kpiBlock = (list, split)=> {
+          const totalOut = list.reduce((s,x)=>s+(x.cik||0),0) || 0;
+          const topOut = split.top.reduce((s,x)=>s+(x.cik||0),0) || 0;
+          const topName = split.top[0] ? split.top[0].Ad : '—';
+          return `
+            <div class="risk-kpis" style="margin-top:0;">
+              <div class="risk-kpi">
+                <div class="cap">Toplam Grup</div>
+                <div class="val">${list.length.toLocaleString('tr-TR')}</div>
+                <div class="sub">Sıralama: Çıkan (azalan)</div>
+              </div>
+              <div class="risk-kpi">
+                <div class="cap">Toplam Çıkan</div>
+                <div class="val">${FMT(totalOut)}</div>
+                <div class="sub">${fmtMonthLabel(curMonth)} • filtreli veri</div>
+              </div>
+              <div class="risk-kpi">
+                <div class="cap">80% Grubu</div>
+                <div class="val">${split.top.length.toLocaleString('tr-TR')} satır</div>
+                <div class="sub">Pay: ${Math.round((topOut/(totalOut||1))*100)}% • eşik: ~${Math.round(split.cutPct)}%</div>
+              </div>
+              <div class="risk-kpi">
+                <div class="cap">En Büyük Satır</div>
+                <div class="val">${String(topName).slice(0,46)}</div>
+                <div class="sub">İlk satır genelde ana sürücü</div>
+              </div>
+            </div>
+          `;
+        };
+
+        const table = (list)=>`
+          <table class="risk-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Ad</th>
+                <th class="num">Devreden</th>
+                <th class="num">Giren</th>
+                <th class="num">Çıkan</th>
+                <th class="num">Kalan</th>
+                <th class="num">Pay %</th>
+                <th class="num">Kümülatif %</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${list.slice(0,n).map(x=>`
+                <tr>
+                  <td class="num">${x.Sira}</td>
+                  <td>${x.Ad}</td>
+                  <td class="num">${FMT(x.dev||0)}</td>
+                  <td class="num">${FMT(x.gir||0)}</td>
+                  <td class="num">${FMT(x.cik||0)}</td>
+                  <td class="num">${FMT(x.kal||0)}</td>
+                  <td class="num">${Math.round(x.OutPayPct||0)} %</td>
+                  <td class="num">${Math.round(x.KumPct||0)} %</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+          ${list.length>n ? `<div class="note" style="margin:8px 2px 2px;">Not: ${list.length.toLocaleString('tr-TR')} satır var. İlk ${n} gösteriliyor.</div>`:''}
+        `;
+
+        const controls = `
+          <div class="risk-controls" data-risk="pareto" style="margin-top:10px;">
+            <div class="left" style="min-width:220px;">
+              <span class="cap">Satır Limiti</span>
+              <select id="paretoLimit">
+                ${[60,120,200,300,500].map(v=>`<option value="${v}" ${v===n?'selected':''}>${v}</option>`).join('')}
+              </select>
+              <div class="hint">Pareto tablolarında gösterilecek maksimum satır</div>
+            </div>
+            <div class="right">
+              <span class="risk-chip"><b>Not:</b> Pareto %80 eşiği otomatik hesaplanır.</span>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('paretoDeptPremium').innerHTML = `
+          <div class="risk-title">Pareto 80/20 — Departman</div>
+          <div class="risk-sub">${fmtMonthLabel(curMonth)} • Çıkan tutara/miktara göre</div>
+          ${kpiBlock(deptList, deptSplit)}
+          ${controls}
+          <details class="risk-group" open>
+            <summary>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <span class="risk-pill mid"><span class="dot"></span>80% Çıkan Grubu</span>
+                <span class="risk-chip">${deptSplit.top.length.toLocaleString('tr-TR')} satır</span>
+              </div>
+              <span class="risk-chip">Kümülatif: ~${Math.round(deptSplit.cutPct)}%</span>
+            </summary>
+            <div class="risk-body">${deptSplit.top.length?table(deptSplit.top):`<div class="risk-empty">Kayıt yok.</div>`}</div>
+          </details>
+          <details class="risk-group">
+            <summary>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <span class="risk-pill low"><span class="dot"></span>Kuyruk</span>
+                <span class="risk-chip">${deptSplit.tail.length.toLocaleString('tr-TR')} satır</span>
+              </div>
+              <span class="risk-chip">Kalan %20+</span>
+            </summary>
+            <div class="risk-body">${deptSplit.tail.length?table(deptSplit.tail):`<div class="risk-empty">Kayıt yok.</div>`}</div>
+          </details>
+        `;
+
+        document.getElementById('paretoItemPremium').innerHTML = `
+          <div class="risk-title">Pareto 80/20 — Depo • Stok</div>
+          <div class="risk-sub">${fmtMonthLabel(curMonth)} • Çıkan tutara/miktara göre</div>
+          ${kpiBlock(itemList, itemSplit)}
+          ${controls}
+          <details class="risk-group" open>
+            <summary>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <span class="risk-pill mid"><span class="dot"></span>80% Çıkan Grubu</span>
+                <span class="risk-chip">${itemSplit.top.length.toLocaleString('tr-TR')} satır</span>
+              </div>
+              <span class="risk-chip">Kümülatif: ~${Math.round(itemSplit.cutPct)}%</span>
+            </summary>
+            <div class="risk-body">${itemSplit.top.length?table(itemSplit.top):`<div class="risk-empty">Kayıt yok.</div>`}</div>
+          </details>
+          <details class="risk-group">
+            <summary>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <span class="risk-pill low"><span class="dot"></span>Kuyruk</span>
+                <span class="risk-chip">${itemSplit.tail.length.toLocaleString('tr-TR')} satır</span>
+              </div>
+              <span class="risk-chip">Kalan %20+</span>
+            </summary>
+            <div class="risk-body">${itemSplit.tail.length?table(itemSplit.tail):`<div class="risk-empty">Kayıt yok.</div>`}</div>
+          </details>
+        `;
+
+        const wire = ()=>{
+          const sel = document.getElementById('paretoLimit');
+          if(!sel) return;
+          sel.onchange = ()=>{
+            RISK_UI.pareto = RISK_UI.pareto || {};
+            RISK_UI.pareto.n = parseInt(sel.value,10) || 120;
+            saveState();
+            rerenderRiskOnly();
+          };
+        };
+        wire();
+
+        enhanceAllTables(document.getElementById('panel-pareto'));
+      }
+
+      /* ---------------------- AI Text ---------------------- */
+      function buildAIText(rows,curMonth){
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+        const total=monthRows.reduce((a,r)=>a+balanceOfRow(r,cols),0);
+
+        const belowMin = monthRows.filter(r=>{
+          const bal=balanceOfRow(r,cols);
+          const th=thresholdsFromRow(r);
+          return th.min>0 && bal < th.min;
+        });
+
+        const aboveMax = monthRows.filter(r=>{
+          const bal=balanceOfRow(r,cols);
+          const th=thresholdsFromRow(r);
+          return th.max>0 && bal > th.max;
+        });
+
+        const noMove = monthRows.filter(r=>{
+          const gi=r[cols.gir]||0, co=r[cols.cik]||0;
+          return gi===0 && co===0 && !isGoodsInTransitRow(r);
+        });
+
+        const topDepo = groupMonthly(rows,'Depo',curMonth).rows.slice(0,3);
+
+        return `
+          <div class="ov-section-title">Özet</div>
+          <ul>
+            <li><strong>Seçili Ay:</strong> ${fmtMonthLabel(curMonth)}</li>
+            <li><strong>Toplam Kalan:</strong> ${FMT(total)}</li>
+            <li><strong>Min Altı:</strong> ${belowMin.length} kalem</li>
+            <li><strong>Max Üstü:</strong> ${aboveMax.length} kalem</li>
+            <li><strong>Hareketsiz (GIT hariç):</strong> ${noMove.length} kalem</li>
+          </ul>
+          <div class="ov-section-title" data-type="risk">Risk</div>
+          <ul>
+            <li>Min altı kalemlerde <strong>stokout</strong> riski vardır (sipariş/transfer önerilir).</li>
+            <li>Max üstü kalemlerde <strong>aşırı stok</strong> ve sermaye bağlama riski vardır.</li>
+            <li>Hareketsiz kalemler için <strong>kullanım/ayıklama</strong> planı yapılmalıdır.</li>
+          </ul>
+          <div class="ov-section-title" data-type="action">Hızlı Aksiyon</div>
+          <ul>
+            <li>Top depo yoğunluğu: ${topDepo.map(x=>`${x.Ad} (${FMT(x.kal)})`).join(', ') || '—'}</li>
+            <li>Min altı → tedarik planı / iç transfer; Max üstü → tüketim artırma / iade / farklı depoya kaydırma</li>
+          </ul>
+        `;
+      }
+
+      function renderAll(){
+        if(!RAW.length){return;}
+        const rows = applyFilters(RAW);
+
+        const months=[...new Set(RAW.map(r=>r.Donem))].sort();
+        ACTIVE_MONTH = months[months.length-1] || null;
+        const curMonth = currentMonthFromFilters();
+
+        renderKPI(rows,curMonth);
+        renderMgmtSummary(rows,curMonth);
+
+        renderOverviewCard('ov-card-class','Depo Sınıfı','DepoSinifi',rows,curMonth);
+        renderOverviewCard('ov-card-depo','Depo','Depo',rows,curMonth,{ limit: 0 });
+        renderOverviewCard('ov-card-fsn','FSN Class','FSN',rows,curMonth);
+
+        renderCompare(rows,curMonth);
+
+        renderRiskPages(rows,curMonth);
+        renderParetoPremium(rows,curMonth);
+
+        document.getElementById('aiAuto').textContent = `Seçili ay: ${fmtMonthLabel(curMonth)} • Satır: ${rows.filter(r=>r.Donem===curMonth).length.toLocaleString('tr-TR')}`;
+
+        enhanceAllTables(document);
+      }
+
+      /* ---------------------- Tabs ---------------------- */
+      function setTab(tab){
+        document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
+        document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+        const el=document.getElementById('panel-'+tab);
+        if(el) el.classList.add('active');
+      }
+      document.getElementById('tabs').addEventListener('click',e=>{
+        const t=e.target.closest('.tab'); if(!t) return;
+        setTab(t.dataset.tab);
+      });
+
+      /* ---------------------- Mode Switch ---------------------- */
+      function initAnalysisUI(){
+        const sw=document.getElementById('modeSwitch'); if(!sw)return;
+        [...sw.querySelectorAll('button')].forEach(btn=>{
+          btn.classList.toggle('active', btn.dataset.mode === ANALYSIS_MODE);
+        });
+      }
+      document.getElementById('modeSwitch').addEventListener('click',e=>{
+        const b=e.target.closest('button'); if(!b)return;
+        ANALYSIS_MODE=b.dataset.mode;
+        initAnalysisUI();
+        renderAll();
+        saveState();
+      });
+
+      /* ---------------------- Dropdown open/close ---------------------- */
+      const msEls=[...document.querySelectorAll('.ddbox')];
+      msEls.forEach(ms=>{
+        const btn=ms.querySelector('button');
+        btn.addEventListener('click',e=>{
+          e.stopPropagation();
+          msEls.forEach(x=>{if(x!==ms)x.classList.remove('open');});
+          ms.classList.toggle('open');
+        });
+      });
+      document.body.addEventListener('click',e=>{
+        if(!e.target.closest('.ddbox'))msEls.forEach(x=>x.classList.remove('open'));
+      });
+
+      /* ---------------------- Upload / Clear / Save ---------------------- */
+      document.getElementById('btnUpload').onclick=()=>document.getElementById('file').click();
+      document.getElementById('btnClear').onclick=()=>{
+        FILTERS={Donem:[],DepoSinifi:[],Depo:[],FSN:[],MTRL:[],UstGrup:[],AltGrup:[]};
+        buildMS(); renderAll(); saveState();
+      };
+
+      function exportSingleHTML(){
+        try{
+          if(RAW && RAW.length){
+            const payload={raw:RAW,filters:FILTERS,analysis:ANALYSIS_MODE,risk:RISK_UI,ts:new Date().toISOString()};
+            const json=JSON.stringify(payload);
+            const jsonSafe=json.replace(new RegExp('<'+'/script','gi'),'<\\/script');
+            document.getElementById('EMBED_DATA').textContent=jsonSafe;
+          }
+          const html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+          const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+          const a=document.createElement('a');
+          const ts=new Date().toISOString().replace(/[:.]/g,'-');
+          a.download=`AVESORO-BI-rapor-${ts}.html`;
+          a.href=URL.createObjectURL(blob);
+          document.body.appendChild(a);a.click();
+          setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},0);
+          msg('Tek dosya indirildi (veri + ayarlar gömülü). Bu HTML’yi istediğiniz cihazda açabilirsiniz.',true);
+        }catch(err){
+          console.error(err);
+          msg('Kaydetme başarısız: '+(err.message||err),false);
+        }
+      }
+      document.getElementById('btnSave').addEventListener('click',exportSingleHTML);
+
+      document.getElementById('file').addEventListener('change',async e=>{
+        const f=e.target.files[0]; if(!f)return;
+        try{
+          const ext=(f.name.split('.').pop()||'').toLowerCase();
+          if(ext==='csv'){
+            RAW=parseCSV(await f.text());
+          }else{
+            if(!window.XLSX){ msg('Excel kütüphanesi yüklenemedi. İnternet gerekir veya CSV yükleyin.',false); return; }
+            const buf=await f.arrayBuffer();
+            const wb=XLSX.read(buf,{type:'array'});
+            const first=wb.SheetNames[0];
+            RAW=normalizeRows(XLSX.utils.sheet_to_json(wb.Sheets[first],{defval:''}));
+          }
+
+          const months=[...new Set(RAW.map(r=>r.Donem))].sort();
+          ACTIVE_MONTH=months[months.length-1]||null;
+
+          if(!FROM_EMBED) loadState();
+          buildMS();
+          renderAll();
+
+          msg(`Veri yüklendi. Satır: <b>${RAW.length.toLocaleString('tr-TR')}</b>`,true);
+        }catch(err){
+          console.error(err);
+          msg('Dosya okunamadı: '+(err.message||err),false);
+        }finally{ e.target.value=''; }
+      });
+
+      /* ---------------------- Embedded load ---------------------- */
+      (function(){
+        const el=document.getElementById('EMBED_DATA');
+        if(!el)return;
+        try{
+          const pack=JSON.parse(el.textContent||'{}');
+          if(pack && Array.isArray(pack.raw) && pack.raw.length){
+            RAW=pack.raw;
+            FILTERS=Object.assign(FILTERS,pack.filters||{});
+            if(pack.analysis)ANALYSIS_MODE=pack.analysis;
+            if(pack.risk) RISK_UI=Object.assign(RISK_UI, pack.risk);
+            FROM_EMBED=true;
+
+            const months=[...new Set(RAW.map(r=>r.Donem))].sort();
+            ACTIVE_MONTH=months[months.length-1]||null;
+
+            initAnalysisUI();
+            buildMS();
+            renderAll();
+            msg(`Gömülü veri yüklendi. Satır: <b>${RAW.length.toLocaleString('tr-TR')}</b>`,true);
+          }else{
+            initAnalysisUI();
+            msg('Excel/CSV yükleyerek başlayın.',true);
+          }
+        }catch(e){
+          initAnalysisUI();
+          msg('Excel/CSV yükleyerek başlayın.',true);
+        }
+      })();
+
+      /* ---------------------- AI Panel ---------------------- */
+      document.getElementById('btnAuto').addEventListener('click',()=>{
+        if(!RAW.length){ document.getElementById('aiOut').innerHTML='—'; return; }
+        const rows = applyFilters(RAW);
+        const curMonth=currentMonthFromFilters();
+        document.getElementById('aiOut').innerHTML = buildAIText(rows,curMonth);
+      });
+
+      /* ---------------------- Assistant (Popup) ---------------------- */
+      function addAssistantMessage(role,text){
+        const wrap=document.getElementById('assistMessages');
+        const msgEl=document.createElement('div');
+        msgEl.className='assist-msg '+(role==='user'?'user':'bot');
+        const bubble=document.createElement('div');
+        bubble.className='assist-bubble';
+        bubble.innerHTML=String(text).replace(/\n/g,'<br>');
+        msgEl.appendChild(bubble);
+        wrap.appendChild(msgEl);
+        wrap.scrollTop=wrap.scrollHeight;
+      }
+
+      function generateAssistantAnswer(q){
+        if(!RAW.length) return 'Önce Excel/CSV yükleyelim.';
+        const rows=applyFilters(RAW);
+        const curMonth=currentMonthFromFilters();
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+
+        const qq=deaccent(q);
+        if(qq.includes('genel') || qq.includes('ozet')){
+          const total=monthRows.reduce((a,r)=>a+balanceOfRow(r,cols),0);
+          const topDepo=groupMonthly(rows,'Depo',curMonth).rows.slice(0,3);
+          return `Seçili ay: ${fmtMonthLabel(curMonth)}\nToplam kalan: ${FMT(total)}\nTop depolar: ${topDepo.map(x=>`${x.Ad} (${FMT(x.kal)})`).join(', ') || '—'}`;
+        }
+        if(qq.includes('asiri') || qq.includes('max')){
+          const pack = buildMaxPack(rows,curMonth);
+          const flat = pack.groups.flatMap(g=>g.rows);
+          const top=flat.slice(0,5).map(r=>`${r.Depo||'—'} • ${r.StokAdi||'—'} (Fazla: ${FMT(r.Gap||0)})`).join('\n');
+          return `Max üstü / aşırı stok: ${flat.length} kalem\nİlk örnekler:\n${top || '—'}`;
+        }
+        if(qq.includes('min')){
+          const pack = buildMinPack(rows,curMonth);
+          const flat = pack.groups.flatMap(g=>g.rows);
+          const top=flat.slice(0,5).map(r=>`${r.Depo||'—'} • ${r.StokAdi||'—'} (Açık: ${FMT(r.Gap||0)})`).join('\n');
+          return `Min altı: ${flat.length} kalem\nİlk örnekler:\n${top || '—'}`;
+        }
+        if(qq.includes('hareketsiz') || qq.includes('hic hareket')){
+          const pack = buildNoMovePack(rows,curMonth);
+          const flat = pack.groups.flatMap(g=>g.rows);
+          const top=flat.slice(0,5).map(r=>`${r.Depo||'—'} • ${r.StokAdi||'—'} (Kalan: ${FMT(r.Bal||0)})`).join('\n');
+          return `Hareketsiz (GIT hariç): ${flat.length} kalem\nİlk örnekler:\n${top || '—'}`;
+        }
+
+        return `Sorunuzu şöyle de sorabilirsiniz:\n• “Genel özet ver”\n• “Aşırı stoklar hangileri?”\n• “Min altı olanlar hangileri?”\n• “Hareketsiz stokları göster”`;
+      }
+
+      function assistantAsk(q){
+        addAssistantMessage('user',q);
+        const a=generateAssistantAnswer(q);
+        addAssistantMessage('bot',a);
+      }
+
+      (function initAssistantUI(){
+        const panel=document.getElementById('assistantPanel');
+        const btnHelp=document.getElementById('btnHelp');
+        const btnClose=document.getElementById('assistClose');
+        const form=document.getElementById('assistForm');
+        const input=document.getElementById('assistInput');
+
+        const syncBtn=()=>{
+          const open=panel.classList.contains('open');
+          btnHelp.classList.toggle('active', open);
+        };
+
+        btnHelp.addEventListener('click',()=>{
+          panel.classList.toggle('open');
+          syncBtn();
+          if(panel.classList.contains('open')) input.focus();
+        });
+        btnClose.addEventListener('click',()=>{
+          panel.classList.remove('open');
+          syncBtn();
+        });
+
+        form.addEventListener('submit',e=>{
+          e.preventDefault();
+          const q=input.value.trim();
+          if(!q)return;
+          assistantAsk(q);
+          input.value='';
+        });
+
+        document.querySelectorAll('.assist-quick button').forEach(b=>{
+          b.addEventListener('click',()=>assistantAsk(b.dataset.q));
+        });
+
+        syncBtn();
+      })();
+
+      /* ✅ Shimmer: hover başına 1 kez (mouse çıkınca reset) */
+      (function initShimmerOnce(){
+        const ag = document.getElementById('actionGroup');
+        if(!ag) return;
+
+        let t = null;
+        const dur = 1100;
+
+        const playOnce = ()=>{
+          if (ag.dataset.flashed === '1') return;
+          ag.dataset.flashed = '1';
+          ag.classList.add('flash');
+          clearTimeout(t);
+          t = setTimeout(()=> ag.classList.remove('flash'), dur);
+        };
+
+        ag.addEventListener('mouseenter', playOnce);
+        ag.addEventListener('mouseleave', ()=>{
+          ag.dataset.flashed = '0';
+          ag.classList.remove('flash');
+          clearTimeout(t);
+        });
+      })();
+
+      /* ✅ Assistant Pulse: hover başına 1 kez (mouse çıkınca reset) */
+      (function initAssistantPulse(){
+        const btn = document.getElementById('btnHelp');
+        if(!btn) return;
+
+        let t = null;
+        const dur = 950;
+
+        const playOnce = ()=>{
+          if(btn.dataset.pulsed === '1') return;
+          btn.dataset.pulsed = '1';
+          btn.classList.add('pulse-once');
+          clearTimeout(t);
+          t = setTimeout(()=> btn.classList.remove('pulse-once'), dur);
+        };
+
+        btn.addEventListener('mouseenter', playOnce);
+        btn.addEventListener('mouseleave', ()=>{
+          btn.dataset.pulsed = '0';
+          btn.classList.remove('pulse-once');
+          clearTimeout(t);
+        });
+      })();
+    </script>
+  </body>
 </html>
