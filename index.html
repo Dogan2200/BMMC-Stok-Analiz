@@ -2070,11 +2070,23 @@ function openModal(id){
 function closeModal(id){
   const el = document.getElementById(id);
   if(!el) return;
-  el.classList.remove('open');
-  el.setAttribute('aria-hidden','true');
+
+  // ✅ Login ekranı: oturum yoksa kapatma (arka ekrana düşmesin)
   if(id === 'loginBackdrop'){
+    const sess = readSession();
+    if(!sess){
+      // login açık kalmalı
+      el.classList.add('open');
+      el.setAttribute('aria-hidden','false');
+      document.body.classList.add('auth-lock');
+      return;
+    }
+    // oturum varsa kapatılabilir
     document.body.classList.remove('auth-lock');
   }
+
+  el.classList.remove('open');
+  el.setAttribute('aria-hidden','true');
 }
 
 function setAppLocked(locked){
@@ -2155,12 +2167,19 @@ async function login(username, password){
 
 function logout(){
   clearSession();
+
+  // (isteğe bağlı ama temiz) açık panelleri kapat
+  closeModal('userAdminBackdrop');
+  document.getElementById('assistantPanel')?.classList.remove('open');
+
   paintHeaderUser(null);
   applyRoleUI(null);
 
   setAppLocked(true);
   clearLoginForm();
-  openModal('loginBackdrop'); // ✅ çıkışta login ekranı
+
+  // ✅ çıkışta kesin login ekranı
+  openModal('loginBackdrop');
 }
 
 /* USER ADMIN fonksiyonların burada aynen kalsın... */
