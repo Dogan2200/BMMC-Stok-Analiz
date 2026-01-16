@@ -2210,6 +2210,13 @@ function wireAuthUI(){
 
   const btnLogout = document.getElementById('btnLogout');
   btnLogout && (btnLogout.onclick = ()=> logout());
+
+  // ✅ BURAYA EKLE
+  const btnUserAdmin = document.getElementById('btnUserAdmin');
+  const userAdminClose = document.getElementById('userAdminClose');
+
+  btnUserAdmin && (btnUserAdmin.onclick = ()=> openModal('userAdminBackdrop'));
+  userAdminClose && (userAdminClose.onclick = ()=> closeModal('userAdminBackdrop'));
 }
 
 async function initAuth(){
@@ -2232,7 +2239,10 @@ async function initAuth(){
   }
 }
 
-document.addEventListener('DOMContentLoaded', ()=>{ initAuth(); });
+document.addEventListener('DOMContentLoaded', async ()=>{
+  await initAuth();
+  await autoLoadRawIfNeeded();
+});
 
 /* =========================
    TABLOLARDA SIRALAMA + FİLTRE
@@ -2497,6 +2507,14 @@ document.addEventListener('DOMContentLoaded', ()=>{ initAuth(); });
       let ACTIVE_MONTH=null;
       let FROM_EMBED=false;
 
+// ✅ AUTO RAW LOAD (GitHub raw / URL)
+const AUTO_RAW_ENABLED = true;
+
+// Repo: Dogan2200/BMMC-Stok-Analiz  | Dosya: kamu/data.xlsx
+const RAW_DATA_URL =
+  "https://raw.githubusercontent.com/Dogan2200/BMMC-Stok-Analiz/main/kamu/data.xlsx?v=" + Date.now();
+
+
       let RISK_UI = {
         nomove:{ q:'', n:150, inner:'FSN' },
         min:{ q:'', n:150, inner:'FSN' },
@@ -2623,7 +2641,78 @@ document.addEventListener('DOMContentLoaded', ()=>{ initAuth(); });
         });
         return normalizeRows(data);
       }
+      async function loadRemoteData(url){
+  const clean = String(url || "").trim();
+  if(!clean) throw new Error("RAW_DATA_URL boş.");
 
+  const lower = clean.toLowerCase();
+
+  // CSV
+  if(lower.endsWith(".csv")){
+    const txt = await fetch(clean, { cache: "no-store" }).then(r=>{
+      if(!r.ok) throw new Error("CSV indirilemedi: " + r.status);
+      return r.text();
+    });
+    return parseCSV(txt);
+  }
+
+  // JSON (normalizeRows beklediği yapıda olmalı: [{...},{...}])
+  if(lower.endsWith(".json")){
+    const js = await fetch(clean, { cache: "no-store" }).then(r=>{
+      if(!r.ok) throw new Error("JSON indirilemedi: " + r.status);
+      return r.json();
+    });
+    return normalizeRows(js);
+  }
+
+  // XLSX / XLS / XLSM vb.
+  const buf = await fetch(clean, { cache: "no-store" }).then(r=>{
+    if(!r.ok) throw new Error("Excel indirilemedi: " + r.status);
+    return r.arrayBuffer();
+  });
+
+  const wb = XLSX.read(buf, { type: "array" });
+  const wsName = wb.SheetNames[0];
+  const ws = wb.Sheets[wsName];
+  const json = XLSX.utils.sheet_to_json(ws, { defval: "" });
+
+  return normalizeRows(json);
+}
+
+async function autoLoadRawIfNeeded(){
+  try{
+    if(!AUTO_RAW_ENABLED) return;
+    if(!RAW_DATA_URL || RAW_DATA_URL === "RAW_URL_BURAYA") return;
+
+    // Zaten veri yüklüyse tekrar çekme
+    if(Array.isArray(RAW) && RAW.length) return;
+
+    const rows = await loadRemoteData(RAW_DATA_URL);
+    RAW = rows || [];
+    FROM_EMBED = true;
+
+    if(!RAW.length){
+      msg("RAW verisi indirildi ama satır bulunamadı.", false);
+      return;
+    }
+
+    buildMS();
+
+    // aktif ay yoksa en güncel ayı seç
+    if(!ACTIVE_MONTH){
+      const months = [...new Set(RAW.map(x=>x.Donem).filter(Boolean))].sort();
+      ACTIVE_MONTH = months[months.length - 1] || null;
+    }
+
+    // filtre label + ekranı bas
+    updateMSLabels();
+    if(typeof renderAll === "function") renderAll();
+    msg("RAW verisi otomatik yüklendi ✅", true);
+  }catch(err){
+    console.error(err);
+    msg("RAW otomatik yükleme hatası: " + (err?.message || err), false);
+  }
+}
       function buildMS(){
         const uniq=arr=>[...new Set(arr.filter(Boolean))].sort();
         ALL={
@@ -3911,23 +4000,16 @@ document.addEventListener('DOMContentLoaded', ()=>{ initAuth(); });
           clearTimeout(t);
         });
       })();
-  <script>
-  // ... (senin uzun ana kodun)
-  (function initAssistantPulse(){
-    ...
-  })();
-</script>
+ </script>
+
 <script>
 /* =========================
    ✅ RAW URL’den CSV/XLSX yükleme
    ========================= */
-const RAW_URL_KEY = 'AVESORO_RAW_URL_V1';
-
 function getQueryParam(name){
   try{ return new URLSearchParams(location.search).get(name); }
   catch(e){ return null; }
 }
-
 async function loadFromRawUrl(url){
   url = String(url || '').trim();
   if(!url) return;
@@ -3935,22 +4017,39 @@ async function loadFromRawUrl(url){
   try{
     msg(`RAW verisi indiriliyor...`, true);
 
-    const res = await fetch(url, { cache: 'no-store' });
+    const res = await fetch(url, { cache: 'no-store', mode: 'cors', credentials: 'omit' });
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
 
-    // 404 sayfası vs. gelirse yakalamak için:
     const ct = (res.headers.get('content-type') || '').toLowerCase();
-    const ext = url.split('?')[0].toLowerCase();
+    const cleanUrl = url.split('?')[0].toLowerCase();
+
+    // 🔎 GitHub HTML sayfası geldiyse yakala
+    if (ct.includes('text/html')) {
+      const html = await res.text();
+      if (html.toLowerCase().includes('<!doctype html') || html.toLowerCase().includes('<html')) {
+        throw new Error('Bu link RAW dosya değil (HTML sayfası dönüyor). raw.githubusercontent.com linki kullanın.');
+      }
+      // HTML değilse geri dönüştürme şansı yok: yine de hata
+      throw new Error('Beklenmeyen yanıt (text/html). RAW linki kontrol edin.');
+    }
 
     let rows = [];
 
-    // CSV ise text
-    if(ext.endsWith('.csv') || ct.includes('text/csv') || ct.includes('text/plain')){
+    // CSV
+    if(cleanUrl.endsWith('.csv') || ct.includes('text/csv') || ct.includes('text/plain')){
       const text = await res.text();
       rows = parseCSV(text);
     } else {
-      // XLSX/XLS vb. ise arrayBuffer
+      // XLSX
+      if(!window.XLSX) throw new Error('XLSX kütüphanesi yok. İnternet gerekir veya CSV kullanın.');
       const buf = await res.arrayBuffer();
+
+      // 🔎 XLSX aslında ZIP: ilk iki byte "PK" olmalı
+      const u8 = new Uint8Array(buf);
+      if(!(u8[0] === 0x50 && u8[1] === 0x4B)){
+        throw new Error('Dosya XLSX gibi görünmüyor (PK/ZIP imzası yok). RAW linki yanlış olabilir.');
+      }
+
       const wb = XLSX.read(buf, { type: 'array' });
       const wsName = wb.SheetNames[0];
       const ws = wb.Sheets[wsName];
@@ -3958,10 +4057,8 @@ async function loadFromRawUrl(url){
       rows = normalizeRows(json);
     }
 
-    // ✅ Uygulamaya “veriyi oturt”
     ingestRows(rows, `RAW: ${url}`);
 
-    // İstersen URL’yi hatırla
     try{ localStorage.setItem(RAW_URL_KEY, url); }catch(e){}
     msg(`RAW yüklendi ✅ Satır: ${rows.length.toLocaleString('tr-TR')}`, true);
   }catch(err){
@@ -3969,7 +4066,6 @@ async function loadFromRawUrl(url){
     msg(`RAW okunamadı ❌ (${err.message || err})`, false);
   }
 }
-
 /* Uygulamaya veri bağlama (senin akışına göre tek noktadan) */
 function ingestRows(rows, sourceLabel=''){
   RAW = Array.isArray(rows) ? rows : [];
