@@ -1637,22 +1637,19 @@
       <div class="auth-grid">
         <div class="auth-field">
           <label>Kullanıcı Adı</label>
-          <input id="loginUser" type="text" autocomplete="username" placeholder="örn: admin" />
+          <input id="loginUser" type="text" autocomplete="off" />
         </div>
         <div class="auth-field">
           <label>Şifre</label>
-          <input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••••" />
+          <input id="loginPass" type="password" autocomplete="off" />
         </div>
       </div>
 
-      <div class="auth-actions">
-  <button class="auth-btn ghost" id="loginReset" type="button">Sıfırla (Admin’i Yeniden Oluştur)</button>
-  <button class="auth-btn ghost" id="loginDemo" type="button">Admin ile Doldur</button>
+  <div class="auth-actions">
   <button class="auth-btn primary" id="loginBtn" type="button">Giriş Yap</button>
 </div>
-      <div class="auth-note" id="loginNote">
-        Varsayılan admin: <b>admin</b> / <b>123</b>
-      </div>
+
+      <div class="auth-note" id="loginNote" style="display:none;"></div>
     </div>
   </div>
 </div>
@@ -2011,11 +2008,13 @@ function paintHeaderUser(session){
 
 function setNote(el, text, type){
   if(!el) return;
+  el.style.display = '';           // ✅ not görünür olsun
   el.textContent = text;
   el.classList.remove('err','ok');
   if(type==='err') el.classList.add('err');
   if(type==='ok')  el.classList.add('ok');
 }
+
 
 async function login(username, password){
   username = String(username||'').trim();
@@ -2040,6 +2039,7 @@ function logout(){
   paintHeaderUser(null);
   applyRoleUI(null);
   setAppLocked(true);
+  clearLoginForm();
   openModal('loginBackdrop');
 }
 
@@ -2122,6 +2122,7 @@ async function initAuth(){
     setAppLocked(true);
     paintHeaderUser(null);
     applyRoleUI(null);
+    clearLoginForm(); // ✅ her açılışta tamamen boş
     openModal('loginBackdrop');
   }else{
     setAppLocked(false);
@@ -2129,43 +2130,26 @@ async function initAuth(){
     applyRoleUI(session);
     closeModal('loginBackdrop');
   }
+function clearLoginForm(){
+  const uEl = document.getElementById('loginUser');
+  const pEl = document.getElementById('loginPass');
+  const note = document.getElementById('loginNote');
 
+  if(uEl) uEl.value = '';
+  if(pEl) pEl.value = '';
+
+  if(note){
+    note.style.display = 'none';
+    note.textContent = '';
+    note.classList.remove('err','ok');
+  }
+}
   // Login modal elements
   const loginBtn   = document.getElementById('loginBtn');
-  const loginDemo  = document.getElementById('loginDemo');
-  const loginReset = document.getElementById('loginReset');
   const loginClose = document.getElementById('loginClose');
   const loginNote  = document.getElementById('loginNote');
 
-  // ✅ Demo doldur: admin/123
-  loginDemo && (loginDemo.onclick = ()=>{
-    const uEl = document.getElementById('loginUser');
-    const pEl = document.getElementById('loginPass');
-    if(uEl) uEl.value = 'admin';
-    if(pEl) pEl.value = '123';
-    setNote(loginNote, 'Admin bilgileri dolduruldu (admin / 123).', 'ok');
-  });
-
-  // ✅ Reset: localStorage temizle + default admin kur
-  loginReset && (loginReset.onclick = async ()=>{
-    const ok = confirm("Tüm kullanıcılar sıfırlanacak ve varsayılan admin (admin/123) yeniden oluşturulacak. Devam edilsin mi?");
-    if(!ok) return;
-
-    localStorage.removeItem(AUTH_USERS_KEY);
-    localStorage.removeItem(AUTH_SESSION_KEY);
-    await ensureDefaultAdmin();
-
-    const uEl = document.getElementById('loginUser');
-    const pEl = document.getElementById('loginPass');
-    if(uEl) uEl.value = 'admin';
-    if(pEl) pEl.value = '123';
-
-    setNote(loginNote, "Sıfırlandı. Varsayılan admin: admin / 123", "ok");
-    openModal('loginBackdrop');
-    setAppLocked(true);
-  });
-
-  // ✅ Giriş Yap
+     // ✅ Giriş Yap
   loginBtn && (loginBtn.onclick = async ()=>{
     const u = (document.getElementById('loginUser')?.value || '').trim();
     const p = (document.getElementById('loginPass')?.value || '').trim();
@@ -3796,8 +3780,7 @@ document.addEventListener('DOMContentLoaded', ()=>{ initAuth(); });
             msg(`Gömülü veri yüklendi. Satır: <b>${RAW.length.toLocaleString('tr-TR')}</b>`,true);
           }else{
             initAnalysisUI();
-            msg('Excel/CSV yükleyerek başlayın.',true);
-          }
+        }
         }catch(e){
           initAnalysisUI();
           msg('Excel/CSV yükleyerek başlayın.',true);
