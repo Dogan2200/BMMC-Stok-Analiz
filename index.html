@@ -2219,6 +2219,242 @@ function wireAuthUI(){
   userAdminClose && (userAdminClose.onclick = ()=> closeModal('userAdminBackdrop'));
 }
 
+/* =========================
+   ✅ USER ADMIN ENGINE (localStorage) — FIX
+   ========================= */
+function isAdminSession(){
+  const s = readSession();
+  return !!(s && s.role === 'admin');
+}
+
+function uaSetNote(text, type){
+  const el = document.getElementById('uaNote');
+  if(!el) return;
+  el.textContent = text;
+  el.classList.remove('err','ok');
+  if(type==='err') el.classList.add('err');
+  if(type==='ok')  el.classList.add('ok');
+}
+
+function uaRenderTable(){
+  const tb = document.getElementById('uaTbody');
+  if(!tb) return;
+
+  const users = readUsers();
+  if(!users.length){
+    tb.innerHTML = `<tr><td colspan="5">Kullanıcı yok.</td></tr>`;
+    return;
+  }
+
+  tb.innerHTML = users
+    .slice()
+    .sort((a,b)=> String(a.username||'').localeCompare(String(b.username||''), 'tr'))
+    .map(u=>{
+      const created = (u.createdAt || '').slice(0,19).replace('T',' ');
+      const last    = (u.lastLogin || '').slice(0,19).replace('T',' ');
+      return `
+        <tr>
+          <td><b>${u.username || '—'}</b></td>
+          <td>${u.role || 'viewer'}</td>
+          <td>${created || '—'}</td>
+          <td>${last || '—'}</td>
+          <td style="white-space:nowrap; display:flex; gap:6px; flex-wrap:wrap;">
+            <button class="user-mini-btn" data-act="reset" data-u="${u.username}">Şifre</button>
+            <button class="user-mini-btn" data-act="del" data-u="${u.username}">Sil</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+  // row actions
+  tb.querySelectorAll('button[data-act]').forEach(btn=>{
+    btn.onclick = async ()=>{
+      if(!isAdminSession()){
+        uaSetNote('Yetkiniz yok (admin gerekli).', 'err');
+        return;
+      }
+      const act = btn.dataset.act;
+      const username = btn.dataset.u;
+
+      if(act === 'del'){
+        if(username === 'admin'){
+          uaSetNote('admin kullanıcısı silinemez.', 'err');
+          return;
+        }
+        const users = readUsers().filter(x => (x.username||'') !== username);
+        writeUsers(users);
+        uaRenderTable();
+        uaSetNote(`Kullanıcı silindi: ${username}`, 'ok');
+      }
+
+      if(act === 'reset'){
+        const np = prompt(`${username} için yeni şifre girin:`);
+        if(!np) return;
+        const users = readUsers();
+        const u = users.find(x => (x.username||'') === username);
+        if(!u){
+          uaSetNote('Kullanıcı bulunamadı.', 'err');
+          return;
+        }
+        u.passHash = await sha256(np);
+        writeUsers(users);
+        uaSetNote(`Şifre güncellendi: ${username}`, 'ok');
+      }
+    };
+  });
+}
+
+async function uaUpsertFromForm(){
+  if(!isAdminSession()){
+    uaSetNote('Yetkiniz yok (admin gerekli).', 'err');
+    return;
+  }
+
+  const uEl = document.getElementById('uaUser');
+  const pEl = document.getElementById('uaPass');
+  const rEl = document.getElementById('uaRole');
+
+  const username = String(uEl?.value || '').trim();
+  const passRaw  = String(pEl?.value || '').trim();
+  const role     = String(rEl?.value || 'viewer').trim();
+
+  if(!username){
+    uaSetNote('Kullanıcı adı boş olamaz.', 'err');
+    return;
+  }
+
+  const users = readUsers();
+  let u = users.find(x => (x.username||'').toLowerCase() === username.toLowerCase());
+
+  if(!u){
+    // yeni kullanıcı
+    if(!passRaw){
+      uaSetNote('Yeni kullanıcı için şifre zorunlu.', 'err');
+      return;
+    }
+    u = {
+      username,
+      role,
+      passHash: await sha256(passRaw),
+      createdAt: nowISO(),
+      lastLogin: ''
+    };
+    users.push(u);
+    writeUsers(users);
+    uaSetNote(`Kullanıcı eklendi: ${username}`, 'ok');
+  }else{
+    // güncelle
+    u.role = role || u.role || 'viewer';
+    if(passRaw){
+      u.passHash = await sha256(passRaw);
+    }
+    writeUsers(users);
+    uaSetNote(`Kullanıcı güncellendi: ${u.username}`, 'ok');
+  }
+
+  // form temizle
+  if(pEl) pEl.value = '';
+  uaRenderTable();
+}
+
+function uaExportUsers(){
+  if(!isAdminSession()){
+    uaSetNote('Yetkiniz yok (admin gerekli).', 'err');
+    return;
+  }
+  const users = readUsers();
+  const blob = new Blob([JSON.stringify(users, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'avesoro_users.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  uaSetNote('JSON dışa aktarıldı.', 'ok');
+}
+
+function uaImportUsersFromFile(file){
+  if(!isAdminSession()){
+    uaSetNote('Yetkiniz yok (admin gerekli).', 'err');
+    return;
+  }
+  const fr = new FileReader();
+  fr.onload = async ()=>{
+    try{
+      const arr = JSON.parse(fr.result || '[]');
+      if(!Array.isArray(arr)) throw new Error('JSON dizi formatında olmalı.');
+
+      // minimum alan normalize + admin garanti
+      let users = arr.map(x=>({
+        username: String(x.username||'').trim(),
+        role: (x.role==='admin'?'admin':'viewer'),
+        passHash: String(x.passHash||''),
+        createdAt: x.createdAt || nowISO(),
+        lastLogin: x.lastLogin || ''
+      })).filter(x=>x.username);
+
+      // admin yoksa ekle
+      const hasAdmin = users.some(x=>x.username.toLowerCase()==='admin');
+      if(!hasAdmin){
+        users.unshift({
+          username:'admin',
+          role:'admin',
+          passHash: await sha256('123'),
+          createdAt: nowISO(),
+          lastLogin:''
+        });
+      }
+
+      writeUsers(users);
+      uaRenderTable();
+      uaSetNote('JSON içe aktarıldı.', 'ok');
+    }catch(e){
+      uaSetNote('İçe aktarma hatası: ' + (e?.message||e), 'err');
+    }
+  };
+  fr.readAsText(file);
+}
+
+function wireUserAdminUI(){
+  const btnAdd    = document.getElementById('uaAdd');
+  const btnExport = document.getElementById('uaExport');
+  const btnImport = document.getElementById('uaImport');
+  const fileInput = document.getElementById('uaImportFile');
+
+  btnAdd && (btnAdd.onclick = ()=> uaUpsertFromForm());
+  btnExport && (btnExport.onclick = ()=> uaExportUsers());
+
+  btnImport && (btnImport.onclick = ()=>{
+    if(!isAdminSession()){
+      uaSetNote('Yetkiniz yok (admin gerekli).', 'err');
+      return;
+    }
+    fileInput?.click();
+  });
+
+  fileInput && (fileInput.onchange = ()=>{
+    const f = fileInput.files && fileInput.files[0];
+    if(!f) return;
+    uaImportUsersFromFile(f);
+    fileInput.value = '';
+  });
+}
+
+/* ✅ wireAuthUI içinde user admin açılırken tabloyu çiz */
+(function patchWireAuthUIOpen(){
+  const oldOpenModal = openModal;
+  openModal = function(id){
+    if(id === 'userAdminBackdrop'){
+      if(!isAdminSession()){
+        uaSetNote('Yetkiniz yok (admin gerekli).', 'err');
+        return;
+      }
+      uaRenderTable();
+      wireUserAdminUI();
+    }
+    return oldOpenModal(id);
+  };
+})();
 async function initAuth(){
   await ensureDefaultAdmin();
   wireAuthUI();
