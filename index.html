@@ -36,16 +36,13 @@
 
         /* ✅ assistant pulse */
         --assist-pulse-speed:.9s;
-
-        /* ✅ Auth theme */
-        --auth-bg: radial-gradient(120% 160% at 0% 0%,#faf5e7,#fdfcf9 55%,#f3faf5 100%);
       }
 
       *{box-sizing:border-box}
       html,body{
         margin:0;
         min-height:100%;
-        background:var(--auth-bg);
+        background:radial-gradient(120% 160% at 0% 0%,#faf5e7,#fdfcf9 55%,#f3faf5 100%);
         color:var(--ink);
         font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
         overflow-x:hidden;
@@ -176,17 +173,10 @@
         font-weight:900;
         cursor:pointer;
         box-shadow:0 10px 22px rgba(15,23,42,.18);
-        transition:transform .12s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease, opacity .18s ease;
+        transition:transform .12s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
         white-space:nowrap;
         position:relative;
         z-index:1;
-      }
-
-      .pill-btn[disabled]{
-        opacity:.55;
-        cursor:not-allowed;
-        transform:none !important;
-        box-shadow:0 10px 22px rgba(15,23,42,.14) !important;
       }
 
       /* ikonlar premium gold */
@@ -271,134 +261,135 @@
       h1{font-size:18px;margin:0;font-weight:800;letter-spacing:.01em}
 
       /* ======= PREMIUM TABS (sadece görünüm) ======= */
-      .tabs{
-        display:flex;
-        gap:8px;
-        margin-top:18px;
-        flex-wrap:wrap;
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-top:18px;
+  flex-wrap:wrap;
 
-        /* premium grup kapsülü */
-        padding:8px;
-        border-radius:999px;
-        background:
-          radial-gradient(140% 220% at 0% 0%, rgba(255,255,255,.78), transparent 58%),
-          radial-gradient(140% 220% at 100% 120%, rgba(254,249,195,.42), transparent 58%),
-          rgba(255,255,255,.45);
-        border:1px solid rgba(250,204,21,.28);
-        box-shadow:
-          0 18px 46px rgba(15,23,42,.10),
-          inset 0 0 0 1px rgba(255,255,255,.38);
-        backdrop-filter:blur(12px);
-        -webkit-backdrop-filter:blur(12px);
-      }
+  /* premium grup kapsülü */
+  padding:8px;
+  border-radius:999px;
+  background:
+    radial-gradient(140% 220% at 0% 0%, rgba(255,255,255,.78), transparent 58%),
+    radial-gradient(140% 220% at 100% 120%, rgba(254,249,195,.42), transparent 58%),
+    rgba(255,255,255,.45);
+  border:1px solid rgba(250,204,21,.28);
+  box-shadow:
+    0 18px 46px rgba(15,23,42,.10),
+    inset 0 0 0 1px rgba(255,255,255,.38);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
 
-      .tab{
-        position:relative;
-        border-radius:999px;
-        padding:9px 14px;
-        cursor:pointer;
+.tab{
+  position:relative;
+  border-radius:999px;
+  padding:9px 14px;
+  cursor:pointer;
 
-        font-size:12px;
-        font-weight:800;
-        letter-spacing:.01em;
-        color:#475569;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.01em;
+  color:#475569;
 
-        background:
-          linear-gradient(180deg, rgba(255,255,255,.92), rgba(248,250,252,.86));
-        border:1px solid rgba(226,232,240,.95);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(248,250,252,.86));
+  border:1px solid rgba(226,232,240,.95);
 
-        box-shadow:
-          0 10px 26px rgba(15,23,42,.08),
-          inset 0 0 0 1px rgba(255,255,255,.40);
+  box-shadow:
+    0 10px 26px rgba(15,23,42,.08),
+    inset 0 0 0 1px rgba(255,255,255,.40);
 
-        backdrop-filter:blur(10px);
-        -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
 
-        transition:
-          transform .14s ease,
-          box-shadow .18s ease,
-          border-color .18s ease,
-          color .18s ease,
-          background .18s ease;
-        user-select:none;
-        overflow:hidden;
-      }
+  transition:
+    transform .14s ease,
+    box-shadow .18s ease,
+    border-color .18s ease,
+    color .18s ease,
+    background .18s ease;
+  user-select:none;
+  overflow:hidden;
+}
 
-      /* hafif “shine” */
-      .tab::before{
-        content:"";
-        position:absolute;
-        inset:-60%;
-        background:linear-gradient(120deg,
-          transparent 44%,
-          rgba(255,255,255,.28) 52%,
-          rgba(250,204,21,.14) 56%,
-          transparent 66%);
-        transform:translateX(-70%) rotate(10deg);
-        opacity:0;
-        pointer-events:none;
-        mix-blend-mode:soft-light;
-        transition:opacity .18s ease, transform .55s ease;
-      }
+/* hafif “shine” */
+.tab::before{
+  content:"";
+  position:absolute;
+  inset:-60%;
+  background:linear-gradient(120deg,
+    transparent 44%,
+    rgba(255,255,255,.28) 52%,
+    rgba(250,204,21,.14) 56%,
+    transparent 66%);
+  transform:translateX(-70%) rotate(10deg);
+  opacity:0;
+  pointer-events:none;
+  mix-blend-mode:soft-light;
+  transition:opacity .18s ease, transform .55s ease;
+}
 
-      .tab:hover{
-        transform:translateY(-1px);
-        border-color:rgba(148,163,184,.55);
-        box-shadow:
-          0 16px 40px rgba(15,23,42,.14),
-          inset 0 0 0 1px rgba(255,255,255,.42);
-        color:#0f172a;
-      }
+.tab:hover{
+  transform:translateY(-1px);
+  border-color:rgba(148,163,184,.55);
+  box-shadow:
+    0 16px 40px rgba(15,23,42,.14),
+    inset 0 0 0 1px rgba(255,255,255,.42);
+  color:#0f172a;
+}
 
-      .tab:hover::before{
-        opacity:1;
-        transform:translateX(45%) rotate(10deg);
-      }
+.tab:hover::before{
+  opacity:1;
+  transform:translateX(45%) rotate(10deg);
+}
 
-      .tab:active{
-        transform:translateY(0);
-        box-shadow:
-          0 12px 30px rgba(15,23,42,.12),
-          inset 0 0 0 1px rgba(255,255,255,.38);
-      }
+.tab:active{
+  transform:translateY(0);
+  box-shadow:
+    0 12px 30px rgba(15,23,42,.12),
+    inset 0 0 0 1px rgba(255,255,255,.38);
+}
 
-      /* erişilebilir odak */
-      .tab:focus-visible{
-        outline:none;
-        border-color:rgba(250,204,21,.60);
-        box-shadow:
-          0 0 0 4px rgba(250,204,21,.18),
-          0 16px 40px rgba(15,23,42,.14);
-      }
+/* erişilebilir odak */
+.tab:focus-visible{
+  outline:none;
+  border-color:rgba(250,204,21,.60);
+  box-shadow:
+    0 0 0 4px rgba(250,204,21,.18),
+    0 16px 40px rgba(15,23,42,.14);
+}
 
-      .tab.active{
-        color:#111827;
-        border-color:rgba(250,204,21,.65);
+.tab.active{
+  color:#111827;
+  border-color:rgba(250,204,21,.65);
 
-        background:
-          radial-gradient(120% 160% at 0% 0%, rgba(255,255,255,.55), transparent 55%),
-          linear-gradient(135deg, #facc15, #fde68a);
+  background:
+    radial-gradient(120% 160% at 0% 0%, rgba(255,255,255,.55), transparent 55%),
+    linear-gradient(135deg, #facc15, #fde68a);
 
-        box-shadow:
-          0 18px 46px rgba(250,204,21,.18),
-          0 16px 38px rgba(15,23,42,.14),
-          inset 0 0 0 1px rgba(255,255,255,.38);
-      }
+  box-shadow:
+    0 18px 46px rgba(250,204,21,.18),
+    0 16px 38px rgba(15,23,42,.14),
+    inset 0 0 0 1px rgba(255,255,255,.38);
+}
 
-      /* aktif sekmede “premium ring” */
-      .tab.active::after{
-        content:"";
-        position:absolute;
-        inset:-1px;
-        border-radius:999px;
-        border:1px solid rgba(255,255,255,.42);
-        pointer-events:none;
-      }
+/* aktif sekmede “premium ring” */
+.tab.active::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.42);
+  pointer-events:none;
+}
 
-      @media (prefers-reduced-motion: reduce){
-        .tab, .tab::before{ transition:none !important; }
-        .tab::before{ opacity:0 !important; }
-      }
+@media (prefers-reduced-motion: reduce){
+  .tab, .tab::before{ transition:none !important; }
+  .tab::before{ opacity:0 !important; }
+}
+
 
       .btn,
       .ddbox>button{
@@ -1356,569 +1347,388 @@
         color:#0f172a;
         box-shadow:0 10px 22px rgba(250,204,21,.32);
       }
+/* =========================
+   ✅ AUTH (Login + User Admin) — Premium Modal
+   ========================= */
+.auth-backdrop{
+  position:fixed; inset:0;
+  background:rgba(2,6,23,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  padding:16px;
+}
+.auth-backdrop.open{ display:flex; }
 
-      /* ===========================
-         ✅ AUTH (LOGIN) + MODAL (PREMIUM)
-         =========================== */
-      .auth-screen{
-        position:fixed;
-        inset:0;
-        z-index:200;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        padding:16px;
-        background:
-          radial-gradient(120% 160% at 0% 0%, rgba(250,245,222,.92), rgba(255,255,255,.72) 55%, rgba(187,247,208,.60) 100%);
-      }
+.auth-modal{
+  width:min(520px, 100%);
+  border-radius:22px;
+  border:1px solid rgba(250,204,21,.35);
+  background:
+    radial-gradient(120% 160% at 0% 0%, rgba(254,249,195,.55), transparent 55%),
+    radial-gradient(120% 160% at 100% 120%, rgba(187,247,208,.35), transparent 55%),
+    rgba(255,255,255,.92);
+  box-shadow:0 30px 90px rgba(0,0,0,.35);
+  overflow:hidden;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
 
-      .auth-wrap{
-        width:min(980px, 100%);
-        display:grid;
-        grid-template-columns: 1.1fr .9fr;
-        gap:14px;
-        align-items:stretch;
-      }
-      @media(max-width:920px){ .auth-wrap{grid-template-columns:1fr; max-width:560px;} }
+.auth-head{
+  padding:12px 14px;
+  background:linear-gradient(90deg,var(--gold-1),var(--gold-2),var(--gold-3));
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.auth-head .t{
+  font-weight:1000;
+  letter-spacing:.02em;
+  color:#111827;
+  font-size:14px;
+}
+.auth-head .s{
+  font-size:11px;
+  color:#1f2937;
+  opacity:.95;
+}
+.auth-close{
+  border:none;
+  background:rgba(255,255,255,.45);
+  border-radius:999px;
+  padding:6px 10px;
+  font-weight:900;
+  cursor:pointer;
+}
+.auth-close:hover{ background:rgba(255,255,255,.7); }
 
-      .auth-hero{
-        border-radius:26px;
-        padding:22px 22px 18px;
-        background:
-          radial-gradient(180% 240% at 0% 0%, rgba(254,249,195,.72), transparent 55%),
-          radial-gradient(180% 240% at 100% 120%, rgba(187,247,208,.62), transparent 58%),
-          rgba(255,255,255,.76);
-        border:1px solid rgba(250,204,21,.32);
-        box-shadow:0 28px 90px rgba(15,23,42,.26);
-        backdrop-filter:blur(16px);
-        -webkit-backdrop-filter:blur(16px);
-        overflow:hidden;
-        position:relative;
-      }
-      .auth-hero::before{
-        content:'';
-        position:absolute;
-        inset:-35%;
-        background:
-          linear-gradient(120deg, rgba(255,255,255,.35), transparent 55%),
-          radial-gradient(circle at 0% 0%, rgba(255,255,255,.85), transparent 55%);
-        opacity:.7;
-        pointer-events:none;
-      }
-      .auth-hero > *{position:relative; z-index:1;}
-      .auth-hero h2{
-        margin:0 0 8px;
-        font-size:18px;
-        font-weight:950;
-        letter-spacing:.01em;
-        color:#0f172a;
-      }
-      .auth-hero p{
-        margin:0 0 12px;
-        font-size:12px;
-        color:#334155;
-        line-height:1.55;
-      }
-      .auth-feature{
-        display:flex;
-        gap:10px;
-        align-items:flex-start;
-        padding:10px 12px;
-        border-radius:18px;
-        border:1px solid rgba(226,232,240,.92);
-        background:rgba(255,255,255,.78);
-        box-shadow:0 12px 30px rgba(15,23,42,.12);
-        margin:8px 0;
-      }
-      .auth-dot{
-        width:10px;height:10px;border-radius:999px;
-        background:linear-gradient(135deg,#facc15,#f97316);
-        box-shadow:0 0 0 4px rgba(250,204,21,.20);
-        margin-top:4px;
-        flex:0 0 auto;
-      }
-      .auth-feature b{
-        display:block;
-        font-size:11px;
-        letter-spacing:.14em;
-        text-transform:uppercase;
-        color:#64748b;
-        margin-bottom:2px;
-      }
-      .auth-feature span{
-        font-size:12px;
-        color:#0f172a;
-        font-weight:700;
-      }
+.auth-body{ padding:14px; }
 
-      .auth-card{
-        border-radius:26px;
-        padding:18px 18px 16px;
-        background:rgba(255,255,255,.92);
-        border:1px solid rgba(226,232,240,.96);
-        box-shadow:0 28px 90px rgba(15,23,42,.28);
-        backdrop-filter:blur(16px);
-        -webkit-backdrop-filter:blur(16px);
-        overflow:hidden;
-        position:relative;
-      }
-      .auth-card::before{
-        content:'';
-        position:absolute;
-        inset:-45%;
-        background:
-          radial-gradient(circle at 0% 0%, rgba(254,249,195,.70), transparent 55%),
-          linear-gradient(120deg, rgba(255,255,255,.22), transparent 55%);
-        opacity:.75;
-        pointer-events:none;
-      }
-      .auth-card > *{position:relative; z-index:1;}
+.auth-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+.auth-field label{
+  display:block;
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:#94a3b8;
+  font-weight:900;
+  margin:0 0 4px 2px;
+}
+.auth-field input, .auth-field select{
+  width:100%;
+  border-radius:14px;
+  border:1px solid rgba(226,232,240,.95);
+  padding:10px 12px;
+  font-size:12px;
+  outline:none;
+  background:rgba(255,255,255,.92);
+  box-shadow:0 10px 24px rgba(15,23,42,.08);
+}
+.auth-field input:focus, .auth-field select:focus{
+  border-color:rgba(250,204,21,.65);
+  box-shadow:0 0 0 4px rgba(250,204,21,.18), 0 16px 30px rgba(15,23,42,.12);
+}
 
-      .auth-title{
-        margin:0 0 8px;
-        font-size:14px;
-        font-weight:950;
-        letter-spacing:.08em;
-        text-transform:uppercase;
-        color:#0f172a;
-      }
-      .auth-sub{
-        margin:0 0 12px;
-        font-size:12px;
-        color:#64748b;
-      }
+.auth-actions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:flex-end;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
 
-      .auth-field{
-        margin:10px 0;
-      }
-      .auth-field label{
-        display:block;
-        font-size:10px;
-        letter-spacing:.14em;
-        text-transform:uppercase;
-        color:#94a3b8;
-        font-weight:900;
-        margin:0 0 6px 2px;
-      }
-      .auth-field input{
-        width:100%;
-        border-radius:14px;
-        border:1px solid rgba(226,232,240,.95);
-        padding:10px 12px;
-        font-size:12px;
-        outline:none;
-        background:rgba(255,255,255,.92);
-        box-shadow:0 10px 24px rgba(15,23,42,.08);
-        transition:box-shadow .18s ease, border-color .18s ease;
-      }
-      .auth-field input:focus{
-        border-color:rgba(250,204,21,.65);
-        box-shadow:0 0 0 4px rgba(250,204,21,.18), 0 16px 30px rgba(15,23,42,.10);
-      }
+.auth-btn{
+  border:none;
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:12px;
+  font-weight:1000;
+  cursor:pointer;
+  box-shadow:0 16px 34px rgba(15,23,42,.18);
+}
+.auth-btn.primary{
+  background:linear-gradient(90deg,var(--gold-1),var(--gold-2),var(--gold-3));
+  color:#111827;
+}
+.auth-btn.ghost{
+  background:rgba(255,255,255,.85);
+  border:1px solid rgba(226,232,240,.95);
+  color:#0f172a;
+}
+.auth-btn:hover{ transform:translateY(-1px); }
+.auth-btn:active{ transform:translateY(0); }
 
-      .auth-row{
-        display:flex;
-        gap:10px;
-        align-items:center;
-        justify-content:space-between;
-        flex-wrap:wrap;
-        margin-top:12px;
-      }
-      .auth-btn{
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        gap:8px;
-        border:none;
-        border-radius:999px;
-        padding:10px 14px;
-        font-size:12px;
-        font-weight:950;
-        cursor:pointer;
-        color:#111827;
-        background:linear-gradient(90deg,var(--gold-1),var(--gold-2),var(--gold-3));
-        box-shadow:0 18px 40px rgba(15,23,42,.18);
-        transition:transform .12s ease, box-shadow .18s ease;
-        white-space:nowrap;
-      }
-      .auth-btn:hover{transform:translateY(-1px); box-shadow:0 24px 60px rgba(15,23,42,.22);}
-      .auth-btn:active{transform:translateY(0);}
-      .auth-btn.secondary{
-        background:linear-gradient(135deg, rgba(255,255,255,.92), rgba(248,250,252,.95));
-        border:1px solid rgba(226,232,240,.95);
-        box-shadow:0 14px 34px rgba(15,23,42,.12);
-      }
-      .auth-help{
-        font-size:11px;
-        color:#64748b;
-        margin-top:10px;
-        line-height:1.45;
-      }
-      .auth-badge{
-        display:inline-flex;
-        align-items:center;
-        gap:8px;
-        padding:6px 10px;
-        border-radius:999px;
-        border:1px solid rgba(226,232,240,.95);
-        background:rgba(255,255,255,.82);
-        box-shadow:0 10px 22px rgba(15,23,42,.10);
-        font-size:11px;
-        color:#0f172a;
-        font-weight:900;
-      }
-      .auth-badge .r{
-        padding:3px 8px;
-        border-radius:999px;
-        font-size:10px;
-        letter-spacing:.10em;
-        text-transform:uppercase;
-        border:1px solid rgba(226,232,240,.95);
-        background:linear-gradient(135deg, rgba(254,249,195,.85), rgba(255,255,255,.95));
-      }
+.auth-note{
+  margin-top:10px;
+  font-size:12px;
+  color:#475569;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(226,232,240,.9);
+  border-radius:14px;
+  padding:10px 12px;
+}
 
-      /* modal overlay (password change) */
-      .modal{
-        position:fixed;
-        inset:0;
-        display:none;
-        align-items:center;
-        justify-content:center;
-        padding:16px;
-        z-index:250;
-        background:rgba(2,6,23,.45);
-        backdrop-filter:blur(6px);
-        -webkit-backdrop-filter:blur(6px);
-      }
-      .modal.open{display:flex;}
-      .modal-card{
-        width:min(560px, 100%);
-        border-radius:26px;
-        padding:16px 16px 14px;
-        background:rgba(255,255,255,.94);
-        border:1px solid rgba(226,232,240,.96);
-        box-shadow:0 34px 120px rgba(15,23,42,.45);
-        position:relative;
-        overflow:hidden;
-      }
-      .modal-card::before{
-        content:'';
-        position:absolute;
-        inset:-45%;
-        background:
-          radial-gradient(circle at 0% 0%, rgba(254,249,195,.60), transparent 58%),
-          radial-gradient(circle at 100% 120%, rgba(187,247,208,.52), transparent 60%),
-          linear-gradient(120deg, rgba(255,255,255,.22), transparent 55%);
-        opacity:.85;
-        pointer-events:none;
-      }
-      .modal-card > *{position:relative; z-index:1;}
-      .modal-title{
-        margin:0 0 6px;
-        font-size:13px;
-        font-weight:950;
-        letter-spacing:.08em;
-        text-transform:uppercase;
-        color:#0f172a;
-      }
-      .modal-sub{margin:0 0 12px; font-size:12px; color:#64748b;}
-      .pwd-meter{
-        margin-top:8px;
-        padding:10px 12px;
-        border-radius:16px;
-        border:1px solid rgba(226,232,240,.95);
-        background:rgba(255,255,255,.82);
-        box-shadow:0 12px 30px rgba(15,23,42,.10);
-        font-size:11px;
-        color:#334155;
-        line-height:1.45;
-      }
+.auth-note.err{
+  color:#991b1b;
+  background:rgba(254,226,226,.75);
+  border-color:rgba(248,113,113,.5);
+}
 
-      /* ===========================
-         ✅ ADMIN PANEL
-         =========================== */
-      .admin-grid{
-        display:grid;
-        grid-template-columns: 1.2fr .8fr;
-        gap:12px;
-        margin-top:10px;
-      }
-      @media(max-width:980px){ .admin-grid{grid-template-columns:1fr;} }
+.auth-note.ok{
+  color:#065f46;
+  background:rgba(220,252,231,.78);
+  border-color:rgba(34,197,94,.35);
+}
 
-      .admin-form{
-        padding:14px 14px 12px;
-        border-radius:22px;
-        border:1px solid rgba(226,232,240,.95);
-        background:
-          radial-gradient(140% 220% at 0% 0%, rgba(254,249,195,.45), transparent 60%),
-          rgba(255,255,255,.92);
-        box-shadow:0 18px 56px rgba(15,23,42,.16);
-      }
-      .admin-form h4{
-        margin:0 0 8px;
-        font-size:12px;
-        font-weight:950;
-        letter-spacing:.10em;
-        text-transform:uppercase;
-        color:#0f172a;
-      }
-      .admin-form .row{
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        gap:10px;
-      }
-      @media(max-width:560px){ .admin-form .row{grid-template-columns:1fr;} }
+/* Header user chip */
+.user-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.28);
+  box-shadow:0 12px 26px rgba(15,23,42,.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size:12px;
+  font-weight:900;
+  color:#111827;
+}
+.user-chip small{
+  font-weight:800;
+  opacity:.85;
+  color:#1f2937;
+}
 
-      .admin-form .field{
-        margin:8px 0;
-      }
-      .admin-form label{
-        display:block;
-        font-size:10px;
-        letter-spacing:.14em;
-        text-transform:uppercase;
-        color:#94a3b8;
-        font-weight:900;
-        margin:0 0 6px 2px;
-      }
-      .admin-form input, .admin-form select{
-        width:100%;
-        border-radius:14px;
-        border:1px solid rgba(226,232,240,.95);
-        padding:10px 12px;
-        font-size:12px;
-        outline:none;
-        background:rgba(255,255,255,.92);
-        box-shadow:0 10px 24px rgba(15,23,42,.08);
-      }
-      .admin-actions{
-        display:flex;
-        gap:10px;
-        align-items:center;
-        justify-content:flex-end;
-        flex-wrap:wrap;
-        margin-top:10px;
-      }
+/* User admin table */
+.user-table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:12px;
+  background:rgba(255,255,255,.95);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 10px 28px rgba(15,23,42,.12);
+  border:1px solid rgba(226,232,240,.92);
+}
+.user-table thead th{
+  background:linear-gradient(180deg,#ffffff,#fefce8);
+  border-bottom:1px solid rgba(226,232,240,.95);
+  padding:9px 10px;
+  text-align:left;
+}
+.user-table tbody td{
+  padding:8px 10px;
+  border-bottom:1px solid #f1f5f9;
+}
+.user-table tbody tr:last-child td{ border-bottom:0; }
 
-      .chip{
-        display:inline-flex;
-        align-items:center;
-        gap:8px;
-        padding:6px 10px;
-        border-radius:999px;
-        border:1px solid rgba(226,232,240,.95);
-        background:rgba(255,255,255,.72);
-        box-shadow:0 10px 22px rgba(15,23,42,.10);
-        font-size:11px;
-        color:#0f172a;
-        font-weight:900;
-      }
-      .chip .role{
-        padding:3px 8px;
-        border-radius:999px;
-        font-size:10px;
-        letter-spacing:.10em;
-        text-transform:uppercase;
-        border:1px solid rgba(226,232,240,.95);
-        background:linear-gradient(135deg, rgba(254,249,195,.85), rgba(255,255,255,.95));
-      }
-
-      .tiny-btn{
-        border:1px solid rgba(226,232,240,.95);
-        background:linear-gradient(135deg, rgba(255,255,255,.92), rgba(248,250,252,.95));
-        border-radius:999px;
-        padding:6px 10px;
-        font-size:11px;
-        font-weight:950;
-        cursor:pointer;
-        box-shadow:0 12px 26px rgba(15,23,42,.10);
-        transition:transform .12s ease, box-shadow .18s ease;
-      }
-      .tiny-btn:hover{transform:translateY(-1px); box-shadow:0 18px 34px rgba(15,23,42,.14);}
-      .tiny-btn:active{transform:translateY(0);}
-
-      .danger-btn{
-        border:1px solid rgba(248,113,113,.55);
-        background:linear-gradient(135deg, rgba(254,226,226,.85), rgba(255,255,255,.95));
-        color:#7f1d1d;
-      }
-
-      .muted-line{
-        font-size:11px;
-        color:#64748b;
-        margin-top:8px;
-        line-height:1.45;
-      }
-
-      .hide{display:none !important;}
+.user-mini-btn{
+  border:1px solid rgba(226,232,240,.92);
+  background:rgba(255,255,255,.9);
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:11px;
+  font-weight:1000;
+  cursor:pointer;
+}
+.user-mini-btn:hover{ transform:translateY(-1px); }
     </style>
   </head>
 
   <body>
-    <!-- ✅ AUTH SCREEN -->
-    <div id="authScreen" class="auth-screen">
-      <div class="auth-wrap">
-        <div class="auth-hero">
-          <h2>AVESORO BI — Güvenli Giriş</h2>
-          <p>
-            Bu rapor, <b>kullanıcı adı + şifre</b> ile açılır. Her kullanıcı rolüne göre yetkilendirilir:
-            <b>Görüntüleme</b>, <b>Görüntüleme + Düzenleme</b>, <b>Admin</b>.
-          </p>
-
-          <div class="auth-feature">
-            <div class="auth-dot"></div>
-            <div>
-              <b>İlk Şifre</b>
-              <span>Admin oluşturur, kullanıcı ilk girişte şifresini yeniler.</span>
-            </div>
-          </div>
-
-          <div class="auth-feature">
-            <div class="auth-dot"></div>
-            <div>
-              <b>Şifre Sıfırlama</b>
-              <span>Şifresini unutan kullanıcı için Admin “Geçici Şifre” atar.</span>
-            </div>
-          </div>
-
-          <div class="auth-feature">
-            <div class="auth-dot"></div>
-            <div>
-              <b>Rol Bazlı Erişim</b>
-              <span>Viewer yükleme/kaydetme yapamaz, Editor yükleme/kaydetme yapabilir, Admin tümünü yönetir.</span>
-            </div>
-          </div>
-
-          <div class="auth-help" id="authHint"></div>
-        </div>
-
-        <div class="auth-card">
-          <div class="auth-title">Giriş</div>
-          <div class="auth-sub">Devam etmek için kullanıcı bilgilerinizi girin.</div>
-
-          <form id="loginForm" autocomplete="off">
-            <div class="auth-field">
-              <label>Kullanıcı Adı</label>
-              <input id="loginUser" type="text" placeholder="örn: dogan" autocomplete="username" />
-            </div>
-            <div class="auth-field">
-              <label>Şifre</label>
-              <input id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password" />
-            </div>
-
-            <div class="auth-row">
-              <button class="auth-btn" type="submit">Giriş Yap</button>
-              <button class="auth-btn secondary" type="button" id="btnForgot">Şifremi Unuttum</button>
-            </div>
-
-            <div style="height:10px"></div>
-            <div id="authMsg" class="badge" style="display:none;"></div>
-            <div style="height:10px"></div>
-
-            <div class="auth-badge" id="authBadge" style="display:none;">
-              <span>Aktif:</span> <span id="authBadgeUser">—</span>
-              <span class="r" id="authBadgeRole">—</span>
-            </div>
-
-            <div class="auth-help">
-              <b>Not:</b> Bu tek dosya HTML yapısında güvenlik, cihaz + tarayıcı düzeyinde uygulanır.
-              Sunucu tarafı kimlik doğrulama yoktur. Kurumsal dağıtımda bu ekranı SSO / VPN / Intranet ile desteklemek önerilir.
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!-- ✅ PASSWORD CHANGE MODAL -->
-    <div id="pwdModal" class="modal">
-      <div class="modal-card">
-        <div class="modal-title">Şifre Yenileme Zorunlu</div>
-        <div class="modal-sub">İlk girişinizde yeni şifrenizi belirlemeniz gerekiyor.</div>
-
-        <form id="pwdForm" autocomplete="off">
-          <div class="auth-field">
-            <label>Mevcut Şifre</label>
-            <input id="pwdOld" type="password" placeholder="Mevcut şifre" autocomplete="current-password" />
-          </div>
-          <div class="auth-field">
-            <label>Yeni Şifre</label>
-            <input id="pwdNew" type="password" placeholder="Yeni şifre" autocomplete="new-password" />
-          </div>
-          <div class="auth-field">
-            <label>Yeni Şifre (Tekrar)</label>
-            <input id="pwdNew2" type="password" placeholder="Yeni şifre tekrar" autocomplete="new-password" />
-          </div>
-
-          <div class="pwd-meter" id="pwdMeter">
-            <b>Şifre Kuralı:</b> En az 8 karakter, büyük harf, küçük harf, rakam ve mümkünse özel karakter önerilir.
-          </div>
-
-          <div class="auth-row">
-            <button class="auth-btn" type="submit">Şifreyi Güncelle</button>
-            <button class="auth-btn secondary" type="button" id="pwdCancel">İptal</button>
-          </div>
-
-          <div style="height:10px"></div>
-          <div id="pwdMsg" class="badge" style="display:none;"></div>
-        </form>
-      </div>
-    </div>
-
-    <header>
-      <div class="container">
-        <div class="topbar">
-          <div class="header-main">
-            <div class="header-title">AVESORO BI – BMMC Stok Yönetimi</div>
-            <div class="header-sub">
-              <span class="tagline">Aylık Stok Analizi • KPI • Risk • Yönetim Özeti • AI Destekli Raporlama</span>
-            </div>
-          </div>
-
-          <div class="right-actions">
-            <!-- ✅ user chip + logout -->
-            <div class="chip" id="userChip" title="Oturum bilgisi" style="display:none;">
-              <span id="chipUser">—</span>
-              <span class="role" id="chipRole">—</span>
-              <button class="tiny-btn" id="btnLogout" type="button" title="Çıkış">Çıkış</button>
-            </div>
-
-            <div class="action-group" id="actionGroup">
-              <span class="shimmer" aria-hidden="true"></span>
-
-              <button class="pill-btn" id="btnUpload" title="Excel veya CSV yükleyin">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M3.5 6.8c0-1 0.8-1.8 1.8-1.8h4.2c.5 0 1 .2 1.3.6l1 1.1c.3.3.8.5 1.2.5h5c1 0 1.8.8 1.8 1.8v8.8c0 1-.8 1.8-1.8 1.8H5.3c-1 0-1.8-.8-1.8-1.8V6.8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-                </svg>
-                Excel / CSV Yükle
-              </button>
-
-              <button class="pill-btn secondary" id="btnSave" title="Tek dosya HTML olarak kaydet">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M5 4.8h11.2L19.2 7.8V19c0 1-.8 1.8-1.8 1.8H6.8C5.8 20.8 5 20 5 19V4.8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-                  <path d="M8 4.8V9h8V4.8" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-                  <path d="M8 20.8v-6.2h8v6.2" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-                </svg>
-                HTML Kaydet
-              </button>
-            </div>
-
-            <button class="pill-btn assistant" id="btnHelp" title="Akıllı Stok Asistanı">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 3l1.2 3.2L16.5 7.4l-3.3 1.2L12 11.9l-1.2-3.3L7.5 7.4l3.3-1.2L12 3z" fill="currentColor"/>
-                <path d="M19 11l.8 2.1L22 14l-2.2.8L19 17l-.8-2.2L16 14l2.2-.9L19 11z" fill="currentColor"/>
-                <path d="M6 12l.9 2.4L9.5 15l-2.6.9L6 18.5l-.9-2.6L2.5 15l2.6-.6L6 12z" fill="currentColor"/>
-              </svg>
-              Akıllı Stok Asistanı
-            </button>
-          </div>
-        </div>
-
+<header>
+  <div class="container">
+    <div class="topbar">
+      <div class="header-main">
+        <div class="header-title">AVESORO BI – BMMC Stok Yönetimi</div>
         <div class="header-sub">
-          <div class="note"></div>
+          <span class="tagline">Aylık Stok Analizi • KPI • Risk • Yönetim Özeti • AI Destekli Raporlama</span>
         </div>
       </div>
-    </header>
 
+      <div class="right-actions">
+        <div class="action-group" id="actionGroup">
+          <span class="shimmer" aria-hidden="true"></span>
+
+          <button class="pill-btn" id="btnUpload" title="Excel veya CSV yükleyin">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3.5 6.8c0-1 0.8-1.8 1.8-1.8h4.2c.5 0 1 .2 1.3.6l1 1.1c.3.3.8.5 1.2.5h5c1 0 1.8.8 1.8 1.8v8.8c0 1-.8 1.8-1.8 1.8H5.3c-1 0-1.8-.8-1.8-1.8V6.8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            </svg>
+            Excel / CSV Yükle
+          </button>
+
+          <button class="pill-btn secondary" id="btnSave" title="Tek dosya HTML olarak kaydet">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 4.8h11.2L19.2 7.8V19c0 1-.8 1.8-1.8 1.8H6.8C5.8 20.8 5 20 5 19V4.8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              <path d="M8 4.8V9h8V4.8" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              <path d="M8 20.8v-6.2h8v6.2" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            </svg>
+            HTML Kaydet
+          </button>
+        </div>
+
+        <button class="pill-btn assistant" id="btnHelp" title="Akıllı Stok Asistanı">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3l1.2 3.2L16.5 7.4l-3.3 1.2L12 11.9l-1.2-3.3L7.5 7.4l3.3-1.2L12 3z" fill="currentColor"/>
+            <path d="M19 11l.8 2.1L22 14l-2.2.8L19 17l-.8-2.2L16 14l2.2-.9L19 11z" fill="currentColor"/>
+            <path d="M6 12l.9 2.4L9.5 15l-2.6.9L6 18.5l-.9-2.6L2.5 15l2.6-.6L6 12z" fill="currentColor"/>
+          </svg>
+          Akıllı Stok Asistanı
+        </button>
+
+        <!-- ✅ EKLENDİ: Kullanıcı Bilgisi + Yönetim + Çıkış -->
+        <span class="user-chip" id="userChip" style="display:none;">
+          <span id="userChipName">—</span>
+          <small id="userChipRole">—</small>
+        </span>
+
+        <button class="pill-btn secondary" id="btnUserAdmin" style="display:none;" title="Kullanıcı Yönetimi (Admin)">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            <circle cx="9" cy="7" r="3" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M20 8v6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            <path d="M23 11h-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          Kullanıcı Yönetimi
+        </button>
+
+        <button class="pill-btn" id="btnLogout" style="display:none;" title="Çıkış Yap">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M10 17l5-5-5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 12H3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            <path d="M21 4v16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          Çıkış
+        </button>
+        <!-- ✅ EK SONU -->
+      </div>
+    </div>
+
+    <div class="header-sub">
+      <div class="note"></div>
+    </div>
+  </div>
+</header>
+<!-- =========================
+     ✅ LOGIN MODAL
+     ========================= -->
+<div class="auth-backdrop" id="loginBackdrop" aria-hidden="true">
+  <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="auth-head">
+      <div>
+        <div class="t" id="loginTitle">AVESORO BI • Kullanıcı Girişi</div>
+        <div class="s">Yetkilendirme ile erişim</div>
+      </div>
+      <button class="auth-close" id="loginClose" type="button" title="Kapat">✕</button>
+    </div>
+
+    <div class="auth-body">
+      <div class="auth-grid">
+        <div class="auth-field">
+          <label>Kullanıcı Adı</label>
+          <input id="loginUser" type="text" autocomplete="username" placeholder="örn: admin" />
+        </div>
+        <div class="auth-field">
+          <label>Şifre</label>
+          <input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••••" />
+        </div>
+      </div>
+
+      <div class="auth-actions">
+  <button class="auth-btn ghost" id="loginReset" type="button">Sıfırla (Admin’i Yeniden Oluştur)</button>
+  <button class="auth-btn ghost" id="loginDemo" type="button">Admin ile Doldur</button>
+  <button class="auth-btn primary" id="loginBtn" type="button">Giriş Yap</button>
+</div>
+      <div class="auth-note" id="loginNote">
+        Varsayılan admin: <b>admin</b> / <b>123</b>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================
+     ✅ USER ADMIN MODAL (Admin)
+     ========================= -->
+<div class="auth-backdrop" id="userAdminBackdrop" aria-hidden="true">
+  <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="userAdminTitle" style="width:min(860px, 100%);">
+    <div class="auth-head">
+      <div>
+        <div class="t" id="userAdminTitle">Kullanıcı Yönetimi</div>
+        <div class="s">Yeni kullanıcı ekle • Rol ata • Şifre sıfırla</div>
+      </div>
+      <button class="auth-close" id="userAdminClose" type="button" title="Kapat">✕</button>
+    </div>
+
+    <div class="auth-body">
+      <div class="auth-grid" style="grid-template-columns:1.2fr 1fr 1fr; gap:10px;">
+        <div class="auth-field">
+          <label>Kullanıcı Adı</label>
+          <input id="uaUser" type="text" placeholder="örn: dogan" />
+        </div>
+        <div class="auth-field">
+          <label>Şifre</label>
+          <input id="uaPass" type="text" placeholder="örn: GucluSifre123!" />
+        </div>
+        <div class="auth-field">
+          <label>Rol</label>
+          <select id="uaRole">
+            <option value="admin">admin</option>
+            <option value="viewer" selected>viewer</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="auth-actions" style="justify-content:space-between; margin-top:10px;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="auth-btn ghost" id="uaExport" type="button">Kullanıcıları Dışa Aktar (JSON)</button>
+          <button class="auth-btn ghost" id="uaImport" type="button">İçe Aktar (JSON)</button>
+          <input id="uaImportFile" type="file" accept="application/json" style="display:none" />
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="auth-btn primary" id="uaAdd" type="button">Kullanıcı Ekle / Güncelle</button>
+        </div>
+      </div>
+
+      <div style="height:10px"></div>
+
+      <div class="auth-note" id="uaNote">Not: Kullanıcılar localStorage’da tutulur.</div>
+
+      <div style="height:10px"></div>
+
+      <div style="overflow:auto;">
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th>Kullanıcı</th>
+              <th>Rol</th>
+              <th>Oluşturma</th>
+              <th>Son Giriş</th>
+              <th>İşlem</th>
+            </tr>
+          </thead>
+          <tbody id="uaTbody">
+            <tr><td colspan="5">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="auth-note" style="margin-top:10px;">
+        Güvenlik notu: Bu çözüm demo/intranet içindir. Gerçek ortamda kullanıcılar sunucu tarafında yönetilmelidir.
+      </div>
+    </div>
+  </div>
+</div>
     <!-- AKILLI STOK ASİSTANI -->
     <div id="assistantPanel" class="assist-panel">
       <div class="assist-header">
@@ -1953,8 +1763,8 @@
       </form>
     </div>
 
-    <main class="container" id="appShell" style="visibility:hidden;">
-      <input id="file" type="file" accept=".xlsx,.xls,.xlsm,.xlsb,.csv" style="display:none" />
+    <main class="container" id="appMain">
+      <input id="file" type="file" accept=".xlsx,.xls,.xlsm,.xlsb,.csv" style="display:none">
 
       <!-- FİLTRELER -->
       <div class="filters" id="filters">
@@ -2008,7 +1818,6 @@
         <div class="tab" data-tab="excess">Aşırı Stoklar</div>
         <div class="tab" data-tab="pareto">Pareto 80/20</div>
         <div class="tab" data-tab="ai">AI Asistan</div>
-        <div class="tab" data-tab="admin" id="adminTab" style="display:none;">Yönetim (Admin)</div>
       </div>
 
       <!-- AYLIK ÖZET -->
@@ -2086,138 +1895,2061 @@
         </div>
       </section>
 
-      <!-- ✅ ADMIN PANEL -->
-      <section class="panel" id="panel-admin">
-        <div class="card">
-          <h3>Kullanıcı & Rol Yönetimi</h3>
-          <div class="note">
-            Bu ekran sadece <b>Admin</b> rolünde görünür. Kullanıcı ekleme, rol atama ve şifre sıfırlama işlemleri buradan yapılır.
-          </div>
-
-          <div class="admin-grid">
-            <div class="admin-form">
-              <h4>Yeni Kullanıcı Oluştur</h4>
-              <div class="row">
-                <div class="field">
-                  <label>Kullanıcı Adı</label>
-                  <input id="newUsername" type="text" placeholder="örn: selman" />
-                </div>
-                <div class="field">
-                  <label>Ad Soyad (Ops.)</label>
-                  <input id="newDisplay" type="text" placeholder="örn: Selman Y." />
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="field">
-                  <label>Rol</label>
-                  <select id="newRole">
-                    <option value="viewer">Görüntüleme</option>
-                    <option value="editor">Görüntüleme + Düzenleme</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label>İlk Şifre (Geçici)</label>
-                  <input id="newPass" type="text" placeholder="örn: Temp@1234" />
-                </div>
-              </div>
-
-              <div class="admin-actions">
-                <button class="auth-btn" type="button" id="btnCreateUser">Kullanıcı Oluştur</button>
-                <button class="auth-btn secondary" type="button" id="btnGenPass">Örnek Şifre Üret</button>
-              </div>
-
-              <div class="muted-line">
-                Kullanıcı ilk girişinde <b>şifre yenileme zorunlu</b> olarak işaretlenir.
-              </div>
-            </div>
-
-            <div class="admin-form">
-              <h4>Şifre Sıfırla</h4>
-              <div class="field">
-                <label>Kullanıcı</label>
-                <select id="resetUser"></select>
-              </div>
-              <div class="field">
-                <label>Yeni Geçici Şifre</label>
-                <input id="resetPass" type="text" placeholder="örn: Reset@1234" />
-              </div>
-
-              <div class="admin-actions">
-                <button class="auth-btn" type="button" id="btnResetPass">Şifreyi Sıfırla</button>
-                <button class="auth-btn secondary" type="button" id="btnGenReset">Örnek Şifre Üret</button>
-              </div>
-
-              <div class="muted-line">
-                Sıfırlanan kullanıcı, bir sonraki girişte <b>şifre yenilemek zorunda</b> kalır.
-              </div>
-            </div>
-          </div>
-
-          <div style="height:12px"></div>
-
-          <div class="admin-form">
-            <h4>Kullanıcı Listesi</h4>
-            <div class="note" id="adminSummary">—</div>
-            <div id="userTable"></div>
-          </div>
-
-          <div style="height:10px"></div>
-          <div id="adminMsg" class="badge" style="display:none;"></div>
-        </div>
-      </section>
-
       <p class="note">© AVESORO BI</p>
     </main>
 
     <script id="EMBED_DATA" type="application/json"></script>
 
-    <script>
-      /***********************************************************************
-       * ✅ AUTH + RBAC (Tek Dosya HTML)
-       *
-       * Roller:
-       * - viewer: görüntüleme (yükleme/kaydet kapalı)
-       * - editor: görüntüleme + düzenleme (yükleme/kaydet açık)
-       * - admin : editor + kullanıcı yönetimi
-       *
-       * Not: Bu yapı statik HTML içinde cihaz+tarayıcı seviyesinde çalışır.
-       *      Şifreler PBKDF2 (SHA-256) ile hashlenir, salt ile saklanır.
-       ***********************************************************************/
-      const AUTH = {
-        user: null,
-        role: null,
-        canEdit: false,
-        isAdmin: false,
-      };
+<script>
+/* =========================
+   ✅ AUTH ENGINE (localStorage) — FIXED
+   ========================= */
+const AUTH_USERS_KEY   = 'AVESORO_USERS_V1';
+const AUTH_SESSION_KEY = 'AVESORO_SESSION_V1';
 
-      const AUTH_KEYS = {
-        USERS: 'AVESORO_BI_USERS_V1',
-        SESSION: 'AVESORO_BI_SESSION_V1',
-        AUDIT: 'AVESORO_BI_AUDIT_V1'
-      };
+function nowISO(){ return new Date().toISOString(); }
 
-      const ROLE_LABEL = {
-        viewer: 'GÖRÜNTÜLEME',
-        editor: 'DÜZENLEME',
-        admin:  'ADMIN'
-      };
+/* Basit, stabil hash (offline) */
+async function sha256(str){
+  str = String(str ?? '');
+  let h = 5381;
+  for (let i = 0; i < str.length; i++) {
+    h = ((h << 5) + h) ^ str.charCodeAt(i); // djb2 xor
+  }
+  return 'h:' + (h >>> 0).toString(16);
+}
 
-      function nowISO(){ return new Date().toISOString(); }
+async function ensureDefaultAdmin(){
+  const raw = localStorage.getItem(AUTH_USERS_KEY);
+  if(raw) return;
 
-      function showBadge(el, text, ok=true){
-        el.style.display='inline-flex';
-        el.className='badge '+(ok?'ok':'err');
-        el.innerHTML = text;
+  const passHash = await sha256('123'); // ✅ Varsayılan şifre: 123
+  const users = [{
+    username:'admin',
+    role:'admin',
+    passHash,
+    createdAt: nowISO(),
+    lastLogin: ''
+  }];
+  localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(users));
+}
+
+function readUsers(){
+  try{ return JSON.parse(localStorage.getItem(AUTH_USERS_KEY) || '[]') || []; }
+  catch(e){ return []; }
+}
+function writeUsers(users){
+  localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(users||[]));
+}
+function readSession(){
+  try{ return JSON.parse(localStorage.getItem(AUTH_SESSION_KEY) || 'null'); }
+  catch(e){ return null; }
+}
+function writeSession(s){
+  localStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(s));
+}
+function clearSession(){
+  localStorage.removeItem(AUTH_SESSION_KEY);
+}
+
+function openModal(id){
+  const el = document.getElementById(id);
+  if(el){ el.classList.add('open'); el.setAttribute('aria-hidden','false'); }
+}
+function closeModal(id){
+  const el = document.getElementById(id);
+  if(el){ el.classList.remove('open'); el.setAttribute('aria-hidden','true'); }
+}
+
+function setAppLocked(locked){
+  const main = document.getElementById('appMain');
+  const btnUpload = document.getElementById('btnUpload');
+  const btnSave   = document.getElementById('btnSave');
+  const btnHelp   = document.getElementById('btnHelp');
+  const btnClear  = document.getElementById('btnClear');
+
+  if(main) main.style.display = locked ? 'none' : '';
+  [btnUpload, btnSave, btnHelp, btnClear].forEach(b=>{
+    if(!b) return;
+    b.disabled = !!locked;
+    b.style.opacity = locked ? .6 : 1;
+    b.style.pointerEvents = locked ? 'none' : '';
+  });
+}
+
+/* ✅ Role UI dışarıda (GLOBAL) */
+function applyRoleUI(session){
+  const isAdmin = session && session.role === 'admin';
+  const btnUpload = document.getElementById('btnUpload');
+  const btnSave   = document.getElementById('btnSave');
+  if(btnUpload) btnUpload.style.display = isAdmin ? '' : 'none';
+  if(btnSave)   btnSave.style.display   = isAdmin ? '' : 'none';
+}
+
+function paintHeaderUser(session){
+  const chip     = document.getElementById('userChip');
+  const chipName = document.getElementById('userChipName');
+  const chipRole = document.getElementById('userChipRole');
+  const logout   = document.getElementById('btnLogout');
+  const adminBtn = document.getElementById('btnUserAdmin');
+
+  if(!session){
+    if(chip) chip.style.display='none';
+    if(logout) logout.style.display='none';
+    if(adminBtn) adminBtn.style.display='none';
+    return;
+  }
+
+  if(chipName) chipName.textContent = session.username || '—';
+  if(chipRole) chipRole.textContent = session.role ? `(${session.role})` : '';
+  if(chip) chip.style.display='inline-flex';
+  if(logout) logout.style.display='inline-flex';
+
+  const isAdmin = (session.role === 'admin');
+  if(adminBtn) adminBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+}
+
+function setNote(el, text, type){
+  if(!el) return;
+  el.textContent = text;
+  el.classList.remove('err','ok');
+  if(type==='err') el.classList.add('err');
+  if(type==='ok')  el.classList.add('ok');
+}
+
+async function login(username, password){
+  username = String(username||'').trim();
+  password = String(password||'');
+  const users = readUsers();
+  const u = users.find(x => (x.username||'').toLowerCase() === username.toLowerCase());
+  if(!u) return {ok:false, msg:'Kullanıcı bulunamadı.'};
+
+  const hash = await sha256(password);
+  if(u.passHash !== hash) return {ok:false, msg:'Şifre hatalı.'};
+
+  u.lastLogin = nowISO();
+  writeUsers(users);
+
+  const session = { username: u.username, role: u.role, ts: nowISO() };
+  writeSession(session);
+  return {ok:true, session};
+}
+
+function logout(){
+  clearSession();
+  paintHeaderUser(null);
+  applyRoleUI(null);
+  setAppLocked(true);
+  openModal('loginBackdrop');
+}
+
+/* ============= USER ADMIN UI ============= */
+function uaRenderTable(){
+  const tb = document.getElementById('uaTbody');
+  if(!tb) return;
+  const users = readUsers();
+  if(!users.length){
+    tb.innerHTML = `<tr><td colspan="5">Kullanıcı yok.</td></tr>`;
+    return;
+  }
+  tb.innerHTML = users.map(u=>{
+    const safeU = String(u.username||'');
+    return `
+      <tr>
+        <td><b>${safeU}</b></td>
+        <td>${u.role||'viewer'}</td>
+        <td>${(u.createdAt||'').slice(0,19).replace('T',' ') || '—'}</td>
+        <td>${(u.lastLogin||'').slice(0,19).replace('T',' ') || '—'}</td>
+        <td style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button class="user-mini-btn" data-act="reset" data-u="${safeU}">Şifre Sıfırla</button>
+          <button class="user-mini-btn" data-act="del" data-u="${safeU}" style="border-color:rgba(248,113,113,.45)">Sil</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function uaUpsertUser(username, password, role){
+  username = String(username||'').trim();
+  password = String(password||'').trim();
+  role = (role==='admin') ? 'admin' : 'viewer';
+
+  if(!username) return {ok:false, msg:'Kullanıcı adı boş olamaz.'};
+  if(!password) return {ok:false, msg:'Şifre boş olamaz.'};
+
+  const users = readUsers();
+  const idx = users.findIndex(x => (x.username||'').toLowerCase() === username.toLowerCase());
+  const passHash = await sha256(password);
+
+  if(idx >= 0){
+    users[idx].username = username;
+    users[idx].role = role;
+    users[idx].passHash = passHash;
+  }else{
+    users.push({ username, role, passHash, createdAt: nowISO(), lastLogin: '' });
+  }
+  writeUsers(users);
+  return {ok:true, msg:'Kullanıcı eklendi / güncellendi.'};
+}
+
+async function uaResetPassword(username){
+  const users = readUsers();
+  const u = users.find(x => (x.username||'').toLowerCase() === String(username).toLowerCase());
+  if(!u) return {ok:false, msg:'Kullanıcı bulunamadı.'};
+
+  const newPass = 'Avesoro' + Math.floor(1000 + Math.random()*9000) + '!';
+  u.passHash = await sha256(newPass);
+  writeUsers(users);
+  return {ok:true, msg:`Yeni şifre: ${newPass}`};
+}
+
+function uaDeleteUser(username){
+  username = String(username||'');
+  if(username.toLowerCase()==='admin') return {ok:false, msg:'admin kullanıcısı silinemez.'};
+
+  const users = readUsers();
+  const left = users.filter(x => (x.username||'').toLowerCase() !== username.toLowerCase());
+  writeUsers(left);
+  return {ok:true, msg:'Kullanıcı silindi.'};
+}
+
+/* ============= INIT ============= */
+async function initAuth(){
+  await ensureDefaultAdmin();
+
+  const session = readSession();
+  if(!session){
+    setAppLocked(true);
+    paintHeaderUser(null);
+    applyRoleUI(null);
+    openModal('loginBackdrop');
+  }else{
+    setAppLocked(false);
+    paintHeaderUser(session);
+    applyRoleUI(session);
+    closeModal('loginBackdrop');
+  }
+
+  // Login modal elements
+  const loginBtn   = document.getElementById('loginBtn');
+  const loginDemo  = document.getElementById('loginDemo');
+  const loginReset = document.getElementById('loginReset');
+  const loginClose = document.getElementById('loginClose');
+  const loginNote  = document.getElementById('loginNote');
+
+  // ✅ Demo doldur: admin/123
+  loginDemo && (loginDemo.onclick = ()=>{
+    const uEl = document.getElementById('loginUser');
+    const pEl = document.getElementById('loginPass');
+    if(uEl) uEl.value = 'admin';
+    if(pEl) pEl.value = '123';
+    setNote(loginNote, 'Admin bilgileri dolduruldu (admin / 123).', 'ok');
+  });
+
+  // ✅ Reset: localStorage temizle + default admin kur
+  loginReset && (loginReset.onclick = async ()=>{
+    const ok = confirm("Tüm kullanıcılar sıfırlanacak ve varsayılan admin (admin/123) yeniden oluşturulacak. Devam edilsin mi?");
+    if(!ok) return;
+
+    localStorage.removeItem(AUTH_USERS_KEY);
+    localStorage.removeItem(AUTH_SESSION_KEY);
+    await ensureDefaultAdmin();
+
+    const uEl = document.getElementById('loginUser');
+    const pEl = document.getElementById('loginPass');
+    if(uEl) uEl.value = 'admin';
+    if(pEl) pEl.value = '123';
+
+    setNote(loginNote, "Sıfırlandı. Varsayılan admin: admin / 123", "ok");
+    openModal('loginBackdrop');
+    setAppLocked(true);
+  });
+
+  // ✅ Giriş Yap
+  loginBtn && (loginBtn.onclick = async ()=>{
+    const u = (document.getElementById('loginUser')?.value || '').trim();
+    const p = (document.getElementById('loginPass')?.value || '').trim();
+
+    const res = await login(u, p);
+    if(!res.ok){
+      setNote(loginNote, res.msg, 'err');
+      return;
+    }
+
+    setNote(loginNote, 'Giriş başarılı.', 'ok');
+    closeModal('loginBackdrop');
+    setAppLocked(false);
+    paintHeaderUser(res.session);
+    applyRoleUI(res.session);
+  });
+
+  // ✅ Kapat
+  loginClose && (loginClose.onclick = ()=> closeModal('loginBackdrop'));
+
+  // Logout
+  const btnLogout = document.getElementById('btnLogout');
+  btnLogout && (btnLogout.onclick = ()=> logout());
+
+  // User Admin open/close
+  const btnUA = document.getElementById('btnUserAdmin');
+  const uaClose = document.getElementById('userAdminClose');
+  btnUA && (btnUA.onclick = ()=>{
+    uaRenderTable();
+    openModal('userAdminBackdrop');
+  });
+  uaClose && (uaClose.onclick = ()=> closeModal('userAdminBackdrop'));
+
+  // User Admin actions
+  const uaAdd = document.getElementById('uaAdd');
+  const uaNote = document.getElementById('uaNote');
+  uaAdd && (uaAdd.onclick = async ()=>{
+    const username = document.getElementById('uaUser').value;
+    const pass = document.getElementById('uaPass').value;
+    const role = document.getElementById('uaRole').value;
+    const res = await uaUpsertUser(username, pass, role);
+    setNote(uaNote, res.msg, res.ok ? 'ok' : 'err');
+    uaRenderTable();
+  });
+
+  const uaTbody = document.getElementById('uaTbody');
+  uaTbody && uaTbody.addEventListener('click', async (e)=>{
+    const b = e.target.closest('button[data-act]');
+    if(!b) return;
+    const act = b.dataset.act;
+    const username = b.dataset.u;
+
+    if(act==='reset'){
+      const res = await uaResetPassword(username);
+      setNote(document.getElementById('uaNote'), res.msg, res.ok ? 'ok' : 'err');
+      uaRenderTable();
+    }
+    if(act==='del'){
+      const res = uaDeleteUser(username);
+      setNote(document.getElementById('uaNote'), res.msg, res.ok ? 'ok' : 'err');
+      uaRenderTable();
+    }
+  });
+
+  // export/import
+  const uaExport = document.getElementById('uaExport');
+  const uaImport = document.getElementById('uaImport');
+  const uaImportFile = document.getElementById('uaImportFile');
+
+  uaExport && (uaExport.onclick = ()=>{
+    const users = readUsers();
+    const blob = new Blob([JSON.stringify(users,null,2)], {type:'application/json;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'avesoro-users.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  uaImport && uaImportFile && (uaImport.onclick = ()=> uaImportFile.click());
+
+  uaImportFile && (uaImportFile.onchange = async ()=>{
+    const f = uaImportFile.files && uaImportFile.files[0];
+    if(!f) return;
+    try{
+      const txt = await f.text();
+      const users = JSON.parse(txt);
+      if(!Array.isArray(users)) throw new Error('Geçersiz format');
+      writeUsers(users);
+      setNote(document.getElementById('uaNote'), 'İçe aktarma başarılı.', 'ok');
+      uaRenderTable();
+    }catch(err){
+      setNote(document.getElementById('uaNote'), 'İçe aktarma hatası: ' + err.message, 'err');
+    }finally{
+      uaImportFile.value = '';
+    }
+  });
+
+  const uaBackdrop = document.getElementById('userAdminBackdrop');
+  uaBackdrop && uaBackdrop.addEventListener('click', (e)=>{
+    if(e.target === uaBackdrop) closeModal('userAdminBackdrop');
+  });
+}
+
+/* ✅ Sayfa yüklenince auth başlat */
+document.addEventListener('DOMContentLoaded', ()=>{ initAuth(); });
+</script>
+
+<script>
+/* TABLOLARDA SIRALAMA + FİLTRE
+   - Başlık satırına tıklayınca sıralar
+   - Başlığın altında kolon bazlı filtre inputları
+   - Tüm tablolar için otomatik uygulanır
+*/
+
+      function parseComparatorExpression(raw){
+        const s = (raw||'').trim();
+        if(!s) return null;
+        const m = s.match(/^(\>=|\<=|!=|=|>|<)\s*(.+)$/);
+        if(m) return {op:m[1], rhs:m[2].trim()};
+        return {op:'contains', rhs:s};
       }
 
-      function hideBadge(el){
-        el.style.display='none';
-        el.innerHTML='';
-        el.className='badge';
+      function normalizeCellText(txt){
+        return (txt==null?'':String(txt)).trim().replace(/\s+/g,' ');
       }
 
-      function auditLog(action, meta={}){
+      function getCellValueForSort(cellText, isNumeric){
+        const t = normalizeCellText(cellText);
+        if(t==='—' || t==='-' || t==='') return isNumeric ? 0 : '';
+        if(isNumeric) return toNum(t);
+        return deaccent(t);
+      }
+
+      function cellMatchesFilter(cellText, expr, isNumeric){
+        if(!expr || !expr.rhs) return true;
+        const txt = normalizeCellText(cellText);
+
+        if(expr.op === 'contains'){
+          return deaccent(txt).includes(deaccent(expr.rhs));
+        }
+
+        const left = toNum(txt);
+        const right = toNum(expr.rhs);
+
+        switch(expr.op){
+          case '>': return left > right;
+          case '<': return left < right;
+          case '>=': return left >= right;
+          case '<=': return left <= right;
+          case '=': return left === right;
+          case '!=': return left !== right;
+          default:
+            return deaccent(txt).includes(deaccent(expr.rhs));
+        }
+      }
+
+      function enhanceTable(table){
+        if(!table || table.dataset.sfApplied === '1') return;
+        const thead = table.querySelector('thead');
+        const tbody = table.querySelector('tbody');
+        if(!thead || !tbody) return;
+
+        table.dataset.sfApplied = '1';
+        table.dataset.sf = '1';
+
+        const headRow = thead.querySelector('tr');
+        if(!headRow) return;
+
+        headRow.classList.add('sf-head');
+
+        const headThs = Array.from(headRow.children).filter(x=>x && x.tagName==='TH');
+        headThs.forEach((th, idx)=>{
+          if(th.dataset.sfReady==='1') return;
+          th.dataset.sfReady='1';
+          th.dataset.colIndex = String(idx);
+          const current = th.innerHTML;
+          th.innerHTML = `<span class="sf-label">${current}<span class="sf-ind">↕</span></span>`;
+        });
+
+        const filterRow = document.createElement('tr');
+        filterRow.className = 'sf-filter';
+
+        headThs.forEach((th, idx)=>{
+          const fth = document.createElement('th');
+          if(th.classList.contains('num')) fth.classList.add('num');
+          fth.innerHTML = `<input type="text" placeholder="Filtre..." data-col="${idx}" />`;
+          filterRow.appendChild(fth);
+        });
+
+        thead.appendChild(filterRow);
+
+        const getAllBodyRows = ()=> Array.from(tbody.querySelectorAll('tr')).filter(r=>r.parentElement===tbody);
+
+        function applyFiltersAndVisibility(){
+          const inputs = Array.from(filterRow.querySelectorAll('input[data-col]'));
+          const exprs = inputs.map(inp=>{
+            const col = parseInt(inp.dataset.col,10);
+            const th = headThs[col];
+            const isNumeric = !!(th && th.classList.contains('num'));
+            const expr = parseComparatorExpression(inp.value || '');
+            return {col,isNumeric,expr};
+          });
+
+          getAllBodyRows().forEach(tr=>{
+            const tds = Array.from(tr.children).filter(x=>x && x.tagName==='TD');
+            let ok = true;
+            for(const e of exprs){
+              if(!e.expr) continue;
+              const cell = tds[e.col];
+              const txt = cell ? cell.textContent : '';
+              if(!cellMatchesFilter(txt, e.expr, e.isNumeric)){ ok=false; break; }
+            }
+            tr.style.display = ok ? '' : 'none';
+          });
+        }
+
+        filterRow.addEventListener('input', (ev)=>{
+          const inp = ev.target;
+          if(!inp || inp.tagName!=='INPUT') return;
+          applyFiltersAndVisibility();
+        });
+
+        function sortByColumn(colIndex, dir){
+          const rows = getAllBodyRows();
+          const th = headThs[colIndex];
+          const isNumeric = !!(th && th.classList.contains('num'));
+
+          const rowsWithKey = rows.map(r=>{
+            const tds = Array.from(r.children).filter(x=>x && x.tagName==='TD');
+            const txt = tds[colIndex] ? tds[colIndex].textContent : '';
+            return {r, key:getCellValueForSort(txt, isNumeric), txt};
+          });
+
+          rowsWithKey.sort((a,b)=>{
+            if(isNumeric){
+              const av = (typeof a.key==='number') ? a.key : toNum(a.txt);
+              const bv = (typeof b.key==='number') ? b.key : toNum(b.txt);
+              return dir==='asc' ? (av-bv) : (bv-av);
+            }
+            const av = String(a.key||'');
+            const bv = String(b.key||'');
+            if(av<bv) return dir==='asc' ? -1 : 1;
+            if(av>bv) return dir==='asc' ? 1 : -1;
+            return 0;
+          });
+
+          const frag = document.createDocumentFragment();
+          rowsWithKey.forEach(x=>frag.appendChild(x.r));
+          tbody.appendChild(frag);
+
+          applyFiltersAndVisibility();
+        }
+
+        headRow.addEventListener('click', (ev)=>{
+          if(ev.target && (ev.target.tagName==='INPUT' || ev.target.closest('input'))) return;
+
+          const th = ev.target.closest('th');
+          if(!th || !th.dataset.colIndex) return;
+
+          const colIndex = parseInt(th.dataset.colIndex,10);
+          if(isNaN(colIndex)) return;
+
+          headThs.forEach(x=>{
+            if(x!==th){
+              delete x.dataset.sort;
+              const ind = x.querySelector('.sf-ind');
+              if(ind) ind.textContent = '↕';
+            }
+          });
+
+          const cur = th.dataset.sort || '';
+          const next = (cur==='asc') ? 'desc' : 'asc';
+          th.dataset.sort = next;
+
+          const ind = th.querySelector('.sf-ind');
+          if(ind) ind.textContent = (next==='asc') ? '↑' : '↓';
+
+          sortByColumn(colIndex, next);
+        });
+
+        applyFiltersAndVisibility();
+      }
+
+      function enhanceAllTables(root=document){
+        const tables = Array.from(root.querySelectorAll('table'));
+        tables.forEach(t=> enhanceTable(t));
+      }
+
+      /* ---------------------- Helpers ---------------------- */
+      const MONEY = n => (n==null||isNaN(n)?'—':'$'+Math.round(n).toLocaleString('tr-TR'));
+      const QTY   = n => (n==null||isNaN(n)?'—':Math.round(n).toLocaleString('tr-TR'));
+
+      const msg = (html,ok=true)=>{
+        let el=document.getElementById('msg');
+        if(!el){
+          el = document.createElement('div');
+          el.id='msg';
+          document.querySelector('header .note').appendChild(el);
+        }
+        el.innerHTML=html;
+        el.className='note badge '+(ok?'ok':'err');
+      };
+      const PCT = n => {
+  if (n == null || isNaN(n)) return '—';
+  const v = Math.round(n * 10) / 10; // 1 ondalık
+  return v.toLocaleString('tr-TR', { maximumFractionDigits: 1 }) + ' %';
+};
+      const deaccent = (s='') => s.replaceAll('İ','I').replaceAll('ı','i')
+        .normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase();
+
+      const toNum = val=>{
+        if(val==null||val==='')return 0;
+        if(typeof val==='number')return val;
+        let s=String(val).trim();
+        const neg=/^\(.*\)$/.test(s); if(neg)s=s.replace(/[()]/g,'');
+        s=s.replace(/[^\d.,-]/g,'');
+        if(s.includes('.')&&s.includes(','))s=s.replace(/\./g,'').replace(',','.');
+        else if(s.includes(',')&&!s.includes('.'))s=s.replace(',','.');
+        let n=parseFloat(s); if(isNaN(n))n=0;
+        return neg?-Math.abs(n):Math.abs(n);
+      };
+
+      const monthMap={ocak:1,oca:1,subat:2,sub:2,mart:3,mar:3,nisan:4,nis:4,mayis:5,may:5,
+        haziran:6,haz:6,temmuz:7,tem:7,agustos:8,agu:8,eylul:9,eyl:9,ekim:10,eki:10,kasim:11,kas:11,aralik:12,ara:12};
+
+      function normMonth(v){
+        if(v==null||v==='')return'';
+        if(typeof v==='number'){
+          if(v>40000&&v<60000){
+            const base=Date.UTC(1899,11,30);
+            const ms=base+Math.round(v)*86400000;
+            const d=new Date(ms);
+            return `${d.getUTCFullYear()}-${('0' + (d.getUTCMonth() + 1)).slice(-2)}`;
+          }
+        }
+        let s=deaccent(String(v).trim());
+        let m=s.match(/(20\d{2})\D+([01]?\d)\b/); if(m)return`${m[1]}-${('0' + m[2]).slice(-2)}`;
+        m=s.match(/(20\d{2})([01]\d)\b/); if(m)return`${m[1]}-${m[2]}`;
+        const y=(s.match(/(20\d{2})/)||[])[1];
+        for(const k of Object.keys(monthMap)){
+          if(s.includes(k))return(y?y:'0000')+'-'+('0'+monthMap[k]).slice(-2);
+        }
+        return s;
+      }
+
+      function isGoodsInTransitRow(r){
+        if(!r)return false;
+        if(r.DepoSinifi && deaccent(r.DepoSinifi).includes('goods in transit'))return true;
+        return deaccent(r.Depo||'').includes('goods in transit');
+      }
+
+      function percentile(values, p){
+        if(!values || !values.length) return 0;
+        const arr=values.slice().sort((a,b)=>a-b);
+        const idx=(arr.length-1)*p;
+        const lo=Math.floor(idx), hi=Math.ceil(idx);
+        if(lo===hi) return arr[lo];
+        const w=idx-lo;
+        return arr[lo]*(1-w) + arr[hi]*w;
+      }
+
+      const STATE_KEY='AVESORO_BI_STATE';
+      let ANALYSIS_MODE='tutar';
+      let FILTERS={Donem:[],DepoSinifi:[],Depo:[],FSN:[],MTRL:[],UstGrup:[],AltGrup:[]};
+      let ALL={Donem:[],DepoSinifi:[],Depo:[],FSN:[],MTRL:[],UstGrup:[],AltGrup:[]};
+      let RAW=[];
+      let ACTIVE_MONTH=null;
+      let FROM_EMBED=false;
+
+      let RISK_UI = {
+        nomove:{ q:'', n:150, inner:'FSN' },
+        min:{ q:'', n:150, inner:'FSN' },
+        max:{ q:'', n:150, inner:'FSN' },
+        excess:{ q:'', n:150, inner:'FSN' },
+        pareto:{ n:120 }
+      };
+
+      const MONTH_LABELS_TR=['','Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+      function fmtMonthLabel(ym){
+        if(!ym)return'(dönem yok)';
+        const [y,m]=ym.split('-');
+        const n=parseInt(m,10)||0;
+        const name=MONTH_LABELS_TR[n]||m;
+        return `${name} ${y}`;
+      }
+
+      function saveState(){
         try{
-         
+          localStorage.setItem(STATE_KEY, JSON.stringify({
+            filters:FILTERS,
+            analysis:ANALYSIS_MODE,
+            risk:RISK_UI
+          }));
+        }catch(e){}
+      }
+      function loadState(){
+        try{
+          const raw=localStorage.getItem(STATE_KEY);
+          if(!raw)return;
+          const s=JSON.parse(raw);
+          if(s&&s.filters)FILTERS=Object.assign({Donem:[],DepoSinifi:[],Depo:[],FSN:[],MTRL:[],UstGrup:[],AltGrup:[]},s.filters);
+          if(s&&s.analysis)ANALYSIS_MODE=s.analysis;
+          if(s&&s.risk) RISK_UI = Object.assign(RISK_UI, s.risk);
+          initAnalysisUI();
+        }catch(e){}
+      }
+
+      function getCols(){
+        return (ANALYSIS_MODE==='tutar')
+          ? {dev:'Devreden',gir:'Giren',cik:'Cikan',kal:'Kalan',minKey:'MinTutar',maxKey:'MaxTutar'}
+          : {dev:'DevredenM',gir:'GirenM',cik:'CikanM',kal:'KalanM',minKey:'MinMiktar',maxKey:'MaxMiktar'};
+      }
+      const FMT=n=>(ANALYSIS_MODE==='tutar'?MONEY(n):QTY(n));
+      const formatMinMax=v=>((v==null||isNaN(v)||v===0)?'—':FMT(v));
+      function balanceOfRow(r,cols){
+        const d=r[cols.dev]||0,g=r[cols.gir]||0,c=r[cols.cik]||0,k=r[cols.kal]||0;
+        return (d||g||c)?(d+g-c):k;
+      }
+      function thresholdsFromRow(r){
+        const c=getCols();return{min:r[c.minKey]||0,max:r[c.maxKey]||0};
+      }
+
+      function normalizeRows(arr){
+        const map={};
+        Object.keys(arr[0]||{}).forEach(h=>{
+          const k=deaccent(h);
+          if(k.includes('donem'))map[h]='Donem';
+          else if(k.startsWith('depo sinif'))map[h]='DepoSinifi';
+          else if(k==='depo'||k.includes('depo adi'))map[h]='Depo';
+          else if(k.startsWith('ust grup'))map[h]='UstGrup';
+          else if(k.startsWith('alt grup'))map[h]='AltGrup';
+          else if(k.startsWith('stok adi')||k==='stok')map[h]='StokAdi';
+          else if(k.startsWith('mtrl'))map[h]='MTRL';
+          else if(k.startsWith('fsn')||k.includes('fsn class')||k.includes('abc class'))map[h]='FSN';
+          else if(k.includes('departman'))map[h]='Departman';
+          else if(k.includes('devreden tutar'))map[h]='Devreden';
+          else if(k.includes('giren tutar'))map[h]='Giren';
+          else if(k.includes('cikan tutar'))map[h]='Cikan';
+          else if(k.includes('kalan tutar'))map[h]='Kalan';
+          else if(k.includes('devreden miktar')||k.includes('opening qty'))map[h]='DevredenM';
+          else if(k.includes('giren miktar')||k.includes('in qty'))map[h]='GirenM';
+          else if(k.includes('cikan miktar')||k.includes('out qty'))map[h]='CikanM';
+          else if(k.includes('kalan miktar')||k.includes('balance qty'))map[h]='KalanM';
+          else if(k.includes('min')&&k.includes('seviye')&&(k.includes('miktar')||k.includes('qty')))map[h]='MinMiktar';
+          else if((k.includes('maks')||k.includes('max'))&&k.includes('seviye')&&(k.includes('miktar')||k.includes('qty')))map[h]='MaxMiktar';
+          else if(k.includes('min')&&k.includes('seviye')&&k.includes('tutar'))map[h]='MinTutar';
+          else if((k.includes('maks')||k.includes('max'))&&k.includes('seviye')&&k.includes('tutar'))map[h]='MaxTutar';
+        });
+
+        const out=[];
+        for(const r of arr){
+          const o={
+            Donem:'',DepoSinifi:'',Depo:'',UstGrup:'',AltGrup:'',StokAdi:'',MTRL:'',FSN:'',Departman:'',
+            Devreden:0,Giren:0,Cikan:0,Kalan:0,DevredenM:0,GirenM:0,CikanM:0,KalanM:0,
+            MinTutar:0,MaxTutar:0,MinMiktar:0,MaxMiktar:0
+          };
+          for(const h of Object.keys(r)){
+            const k=map[h];if(!k)continue;
+            if(k==='Donem')o.Donem=normMonth(r[h]);
+            else if(['Devreden','Giren','Cikan','Kalan','DevredenM','GirenM','CikanM','KalanM','MinTutar','MaxTutar','MinMiktar','MaxMiktar'].includes(k))
+              o[k]=toNum(r[h]);
+            else o[k]=String(r[h]||'').trim();
+          }
+          if(!o.DepoSinifi){
+            const d=deaccent(o.Depo||'');
+            if(d.includes('goods in transit'))o.DepoSinifi='Goods In Transit';
+            else if(d.includes('unit'))o.DepoSinifi='Unit Warehouse';
+            else if(d.includes('main')||d.includes('ana depo'))o.DepoSinifi='Main Warehouse';
+            else o.DepoSinifi='Belirtilmemiş';
+          }
+          if(o.Donem)out.push(o);
+        }
+        return out;
+      }
+
+      function parseCSV(text){
+        const head=text.split(/\r?\n/)[0]||'';
+        const sep=(head.match(/;/g)||[]).length>=(head.match(/,/g)||[]).length?';':',';
+        const rows=text.split(/\r?\n/).filter(x=>x.trim().length).map(line=>{
+          const out=[];let cur='',q=false;
+          for(let i=0;i<line.length; i++){
+            const ch=line[i];
+            if(ch==='"'){q = !q;continue;}
+            if(ch===sep&&!q){out.push(cur);cur='';}
+            else cur+=ch;
+          }
+          out.push(cur);return out;
+        });
+        const headers=rows[0];
+        const data=rows.slice(1).map(arr=>{
+          const o={};headers.forEach((h,i)=>o[h]=arr[i]??'');
+          return o;
+        });
+        return normalizeRows(data);
+      }
+
+      function buildMS(){
+        const uniq=arr=>[...new Set(arr.filter(Boolean))].sort();
+        ALL={
+          Donem:uniq(RAW.map(x=>x.Donem)),
+          DepoSinifi:uniq(RAW.map(x=>x.DepoSinifi)),
+          Depo:uniq(RAW.map(x=>x.Depo)),
+          FSN:uniq(RAW.map(x=>x.FSN)),
+          MTRL:uniq(RAW.map(x=>x.MTRL)),
+          UstGrup:uniq(RAW.map(x=>x.UstGrup)),
+          AltGrup:uniq(RAW.map(x=>x.AltGrup)),
+        };
+
+        const msEls=[...document.querySelectorAll('.ddbox')];
+        msEls.forEach(ms=>{
+          const key=ms.dataset.key, box=ms.querySelector('.dd'); box.innerHTML='';
+          const list=ALL[key]||[];
+
+          const top=document.createElement('div');top.className='row';
+          top.innerHTML=`<input type="checkbox" data-all="1" ${(!FILTERS[key] || FILTERS[key].length === 0) ? 'checked' : ''} /> <strong>Tümü</strong>`;
+          box.appendChild(top);
+
+          list.forEach(v=>{
+            const row=document.createElement('div');row.className='row';
+            const checked=FILTERS[key]&&FILTERS[key].includes(v);
+            row.innerHTML=`<input type="checkbox" ${checked ? 'checked' : ''} data-val="${String(v).replaceAll('"','&quot;')}" /> <span>${v}</span>`;
+            box.appendChild(row);
+          });
+
+          box.onchange=ev=>{
+            const inp=ev.target;if(!inp||inp.tagName!=='INPUT')return;
+            if(inp.dataset.all){
+              FILTERS[key]=[];
+              [...box.querySelectorAll('input[type=checkbox]')].forEach(i=>{if(!i.dataset.all)i.checked=false;});
+            }else{
+              const val=inp.dataset.val; FILTERS[key]=FILTERS[key]||[];
+              if(inp.checked)FILTERS[key].push(val);
+              else FILTERS[key]=FILTERS[key].filter(x=>x!==val);
+              box.querySelector('input[data-all]').checked=(FILTERS[key].length===0);
+            }
+            updateMSLabels(); renderAll(); saveState();
+          };
+        });
+
+        updateMSLabels();
+      }
+
+      function updateMSLabels(){
+        [...document.querySelectorAll('.ddbox')].forEach(ms=>{
+          const key=ms.dataset.key;
+          const sel=FILTERS[key]||[];
+          const lab=ms.querySelector('.lab');
+          if(!lab)return;
+          lab.textContent=(!sel.length?'Tümü':(sel.length===1?sel[0]:`${sel.length} seçili`));
+        });
+      }
+
+      function applyFilters(rows){
+        const f=FILTERS;
+        const ok=(key,val)=>{const s=f[key]; if(!s||!s.length)return true; return s.includes(val);};
+        return rows.filter(r=>
+          ok('Donem',r.Donem)&&ok('DepoSinifi',r.DepoSinifi)&&ok('Depo',r.Depo)&&
+          ok('FSN',r.FSN)&&ok('MTRL',r.MTRL)&&ok('UstGrup',r.UstGrup)&&ok('AltGrup',r.AltGrup)
+        );
+      }
+
+      const sum=(arr,key)=>arr.reduce((a,b)=>a+(b[key]||0),0);
+
+      function groupMonthly(rows,byKey,curMonth){
+        const cols=getCols();
+        const map=new Map();
+        rows.filter(x=>x.Donem===curMonth).forEach(r=>{
+          const key=r[byKey]||'Belirtilmemiş';
+          if(!map.has(key))map.set(key,{Ad:key,dev:0,gir:0,cik:0,kal:0,min:0,max:0});
+          const g=map.get(key);
+          const bal=balanceOfRow(r,cols);
+          g.dev+=r[cols.dev]||0;
+          g.gir+=r[cols.gir]||0;
+          g.cik+=r[cols.cik]||0;
+          g.kal+=bal;
+          const th=thresholdsFromRow(r);
+          g.min+=th.min||0;
+          g.max+=th.max||0;
+        });
+        const rowsOut=[...map.values()].sort((a,b)=>b.kal-a.kal);
+        const footer={Ad:'Alt Toplam',dev:sum(rowsOut,'dev'),gir:sum(rowsOut,'gir'),
+          cik:sum(rowsOut,'cik'),kal:sum(rowsOut,'kal'),min:sum(rowsOut,'min'),max:sum(rowsOut,'max')};
+        return{rows:rowsOut,footer};
+      }
+
+      function renderTableMinMax(mountId,rows,footer){
+        const el=document.getElementById(mountId); if(!el)return;
+        if(!rows||!rows.length){el.innerHTML='<div class="note">Kayıt yok.</div>';return;}
+        const tbl=document.createElement('table');
+        tbl.innerHTML=`
+          <thead><tr>
+            <th>Ad</th><th class="num">Devreden</th><th class="num">Giren</th><th class="num">Çıkan</th><th class="num">Kalan</th>
+            <th class="num">Min</th><th class="num">Max</th>
+          </tr></thead>
+          <tbody>${rows.map(r=>`
+            <tr>
+              <td>${r.Ad}</td>
+              <td class="num">${FMT(r.dev)}</td>
+              <td class="num">${FMT(r.gir)}</td>
+              <td class="num">${FMT(r.cik)}</td>
+              <td class="num">${FMT(r.kal)}</td>
+              <td class="num">${formatMinMax(r.min)}</td>
+              <td class="num">${formatMinMax(r.max)}</td>
+            </tr>`).join('')}</tbody>
+          <tfoot><tr>
+            <td><b>${footer.Ad}</b></td>
+            <td class="num"><b>${FMT(footer.dev)}</b></td>
+            <td class="num"><b>${FMT(footer.gir)}</b></td>
+            <td class="num"><b>${FMT(footer.cik)}</b></td>
+            <td class="num"><b>${FMT(footer.kal)}</b></td>
+            <td class="num"><b>${formatMinMax(footer.min)}</b></td>
+            <td class="num"><b>${formatMinMax(footer.max)}</b></td>
+          </tr></tfoot>`;
+        el.innerHTML=''; el.appendChild(tbl);
+        enhanceTable(tbl);
+      }
+
+      function currentMonthFromFilters(){
+        if(FILTERS.Donem && FILTERS.Donem.length===1) return FILTERS.Donem[0];
+        if(FILTERS.Donem && FILTERS.Donem.length>1) return FILTERS.Donem[0];
+        return ACTIVE_MONTH;
+      }
+
+      function renderKPI(rows,curMonth){
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+        const total=monthRows.reduce((a,r)=>a+balanceOfRow(r,cols),0);
+
+        const main=monthRows.filter(r=>!isGoodsInTransitRow(r) && deaccent(r.DepoSinifi).includes('main')).reduce((a,r)=>a+balanceOfRow(r,cols),0);
+        const git =monthRows.filter(r=>isGoodsInTransitRow(r)).reduce((a,r)=>a+balanceOfRow(r,cols),0);
+        const unit=monthRows.filter(r=>!isGoodsInTransitRow(r) && deaccent(r.DepoSinifi).includes('unit')).reduce((a,r)=>a+balanceOfRow(r,cols),0);
+
+        document.getElementById('kpi-month').textContent=fmtMonthLabel(curMonth);
+        document.getElementById('kpi-total').textContent=FMT(total);
+        document.getElementById('kpi-total-sub').textContent=`Satır: ${monthRows.length.toLocaleString('tr-TR')}`;
+        document.getElementById('kpi-main').textContent=FMT(main);
+        document.getElementById('kpi-git').textContent=FMT(git);
+        document.getElementById('kpi-unit').textContent=FMT(unit);
+
+        const share = total ? (git/total*100) : 0;
+        document.getElementById('kpi-git-sub').textContent=`Pay: ${Math.round(share)} %`;
+      }
+
+      function renderMgmtSummary(rows,curMonth){
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+        const total=monthRows.reduce((a,r)=>a+balanceOfRow(r,cols),0);
+        const out=monthRows.reduce((a,r)=>a+(r[cols.cik]||0),0);
+        const inw=monthRows.reduce((a,r)=>a+(r[cols.gir]||0),0);
+
+        const belowMin = monthRows.filter(r=>{
+          const bal=balanceOfRow(r,cols);
+          const th=thresholdsFromRow(r);
+          return th.min>0 && bal < th.min;
+        });
+        const aboveMax = monthRows.filter(r=>{
+          const bal=balanceOfRow(r,cols);
+          const th=thresholdsFromRow(r);
+          return th.max>0 && bal > th.max;
+        });
+
+        const noMove = monthRows.filter(r=>{
+          const gi=r[cols.gir]||0, co=r[cols.cik]||0;
+          return gi===0 && co===0 && !isGoodsInTransitRow(r);
+        });
+
+        const riskScore = Math.min(100,
+          Math.round(
+            (belowMin.length?35:0) +
+            (aboveMax.length?25:0) +
+            (noMove.length?20:0) +
+            (total===0?20:0)
+          )
+        );
+
+        const html=`
+          <div class="mgmt-header">Yönetici Özeti & Risk Dağılımı (Seçili Ay)</div>
+          <div class="mgmt-row">
+            <div class="mgmt-box info">
+              <div class="mgmt-label">Seçili Ay</div>
+              <div class="mgmt-value">${fmtMonthLabel(curMonth)}</div>
+              <div class="mgmt-sub">Filtrelere göre hesaplanır</div>
+            </div>
+
+            <div class="mgmt-box primary">
+              <div class="mgmt-label">Toplam Kalan</div>
+              <div class="mgmt-value">${FMT(total)}</div>
+              <div class="mgmt-sub">Satır: ${monthRows.length.toLocaleString('tr-TR')}</div>
+            </div>
+
+            <div class="mgmt-box neutral">
+              <div class="mgmt-label">Giren / Çıkan</div>
+              <div class="mgmt-value">${FMT(inw)} <span class="note">/</span> ${FMT(out)}</div>
+              <div class="mgmt-sub">Akış göstergesi (ay içi)</div>
+            </div>
+
+            <div class="mgmt-box warn">
+              <div class="mgmt-label">Min Altı</div>
+              <div class="mgmt-value">${belowMin.length.toLocaleString('tr-TR')}</div>
+              <div class="mgmt-sub">Stokout riski barındırır</div>
+            </div>
+
+            <div class="mgmt-box danger">
+              <div class="mgmt-label">Genel Risk Skoru</div>
+              <div class="mgmt-value">${riskScore}<span class="note">/100</span></div>
+              <div class="mgmt-sub">Min/Max + hareketsiz + boş veri</div>
+            </div>
+          </div>
+        `;
+        document.getElementById('mgmt-summary').innerHTML=html;
+      }
+
+      function renderOverviewCard(elId, title, groupBy, rows, curMonth, options = {}) {
+  const { rows: gr, footer } = groupMonthly(rows, groupBy, curMonth);
+
+  // ✅ limit: default 6, limit<=0 ise hepsini göster
+  const limit = (typeof options.limit === 'number') ? options.limit : 6;
+  const list = (limit > 0) ? gr.slice(0, limit) : gr;
+
+  const totalKal = footer.kal || 0;
+
+  const chips = [
+    `Grup: ${gr.length.toLocaleString('tr-TR')}`,
+    `Toplam: ${FMT(footer.kal)}`
+  ];
+
+  const mini = `
+    <table class="ov-mini">
+      <thead>
+        <tr>
+          <th>${title}</th>
+          <th class="num">Kalan</th>
+          <th class="num">Pay %</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${list.map(x => {
+          const pct = totalKal ? (x.kal / totalKal * 100) : 0;
+          return `
+            <tr>
+              <td>${x.Ad}</td>
+              <td class="num">${FMT(x.kal)}</td>
+              <td class="num">${PCT(pct)}</td>
+            </tr>
+          `;
+        }).join('')}
+      </tbody>
+    </table>
+  `;
+
+  const risk = gr.length ? gr.filter(x => x.kal <= 0).length : 0;
+
+  const top3 = gr.slice(0, 3);
+  const text = `
+    <div class="ov-section-title" data-type="trend">Okuma</div>
+    <ul>
+      <li><strong>Top 3</strong>: ${top3.map(x => x.Ad).join(', ') || '—'}</li>
+      <li><strong>Riskli grup sayısı</strong> (kalan ≤ 0): ${risk}</li>
+    </ul>
+    <div class="ov-section-title" data-type="action">Aksiyon</div>
+    <ul>
+      <li>Top gruplarda tüketim/çıkan analizi ile sipariş planı doğrulayın.</li>
+      <li>Min/Max ihlali olan gruplarda min-max parametrelerini gözden geçirin.</li>
+    </ul>
+  `;
+
+  document.getElementById(elId).innerHTML = `
+    <div class="ov-header">
+      <div>
+        <div class="ov-label">${fmtMonthLabel(curMonth)}</div>
+        <h3>${title} — Özet</h3>
+      </div>
+      <div class="ov-chips">${chips.map(c => `<span class="ov-chip">${c}</span>`).join('')}</div>
+    </div>
+    <div class="ov-mini-wrap">
+      ${mini}
+      <div class="ov-description">${text}</div>
+    </div>
+  `;
+
+  const t = document.getElementById(elId).querySelector('table');
+  if (t) enhanceTable(t);
+}
+      function renderCompare(rows,curMonth){
+        const a=groupMonthly(rows,'DepoSinifi',curMonth); renderTableMinMax('tbl-class', a.rows, a.footer);
+        const b=groupMonthly(rows,'Depo',curMonth);      renderTableMinMax('tbl-ware',  b.rows, b.footer);
+        const c=groupMonthly(rows,'MTRL',curMonth);      renderTableMinMax('tbl-mtrl',  c.rows, c.footer);
+        const d=groupMonthly(rows,'Departman',curMonth); renderTableMinMax('tbl-dept',  d.rows, d.footer);
+      }
+
+      /* ============ ✅ Risk Packs + Premium Render ============ */
+      function smartCommentNoMove(x){
+        const fsn = deaccent(x.FSN||'');
+        const bal = Math.abs(x.Bal||0);
+        if(fsn.includes('non')) return `Non-moving sınıfında birikim var; ${FMT(bal)} seviyesinde sermaye bağlanıyor. Tasfiye/konsolidasyon veya satın alma durdurma aksiyonu değerlendirilebilir.`;
+        if(fsn.includes('slow')) return `Slow-moving kalem; ${FMT(bal)} seviyesinde stok tutuluyor. Tüketim planı ve transfer/alternatif kullanım senaryosu kontrol edilmeli.`;
+        if(fsn.includes('fast')) return `Fast-moving ama bu ay hareket yok. ${FMT(bal)} seviyesinde stok var; talep/sipariş planı ile uyumu doğrulayın.`;
+        return `Tüm dönem boyunca giriş/çıkış yok; ${FMT(bal)} seviyesinde stok sermayeyi bağlıyor. Kullanım planı veya tasfiye opsiyonu gözden geçirilmeli.`;
+      }
+      function smartCommentMin(x){
+        const gap = Math.abs(x.Gap||0);
+        return `Min altı. Açık: ${FMT(gap)}. Stokout riskini azaltmak için iç transfer / acil tedarik ve tüketim trend kontrolü önerilir.`;
+      }
+      function smartCommentMax(x){
+        const gap = Math.abs(x.Gap||0);
+        return `Max üstü. Fazla: ${FMT(gap)}. Sermaye bağlama riskini azaltmak için tüketim planı / konsolidasyon / iade opsiyonlarını değerlendirin.`;
+      }
+
+      function tierizeByImpact(rows){
+        const impacts = rows.map(r=>Math.abs(r.Impact||0)).filter(v=>v>0);
+        const p95 = percentile(impacts, .95);
+        const p80 = percentile(impacts, .80);
+        const total = impacts.reduce((a,b)=>a+b,0) || 1;
+
+        const crit = [];
+        const mid  = [];
+        const low  = [];
+
+        rows.forEach(r=>{
+          const imp = Math.abs(r.Impact||0);
+          const share = (imp/total)*100;
+          r.PayPct = share;
+          if(imp >= p95 || share >= 5) crit.push(r);
+          else if(imp >= p80 || share >= 1) mid.push(r);
+          else low.push(r);
+        });
+
+        const srt = (a,b)=>Math.abs(b.Impact||0)-Math.abs(a.Impact||0);
+        crit.sort(srt); mid.sort(srt); low.sort(srt);
+
+        const totalAbs = rows.reduce((a,r)=>a+Math.abs(r.Impact||0),0) || 1;
+
+        return {
+          totalAbs,
+          groups:[
+            { key:'crit', tier:'crit', title:'Kritik Düzey', rows:crit },
+            { key:'mid',  tier:'mid',  title:'Orta Düzey',  rows:mid  },
+            { key:'low',  tier:'low',  title:'Düşük Düzey', rows:low  },
+          ]
+        };
+      }
+
+      function buildNoMovePack(rows,curMonth){
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+        const nm = monthRows
+          .filter(r=>!isGoodsInTransitRow(r))
+          .filter(r=>(r[cols.gir]||0)===0 && (r[cols.cik]||0)===0)
+          .map(r=>{
+            const bal = balanceOfRow(r,cols);
+            return {
+              Depo:r.Depo||'—',
+              StokAdi:r.StokAdi||'—',
+              UstGrup:r.UstGrup||'—',
+              FSN:r.FSN||'—',
+              Bal:bal,
+              Impact:Math.abs(bal),
+              PayPct:0,
+              Smart:smartCommentNoMove({FSN:r.FSN,Bal:bal})
+            };
+          });
+
+        return tierizeByImpact(nm);
+      }
+
+      function buildMinPack(rows,curMonth){
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+        const arr = monthRows
+          .map(r=>{
+            const bal = balanceOfRow(r,cols);
+            const th = thresholdsFromRow(r);
+            const gap = (th.min>0 && bal<th.min) ? (th.min - bal) : 0;
+            return { r, bal, th, gap };
+          })
+          .filter(x=>x.gap>0)
+          .map(x=>({
+            Depo:x.r.Depo||'—',
+            StokAdi:x.r.StokAdi||'—',
+            UstGrup:x.r.UstGrup||'—',
+            FSN:x.r.FSN||'—',
+            Bal:x.bal,
+            Min:x.th.min,
+            Gap:x.gap,
+            Impact:Math.abs(x.gap),
+            PayPct:0,
+            Smart:smartCommentMin({Gap:x.gap})
+          }));
+
+        return tierizeByImpact(arr);
+      }
+
+      function buildMaxPack(rows,curMonth){
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+        const arr = monthRows
+          .map(r=>{
+            const bal = balanceOfRow(r,cols);
+            const th = thresholdsFromRow(r);
+            const gap = (th.max>0 && bal>th.max) ? (bal - th.max) : 0;
+            return { r, bal, th, gap };
+          })
+          .filter(x=>x.gap>0)
+          .map(x=>({
+            Depo:x.r.Depo||'—',
+            StokAdi:x.r.StokAdi||'—',
+            UstGrup:x.r.UstGrup||'—',
+            FSN:x.r.FSN||'—',
+            Bal:x.bal,
+            Max:x.th.max,
+            Gap:x.gap,
+            Impact:Math.abs(x.gap),
+            PayPct:0,
+            Smart:smartCommentMax({Gap:x.gap})
+          }));
+
+        return tierizeByImpact(arr);
+      }
+
+      function buildExcessPack(rows,curMonth){
+        return buildMaxPack(rows,curMonth);
+      }
+
+      function rerenderRiskOnly(){
+        if(!RAW.length) return;
+        const rows = applyFilters(RAW);
+        const curMonth = currentMonthFromFilters();
+        renderRiskPages(rows,curMonth);
+        renderParetoPremium(rows,curMonth);
+        enhanceAllTables(document);
+        saveState();
+      }
+
+      function renderRiskWrap(mountId, title, sub, pack, uiKey, columns){
+        const el=document.getElementById(mountId);
+        if(!el) return;
+
+        const ui = RISK_UI[uiKey] || { q:'', n:150, inner:'FSN' };
+        const q = ui.q || '';
+        const n = ui.n || 150;
+        const innerKey = ui.inner || 'FSN';
+
+        const filterSearch = (arr)=>{
+          const qq = deaccent(q).trim();
+          if(!qq) return arr;
+          return arr.filter(x=>{
+            const blob = deaccent([x.Depo,x.StokAdi,x.UstGrup,x.FSN].join(' '));
+            return blob.includes(qq);
+          });
+        };
+
+        const impactVal = (x)=> Math.abs((x.Impact!=null?x.Impact:(x.Gap!=null?x.Gap:x.Bal))||0);
+
+        if(!pack || !pack.groups || !pack.groups.length){
+          el.innerHTML = `
+            <div class="risk-title">${title}</div>
+            <div class="risk-sub">${sub}</div>
+            <div class="risk-empty">Bu sayfada gösterilecek kayıt yok.</div>
+          `;
+          return;
+        }
+
+        const allRows = pack.groups.flatMap(g=>g.rows || []);
+        const allRowsFiltered = filterSearch(allRows);
+        const totalImpact = allRowsFiltered.reduce((s,x)=>s+impactVal(x),0) || 0;
+        const totalCount = allRowsFiltered.length;
+
+        const critCount = filterSearch((pack.groups.find(g=>g.key==='crit')||{}).rows||[]).length;
+        const midCount  = filterSearch((pack.groups.find(g=>g.key==='mid')||{}).rows||[]).length;
+        const lowCount  = filterSearch((pack.groups.find(g=>g.key==='low')||{}).rows||[]).length;
+
+        const topItem = allRowsFiltered.slice().sort((a,b)=>impactVal(b)-impactVal(a))[0];
+        const topItemText = topItem ? `${(topItem.StokAdi||'—').slice(0,38)} • ${(topItem.Depo||'—').slice(0,24)}` : '—';
+
+        const actionText = (uiKey==='min')
+          ? 'Min altı → iç transfer / acil tedarik / tüketim trendi kontrol'
+          : (uiKey==='max' || uiKey==='excess')
+            ? 'Max üstü → tüketim artırma / konsolidasyon / iade / hedef revizyon'
+            : 'Hareketsiz → kullanım planı / tasfiye / proje eşleştirme / iç transfer';
+
+        const controls = `
+          <div class="risk-title">${title}</div>
+          <div class="risk-sub">${sub}</div>
+
+          <div class="risk-kpis">
+            <div class="risk-kpi">
+              <div class="cap">Kayıt Sayısı</div>
+              <div class="val">${totalCount.toLocaleString('tr-TR')}</div>
+              <div class="sub">Kritik: ${critCount} • Orta: ${midCount} • Düşük: ${lowCount}</div>
+            </div>
+            <div class="risk-kpi">
+              <div class="cap">Toplam Etki</div>
+              <div class="val">${FMT(totalImpact)}</div>
+              <div class="sub">Arama+filtre sonrası toplam</div>
+            </div>
+            <div class="risk-kpi">
+              <div class="cap">En Yüksek Etki</div>
+              <div class="val">${topItemText}</div>
+              <div class="sub">Etki: ${topItem ? FMT(impactVal(topItem)) : '—'}</div>
+            </div>
+            <div class="risk-kpi">
+              <div class="cap">Önerilen Aksiyon</div>
+              <div class="val">Hızlı Müdahale</div>
+              <div class="sub">${actionText}</div>
+            </div>
+          </div>
+
+          <div class="risk-controls" data-risk="${uiKey}">
+            <div class="left">
+              <span class="cap">Arama</span>
+              <input type="text" value="${String(q).replaceAll('"','&quot;')}" placeholder="Depo / Stok / Üst Grup / FSN içinde ara..." data-role="q" />
+            </div>
+
+            <div class="right">
+              <div>
+                <span class="cap">Satır</span>
+                <select data-role="n">
+                  ${[50,100,150,300,500].map(v=>`<option value="${v}" ${v===n?'selected':''}>${v}</option>`).join('')}
+                </select>
+              </div>
+
+              <div>
+                <span class="cap">İç Grup</span>
+                <div class="risk-innerseg" data-role="inner">
+                  <button type="button" data-inner="FSN" ${innerKey==='FSN'?'class="active"':''}>FSN</button>
+                  <button type="button" data-inner="UstGrup" ${innerKey==='UstGrup'?'class="active"':''}>Üst Grup</button>
+                  <button type="button" data-inner="Depo" ${innerKey==='Depo'?'class="active"':''}>Depo</button>
+                </div>
+                <div class="hint">Her iç grup için limit</div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        const makeTable = (arr)=>{
+          const show = arr.slice(0,n);
+          return `
+            <table class="risk-table">
+              <thead>
+                <tr>
+                  ${columns.map(c=>`<th class="${c.num?'num':''}">${c.t}</th>`).join('')}
+                </tr>
+              </thead>
+              <tbody>
+                ${show.map(x=>`
+                  <tr>
+                    ${columns.map(c=>{
+                      const v = c.f ? c.f(x) : (x[c.k]??'—');
+                      return `<td class="${c.num?'num':''}">${v}</td>`;
+                    }).join('')}
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+            ${arr.length>show.length ? `<div class="note" style="margin:8px 2px 2px;">Not: ${arr.length.toLocaleString('tr-TR')} kayıt var. İlk ${show.length} gösteriliyor.</div>`:''}
+          `;
+        };
+
+        const innerGroup = (rows)=>{
+          const m = new Map();
+          rows.forEach(x=>{
+            const k = (x[innerKey] || 'Belirtilmemiş');
+            if(!m.has(k)) m.set(k, []);
+            m.get(k).push(x);
+          });
+          return [...m.entries()]
+            .map(([k,arr])=>({ k, arr:arr.slice().sort((a,b)=>impactVal(b)-impactVal(a)) }))
+            .sort((a,b)=> b.arr.reduce((s,x)=>s+impactVal(x),0) - a.arr.reduce((s,x)=>s+impactVal(x),0));
+        };
+
+        const groupsHtml = pack.groups.map((g,idx)=>{
+          const rowsFiltered = filterSearch(g.rows);
+          const groupAbs = rowsFiltered.reduce((s,x)=>s+impactVal(x),0);
+
+          const pillClass = g.tier==='crit'?'crit':(g.tier==='mid'?'mid':'low');
+          const pillText  = g.title;
+
+          const open = (idx===0) ? 'open' : '';
+          const chipCount = `${rowsFiltered.length.toLocaleString('tr-TR')} kalem`;
+          const chipTotal = `Toplam: ${FMT(groupAbs)}`;
+
+          const inner = innerGroup(rowsFiltered);
+          const innerHtml = inner.length ? inner.map((ig,ii)=>{
+            const igAbs = ig.arr.reduce((s,x)=>s+impactVal(x),0);
+            const igOpen = (ii===0) ? 'open' : '';
+            return `
+              <details class="risk-group" ${igOpen} style="margin:10px 0;border-radius:12px;">
+                <summary style="padding:10px 10px;">
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                    <span class="risk-chip"><b>${innerKey==='UstGrup'?'Üst Grup':(innerKey==='Depo'?'Depo':'FSN')}</b>: ${ig.k}</span>
+                    <span class="risk-chip">${ig.arr.length.toLocaleString('tr-TR')} kalem</span>
+                  </div>
+                  <span class="risk-chip">${FMT(igAbs)}</span>
+                </summary>
+                <div class="risk-body" style="padding:10px 10px 6px;">
+                  ${ig.arr.length ? makeTable(ig.arr) : `<div class="risk-empty">Kayıt yok.</div>`}
+                </div>
+              </details>
+            `;
+          }).join('') : `<div class="risk-empty">İç grup için kayıt yok.</div>`;
+
+          return `
+            <details class="risk-group" ${open}>
+              <summary>
+                <div style="display:flex;align-items:center;gap:10px;min-width:0;flex-wrap:wrap;">
+                  <span class="risk-pill ${pillClass}"><span class="dot"></span>${pillText}</span>
+                  <span class="risk-chip">${chipCount}</span>
+                </div>
+                <span class="risk-chip">${chipTotal}</span>
+              </summary>
+              <div class="risk-body">
+                ${rowsFiltered.length ? innerHtml : `<div class="risk-empty">Arama kriterine göre kayıt yok.</div>`}
+              </div>
+            </details>
+          `;
+        }).join('');
+
+        el.innerHTML = controls + groupsHtml;
+
+        const ctrl = el.querySelector('.risk-controls');
+        if(ctrl){
+          const inp = ctrl.querySelector('input[data-role="q"]');
+          const sel = ctrl.querySelector('select[data-role="n"]');
+          const innerSeg = ctrl.querySelector('[data-role="inner"]');
+
+          inp && inp.addEventListener('input', (e)=>{
+            RISK_UI[uiKey].q = e.target.value || '';
+            saveState();
+            rerenderRiskOnly();
+          });
+
+          sel && sel.addEventListener('change', (e)=>{
+            RISK_UI[uiKey].n = parseInt(e.target.value,10) || 150;
+            saveState();
+            rerenderRiskOnly();
+          });
+
+          innerSeg && innerSeg.addEventListener('click', (e)=>{
+            const b = e.target.closest('button[data-inner]');
+            if(!b) return;
+            const v = b.dataset.inner;
+            RISK_UI[uiKey].inner = v;
+            innerSeg.querySelectorAll('button').forEach(x=>x.classList.toggle('active', x.dataset.inner===v));
+            saveState();
+            rerenderRiskOnly();
+          });
+        }
+
+        enhanceAllTables(el);
+      }
+
+      function renderRiskPages(rows,curMonth){
+        const packNoMove = buildNoMovePack(rows,curMonth);
+        const packMin    = buildMinPack(rows,curMonth);
+        const packMax    = buildMaxPack(rows,curMonth);
+        const packExcess = buildExcessPack(rows,curMonth);
+
+        renderRiskWrap(
+          'riskNoMove',
+          'Hiç Hareket Görmeyenler',
+          `${fmtMonthLabel(curMonth)} • GIT hariç • Tutarsal/Miktarsal moda göre`,
+          packNoMove,
+          'nomove',
+          [
+            {t:'Stok Adı',k:'StokAdi'},
+            {t:'Depo',k:'Depo'},
+            {t:'Üst Grup',k:'UstGrup'},
+            {t:'FSN',k:'FSN'},
+            {t:'Kalan',k:'Bal',num:1,f:(x)=>FMT(x.Bal)},
+            {t:'Toplam Pay',k:'PayPct',num:1,f:(x)=>`${Math.round(x.PayPct||0)} %`},
+            {t:'Akıllı Yorum',k:'Smart',f:(x)=>x.Smart||'—'},
+          ]
+        );
+
+        renderRiskWrap(
+          'riskMin',
+          'Min Altı',
+          `${fmtMonthLabel(curMonth)} • Etki=(Min-Kalan) • Stokout odağı`,
+          packMin,
+          'min',
+          [
+            {t:'Stok Adı',k:'StokAdi'},
+            {t:'Depo',k:'Depo'},
+            {t:'Üst Grup',k:'UstGrup'},
+            {t:'FSN',k:'FSN'},
+            {t:'Kalan',k:'Bal',num:1,f:(x)=>FMT(x.Bal)},
+            {t:'Min',k:'Min',num:1,f:(x)=>formatMinMax(x.Min)},
+            {t:'Açık (Min-Kalan)',k:'Gap',num:1,f:(x)=>FMT(x.Gap)},
+            {t:'Akıllı Yorum',k:'Smart',f:(x)=>x.Smart||'—'},
+          ]
+        );
+
+        renderRiskWrap(
+          'riskMax',
+          'Max Üstü',
+          `${fmtMonthLabel(curMonth)} • Etki=(Kalan-Max) • Aşırı stok odağı`,
+          packMax,
+          'max',
+          [
+            {t:'Stok Adı',k:'StokAdi'},
+            {t:'Depo',k:'Depo'},
+            {t:'Üst Grup',k:'UstGrup'},
+            {t:'FSN',k:'FSN'},
+            {t:'Kalan',k:'Bal',num:1,f:(x)=>FMT(x.Bal)},
+            {t:'Max',k:'Max',num:1,f:(x)=>formatMinMax(x.Max)},
+            {t:'Fazla (Kalan-Max)',k:'Gap',num:1,f:(x)=>FMT(x.Gap)},
+            {t:'Akıllı Yorum',k:'Smart',f:(x)=>x.Smart||'—'},
+          ]
+        );
+
+        renderRiskWrap(
+          'riskExcess',
+          'Aşırı Stoklar',
+          `${fmtMonthLabel(curMonth)} • Max üstü verisinden türetilir • Sermaye bağlama odağı`,
+          packExcess,
+          'excess',
+          [
+            {t:'Stok Adı',k:'StokAdi'},
+            {t:'Depo',k:'Depo'},
+            {t:'Üst Grup',k:'UstGrup'},
+            {t:'FSN',k:'FSN'},
+            {t:'Kalan',k:'Bal',num:1,f:(x)=>FMT(x.Bal)},
+            {t:'Max',k:'Max',num:1,f:(x)=>formatMinMax(x.Max)},
+            {t:'Aşırı (Kalan-Max)',k:'Gap',num:1,f:(x)=>FMT(x.Gap)},
+            {t:'Akıllı Yorum',k:'Smart',f:(x)=>x.Smart||'—'},
+          ]
+        );
+      }
+
+      /* ============ ✅ Pareto Premium ============ */
+      function paretoListFromAgg(aggRows){
+        const arr = aggRows.slice().sort((a,b)=> (b.cik||0) - (a.cik||0));
+        const totalOut = arr.reduce((s,x)=>s+(x.cik||0),0) || 1;
+        let run = 0;
+        return arr.map((x,i)=>{
+          run += (x.cik||0);
+          return Object.assign({}, x, {
+            Sira: i+1,
+            OutPayPct: ((x.cik||0)/totalOut)*100,
+            KumPct: (run/totalOut)*100
+          });
+        });
+      }
+
+      function splitPareto80(list){
+        const top=[], tail=[];
+        for(const x of list){
+          if((x.KumPct||0) <= 80) top.push(x);
+          else tail.push(x);
+        }
+        if(!top.length && list.length) top.push(list[0]);
+        const topLast = top[top.length-1];
+        const cutPct = topLast ? (topLast.KumPct||0) : 0;
+        return { top, tail, cutPct };
+      }
+
+      function renderParetoPremium(rows,curMonth){
+        const cols = getCols();
+        const monthRows = rows.filter(r=>r.Donem===curMonth);
+
+        const mapD = new Map();
+        monthRows.forEach(r=>{
+          const k = r.Departman || 'Belirtilmemiş';
+          if(!mapD.has(k)) mapD.set(k, {Ad:k, dev:0, gir:0, cik:0, kal:0});
+          const g=mapD.get(k);
+          g.dev += r[cols.dev]||0;
+          g.gir += r[cols.gir]||0;
+          g.cik += r[cols.cik]||0;
+          g.kal += balanceOfRow(r,cols);
+        });
+        const deptList = paretoListFromAgg([...mapD.values()]);
+        const deptSplit = splitPareto80(deptList);
+
+        const mapS = new Map();
+        monthRows.forEach(r=>{
+          const k = `${r.Depo||'—'} • ${r.StokAdi||'—'}`;
+          if(!mapS.has(k)) mapS.set(k, {Ad:k, dev:0, gir:0, cik:0, kal:0});
+          const g=mapS.get(k);
+          g.dev += r[cols.dev]||0;
+          g.gir += r[cols.gir]||0;
+          g.cik += r[cols.cik]||0;
+          g.kal += balanceOfRow(r,cols);
+        });
+        const itemList = paretoListFromAgg([...mapS.values()]);
+        const itemSplit = splitPareto80(itemList);
+
+        const n = (RISK_UI.pareto && RISK_UI.pareto.n) ? RISK_UI.pareto.n : 120;
+
+        const kpiBlock = (list, split)=> {
+          const totalOut = list.reduce((s,x)=>s+(x.cik||0),0) || 0;
+          const topOut = split.top.reduce((s,x)=>s+(x.cik||0),0) || 0;
+          const topName = split.top[0] ? split.top[0].Ad : '—';
+          return `
+            <div class="risk-kpis" style="margin-top:0;">
+              <div class="risk-kpi">
+                <div class="cap">Toplam Grup</div>
+                <div class="val">${list.length.toLocaleString('tr-TR')}</div>
+                <div class="sub">Sıralama: Çıkan (azalan)</div>
+              </div>
+              <div class="risk-kpi">
+                <div class="cap">Toplam Çıkan</div>
+                <div class="val">${FMT(totalOut)}</div>
+                <div class="sub">${fmtMonthLabel(curMonth)} • filtreli veri</div>
+              </div>
+              <div class="risk-kpi">
+                <div class="cap">80% Grubu</div>
+                <div class="val">${split.top.length.toLocaleString('tr-TR')} satır</div>
+                <div class="sub">Pay: ${Math.round((topOut/(totalOut||1))*100)}% • eşik: ~${Math.round(split.cutPct)}%</div>
+              </div>
+              <div class="risk-kpi">
+                <div class="cap">En Büyük Satır</div>
+                <div class="val">${String(topName).slice(0,46)}</div>
+                <div class="sub">İlk satır genelde ana sürücü</div>
+              </div>
+            </div>
+          `;
+        };
+
+        const table = (list)=>`
+          <table class="risk-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Ad</th>
+                <th class="num">Devreden</th>
+                <th class="num">Giren</th>
+                <th class="num">Çıkan</th>
+                <th class="num">Kalan</th>
+                <th class="num">Pay %</th>
+                <th class="num">Kümülatif %</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${list.slice(0,n).map(x=>`
+                <tr>
+                  <td class="num">${x.Sira}</td>
+                  <td>${x.Ad}</td>
+                  <td class="num">${FMT(x.dev||0)}</td>
+                  <td class="num">${FMT(x.gir||0)}</td>
+                  <td class="num">${FMT(x.cik||0)}</td>
+                  <td class="num">${FMT(x.kal||0)}</td>
+                  <td class="num">${Math.round(x.OutPayPct||0)} %</td>
+                  <td class="num">${Math.round(x.KumPct||0)} %</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+          ${list.length>n ? `<div class="note" style="margin:8px 2px 2px;">Not: ${list.length.toLocaleString('tr-TR')} satır var. İlk ${n} gösteriliyor.</div>`:''}
+        `;
+
+        const controls = `
+          <div class="risk-controls" data-risk="pareto" style="margin-top:10px;">
+            <div class="left" style="min-width:220px;">
+              <span class="cap">Satır Limiti</span>
+              <select id="paretoLimit">
+                ${[60,120,200,300,500].map(v=>`<option value="${v}" ${v===n?'selected':''}>${v}</option>`).join('')}
+              </select>
+              <div class="hint">Pareto tablolarında gösterilecek maksimum satır</div>
+            </div>
+            <div class="right">
+              <span class="risk-chip"><b>Not:</b> Pareto %80 eşiği otomatik hesaplanır.</span>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('paretoDeptPremium').innerHTML = `
+          <div class="risk-title">Pareto 80/20 — Departman</div>
+          <div class="risk-sub">${fmtMonthLabel(curMonth)} • Çıkan tutara/miktara göre</div>
+          ${kpiBlock(deptList, deptSplit)}
+          ${controls}
+          <details class="risk-group" open>
+            <summary>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <span class="risk-pill mid"><span class="dot"></span>80% Çıkan Grubu</span>
+                <span class="risk-chip">${deptSplit.top.length.toLocaleString('tr-TR')} satır</span>
+              </div>
+              <span class="risk-chip">Kümülatif: ~${Math.round(deptSplit.cutPct)}%</span>
+            </summary>
+            <div class="risk-body">${deptSplit.top.length?table(deptSplit.top):`<div class="risk-empty">Kayıt yok.</div>`}</div>
+          </details>
+          <details class="risk-group">
+            <summary>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <span class="risk-pill low"><span class="dot"></span>Kuyruk</span>
+                <span class="risk-chip">${deptSplit.tail.length.toLocaleString('tr-TR')} satır</span>
+              </div>
+              <span class="risk-chip">Kalan %20+</span>
+            </summary>
+            <div class="risk-body">${deptSplit.tail.length?table(deptSplit.tail):`<div class="risk-empty">Kayıt yok.</div>`}</div>
+          </details>
+        `;
+
+        document.getElementById('paretoItemPremium').innerHTML = `
+          <div class="risk-title">Pareto 80/20 — Depo • Stok</div>
+          <div class="risk-sub">${fmtMonthLabel(curMonth)} • Çıkan tutara/miktara göre</div>
+          ${kpiBlock(itemList, itemSplit)}
+          ${controls}
+          <details class="risk-group" open>
+            <summary>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <span class="risk-pill mid"><span class="dot"></span>80% Çıkan Grubu</span>
+                <span class="risk-chip">${itemSplit.top.length.toLocaleString('tr-TR')} satır</span>
+              </div>
+              <span class="risk-chip">Kümülatif: ~${Math.round(itemSplit.cutPct)}%</span>
+            </summary>
+            <div class="risk-body">${itemSplit.top.length?table(itemSplit.top):`<div class="risk-empty">Kayıt yok.</div>`}</div>
+          </details>
+          <details class="risk-group">
+            <summary>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <span class="risk-pill low"><span class="dot"></span>Kuyruk</span>
+                <span class="risk-chip">${itemSplit.tail.length.toLocaleString('tr-TR')} satır</span>
+              </div>
+              <span class="risk-chip">Kalan %20+</span>
+            </summary>
+            <div class="risk-body">${itemSplit.tail.length?table(itemSplit.tail):`<div class="risk-empty">Kayıt yok.</div>`}</div>
+          </details>
+        `;
+
+        const wire = ()=>{
+          const sel = document.getElementById('paretoLimit');
+          if(!sel) return;
+          sel.onchange = ()=>{
+            RISK_UI.pareto = RISK_UI.pareto || {};
+            RISK_UI.pareto.n = parseInt(sel.value,10) || 120;
+            saveState();
+            rerenderRiskOnly();
+          };
+        };
+        wire();
+
+        enhanceAllTables(document.getElementById('panel-pareto'));
+      }
+
+      /* ---------------------- AI Text ---------------------- */
+      function buildAIText(rows,curMonth){
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+        const total=monthRows.reduce((a,r)=>a+balanceOfRow(r,cols),0);
+
+        const belowMin = monthRows.filter(r=>{
+          const bal=balanceOfRow(r,cols);
+          const th=thresholdsFromRow(r);
+          return th.min>0 && bal < th.min;
+        });
+
+        const aboveMax = monthRows.filter(r=>{
+          const bal=balanceOfRow(r,cols);
+          const th=thresholdsFromRow(r);
+          return th.max>0 && bal > th.max;
+        });
+
+        const noMove = monthRows.filter(r=>{
+          const gi=r[cols.gir]||0, co=r[cols.cik]||0;
+          return gi===0 && co===0 && !isGoodsInTransitRow(r);
+        });
+
+        const topDepo = groupMonthly(rows,'Depo',curMonth).rows.slice(0,3);
+
+        return `
+          <div class="ov-section-title">Özet</div>
+          <ul>
+            <li><strong>Seçili Ay:</strong> ${fmtMonthLabel(curMonth)}</li>
+            <li><strong>Toplam Kalan:</strong> ${FMT(total)}</li>
+            <li><strong>Min Altı:</strong> ${belowMin.length} kalem</li>
+            <li><strong>Max Üstü:</strong> ${aboveMax.length} kalem</li>
+            <li><strong>Hareketsiz (GIT hariç):</strong> ${noMove.length} kalem</li>
+          </ul>
+          <div class="ov-section-title" data-type="risk">Risk</div>
+          <ul>
+            <li>Min altı kalemlerde <strong>stokout</strong> riski vardır (sipariş/transfer önerilir).</li>
+            <li>Max üstü kalemlerde <strong>aşırı stok</strong> ve sermaye bağlama riski vardır.</li>
+            <li>Hareketsiz kalemler için <strong>kullanım/ayıklama</strong> planı yapılmalıdır.</li>
+          </ul>
+          <div class="ov-section-title" data-type="action">Hızlı Aksiyon</div>
+          <ul>
+            <li>Top depo yoğunluğu: ${topDepo.map(x=>`${x.Ad} (${FMT(x.kal)})`).join(', ') || '—'}</li>
+            <li>Min altı → tedarik planı / iç transfer; Max üstü → tüketim artırma / iade / farklı depoya kaydırma</li>
+          </ul>
+        `;
+      }
+
+      function renderAll(){
+        if(!RAW.length){return;}
+        const rows = applyFilters(RAW);
+
+        const months=[...new Set(RAW.map(r=>r.Donem))].sort();
+        ACTIVE_MONTH = months[months.length-1] || null;
+        const curMonth = currentMonthFromFilters();
+
+        renderKPI(rows,curMonth);
+        renderMgmtSummary(rows,curMonth);
+
+        renderOverviewCard('ov-card-class','Depo Sınıfı','DepoSinifi',rows,curMonth);
+        renderOverviewCard('ov-card-depo','Depo','Depo',rows,curMonth,{ limit: 0 });
+        renderOverviewCard('ov-card-fsn','FSN Class','FSN',rows,curMonth);
+
+        renderCompare(rows,curMonth);
+
+        renderRiskPages(rows,curMonth);
+        renderParetoPremium(rows,curMonth);
+
+        document.getElementById('aiAuto').textContent = `Seçili ay: ${fmtMonthLabel(curMonth)} • Satır: ${rows.filter(r=>r.Donem===curMonth).length.toLocaleString('tr-TR')}`;
+
+        enhanceAllTables(document);
+      }
+
+      /* ---------------------- Tabs ---------------------- */
+      function setTab(tab){
+        document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
+        document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+        const el=document.getElementById('panel-'+tab);
+        if(el) el.classList.add('active');
+      }
+      document.getElementById('tabs').addEventListener('click',e=>{
+        const t=e.target.closest('.tab'); if(!t) return;
+        setTab(t.dataset.tab);
+      });
+
+      /* ---------------------- Mode Switch ---------------------- */
+      function initAnalysisUI(){
+        const sw=document.getElementById('modeSwitch'); if(!sw)return;
+        [...sw.querySelectorAll('button')].forEach(btn=>{
+          btn.classList.toggle('active', btn.dataset.mode === ANALYSIS_MODE);
+        });
+      }
+      document.getElementById('modeSwitch').addEventListener('click',e=>{
+        const b=e.target.closest('button'); if(!b)return;
+        ANALYSIS_MODE=b.dataset.mode;
+        initAnalysisUI();
+        renderAll();
+        saveState();
+      });
+
+      /* ---------------------- Dropdown open/close ---------------------- */
+      const msEls=[...document.querySelectorAll('.ddbox')];
+      msEls.forEach(ms=>{
+        const btn=ms.querySelector('button');
+        btn.addEventListener('click',e=>{
+          e.stopPropagation();
+          msEls.forEach(x=>{if(x!==ms)x.classList.remove('open');});
+          ms.classList.toggle('open');
+        });
+      });
+      document.body.addEventListener('click',e=>{
+        if(!e.target.closest('.ddbox'))msEls.forEach(x=>x.classList.remove('open'));
+      });
+
+      /* ---------------------- Upload / Clear / Save ---------------------- */
+      document.getElementById('btnUpload').onclick=()=>document.getElementById('file').click();
+      document.getElementById('btnClear').onclick=()=>{
+        FILTERS={Donem:[],DepoSinifi:[],Depo:[],FSN:[],MTRL:[],UstGrup:[],AltGrup:[]};
+        buildMS(); renderAll(); saveState();
+      };
+
+      function exportSingleHTML(){
+        try{
+          if(RAW && RAW.length){
+            const payload={raw:RAW,filters:FILTERS,analysis:ANALYSIS_MODE,risk:RISK_UI,ts:new Date().toISOString()};
+            const json=JSON.stringify(payload);
+            const jsonSafe=json.replace(new RegExp('<'+'/script','gi'),'<\\/script');
+            document.getElementById('EMBED_DATA').textContent=jsonSafe;
+          }
+          const html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+          const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+          const a=document.createElement('a');
+          const ts=new Date().toISOString().replace(/[:.]/g,'-');
+          a.download=`AVESORO-BI-rapor-${ts}.html`;
+          a.href=URL.createObjectURL(blob);
+          document.body.appendChild(a);a.click();
+          setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},0);
+          msg('Tek dosya indirildi (veri + ayarlar gömülü). Bu HTML’yi istediğiniz cihazda açabilirsiniz.',true);
+        }catch(err){
+          console.error(err);
+          msg('Kaydetme başarısız: '+(err.message||err),false);
+        }
+      }
+      document.getElementById('btnSave').addEventListener('click',exportSingleHTML);
+
+      document.getElementById('file').addEventListener('change',async e=>{
+        const f=e.target.files[0]; if(!f)return;
+        try{
+          const ext=(f.name.split('.').pop()||'').toLowerCase();
+          if(ext==='csv'){
+            RAW=parseCSV(await f.text());
+          }else{
+            if(!window.XLSX){ msg('Excel kütüphanesi yüklenemedi. İnternet gerekir veya CSV yükleyin.',false); return; }
+            const buf=await f.arrayBuffer();
+            const wb=XLSX.read(buf,{type:'array'});
+            const first=wb.SheetNames[0];
+            RAW=normalizeRows(XLSX.utils.sheet_to_json(wb.Sheets[first],{defval:''}));
+          }
+
+          const months=[...new Set(RAW.map(r=>r.Donem))].sort();
+          ACTIVE_MONTH=months[months.length-1]||null;
+
+          if(!FROM_EMBED) loadState();
+          buildMS();
+          renderAll();
+
+          msg(`Veri yüklendi. Satır: <b>${RAW.length.toLocaleString('tr-TR')}</b>`,true);
+        }catch(err){
+          console.error(err);
+          msg('Dosya okunamadı: '+(err.message||err),false);
+        }finally{ e.target.value=''; }
+      });
+
+      /* ---------------------- Embedded load ---------------------- */
+      (function(){
+        const el=document.getElementById('EMBED_DATA');
+        if(!el)return;
+        try{
+          const pack=JSON.parse(el.textContent||'{}');
+          if(pack && Array.isArray(pack.raw) && pack.raw.length){
+            RAW=pack.raw;
+            FILTERS=Object.assign(FILTERS,pack.filters||{});
+            if(pack.analysis)ANALYSIS_MODE=pack.analysis;
+            if(pack.risk) RISK_UI=Object.assign(RISK_UI, pack.risk);
+            FROM_EMBED=true;
+
+            const months=[...new Set(RAW.map(r=>r.Donem))].sort();
+            ACTIVE_MONTH=months[months.length-1]||null;
+
+            initAnalysisUI();
+            buildMS();
+            renderAll();
+            msg(`Gömülü veri yüklendi. Satır: <b>${RAW.length.toLocaleString('tr-TR')}</b>`,true);
+          }else{
+            initAnalysisUI();
+            msg('Excel/CSV yükleyerek başlayın.',true);
+          }
+        }catch(e){
+          initAnalysisUI();
+          msg('Excel/CSV yükleyerek başlayın.',true);
+        }
+      })();
+
+      /* ---------------------- AI Panel ---------------------- */
+      document.getElementById('btnAuto').addEventListener('click',()=>{
+        if(!RAW.length){ document.getElementById('aiOut').innerHTML='—'; return; }
+        const rows = applyFilters(RAW);
+        const curMonth=currentMonthFromFilters();
+        document.getElementById('aiOut').innerHTML = buildAIText(rows,curMonth);
+      });
+
+      /* ---------------------- Assistant (Popup) ---------------------- */
+      function addAssistantMessage(role,text){
+        const wrap=document.getElementById('assistMessages');
+        const msgEl=document.createElement('div');
+        msgEl.className='assist-msg '+(role==='user'?'user':'bot');
+        const bubble=document.createElement('div');
+        bubble.className='assist-bubble';
+        bubble.innerHTML=String(text).replace(/\n/g,'<br>');
+        msgEl.appendChild(bubble);
+        wrap.appendChild(msgEl);
+        wrap.scrollTop=wrap.scrollHeight;
+      }
+
+      function generateAssistantAnswer(q){
+        if(!RAW.length) return 'Önce Excel/CSV yükleyelim.';
+        const rows=applyFilters(RAW);
+        const curMonth=currentMonthFromFilters();
+        const cols=getCols();
+        const monthRows=rows.filter(r=>r.Donem===curMonth);
+
+        const qq=deaccent(q);
+        if(qq.includes('genel') || qq.includes('ozet')){
+          const total=monthRows.reduce((a,r)=>a+balanceOfRow(r,cols),0);
+          const topDepo=groupMonthly(rows,'Depo',curMonth).rows.slice(0,3);
+          return `Seçili ay: ${fmtMonthLabel(curMonth)}\nToplam kalan: ${FMT(total)}\nTop depolar: ${topDepo.map(x=>`${x.Ad} (${FMT(x.kal)})`).join(', ') || '—'}`;
+        }
+        if(qq.includes('asiri') || qq.includes('max')){
+          const pack = buildMaxPack(rows,curMonth);
+          const flat = pack.groups.flatMap(g=>g.rows);
+          const top=flat.slice(0,5).map(r=>`${r.Depo||'—'} • ${r.StokAdi||'—'} (Fazla: ${FMT(r.Gap||0)})`).join('\n');
+          return `Max üstü / aşırı stok: ${flat.length} kalem\nİlk örnekler:\n${top || '—'}`;
+        }
+        if(qq.includes('min')){
+          const pack = buildMinPack(rows,curMonth);
+          const flat = pack.groups.flatMap(g=>g.rows);
+          const top=flat.slice(0,5).map(r=>`${r.Depo||'—'} • ${r.StokAdi||'—'} (Açık: ${FMT(r.Gap||0)})`).join('\n');
+          return `Min altı: ${flat.length} kalem\nİlk örnekler:\n${top || '—'}`;
+        }
+        if(qq.includes('hareketsiz') || qq.includes('hic hareket')){
+          const pack = buildNoMovePack(rows,curMonth);
+          const flat = pack.groups.flatMap(g=>g.rows);
+          const top=flat.slice(0,5).map(r=>`${r.Depo||'—'} • ${r.StokAdi||'—'} (Kalan: ${FMT(r.Bal||0)})`).join('\n');
+          return `Hareketsiz (GIT hariç): ${flat.length} kalem\nİlk örnekler:\n${top || '—'}`;
+        }
+
+        return `Sorunuzu şöyle de sorabilirsiniz:\n• “Genel özet ver”\n• “Aşırı stoklar hangileri?”\n• “Min altı olanlar hangileri?”\n• “Hareketsiz stokları göster”`;
+      }
+
+      function assistantAsk(q){
+        addAssistantMessage('user',q);
+        const a=generateAssistantAnswer(q);
+        addAssistantMessage('bot',a);
+      }
+
+      (function initAssistantUI(){
+        const panel=document.getElementById('assistantPanel');
+        const btnHelp=document.getElementById('btnHelp');
+        const btnClose=document.getElementById('assistClose');
+        const form=document.getElementById('assistForm');
+        const input=document.getElementById('assistInput');
+
+        const syncBtn=()=>{
+          const open=panel.classList.contains('open');
+          btnHelp.classList.toggle('active', open);
+        };
+
+        btnHelp.addEventListener('click',()=>{
+          panel.classList.toggle('open');
+          syncBtn();
+          if(panel.classList.contains('open')) input.focus();
+        });
+        btnClose.addEventListener('click',()=>{
+          panel.classList.remove('open');
+          syncBtn();
+        });
+
+        form.addEventListener('submit',e=>{
+          e.preventDefault();
+          const q=input.value.trim();
+          if(!q)return;
+          assistantAsk(q);
+          input.value='';
+        });
+
+        document.querySelectorAll('.assist-quick button').forEach(b=>{
+          b.addEventListener('click',()=>assistantAsk(b.dataset.q));
+        });
+
+        syncBtn();
+      })();
+
+      /* ✅ Shimmer: hover başına 1 kez (mouse çıkınca reset) */
+      (function initShimmerOnce(){
+        const ag = document.getElementById('actionGroup');
+        if(!ag) return;
+
+        let t = null;
+        const dur = 1100;
+
+        const playOnce = ()=>{
+          if (ag.dataset.flashed === '1') return;
+          ag.dataset.flashed = '1';
+          ag.classList.add('flash');
+          clearTimeout(t);
+          t = setTimeout(()=> ag.classList.remove('flash'), dur);
+        };
+
+        ag.addEventListener('mouseenter', playOnce);
+        ag.addEventListener('mouseleave', ()=>{
+          ag.dataset.flashed = '0';
+          ag.classList.remove('flash');
+          clearTimeout(t);
+        });
+      })();
+
+      /* ✅ Assistant Pulse: hover başına 1 kez (mouse çıkınca reset) */
+      (function initAssistantPulse(){
+        const btn = document.getElementById('btnHelp');
+        if(!btn) return;
+
+        let t = null;
+        const dur = 950;
+
+        const playOnce = ()=>{
+          if(btn.dataset.pulsed === '1') return;
+          btn.dataset.pulsed = '1';
+          btn.classList.add('pulse-once');
+          clearTimeout(t);
+          t = setTimeout(()=> btn.classList.remove('pulse-once'), dur);
+        };
+
+        btn.addEventListener('mouseenter', playOnce);
+        btn.addEventListener('mouseleave', ()=>{
+          btn.dataset.pulsed = '0';
+          btn.classList.remove('pulse-once');
+          clearTimeout(t);
+        });
+      })();
+  </script>
+</body>
+</html>
