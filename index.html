@@ -1351,20 +1351,16 @@
    ✅ AUTH (Login + User Admin) — Premium Modal
    ========================= */
 .auth-backdrop{
-  position:fixed; inset:0;
   position:fixed;
-  background:rgba(2,6,23,.55);
+  inset:0;
+  background:rgba(2,6,23,.62);
+  z-index:99999;          /* ✅ yükselt */
   display:none;
   align-items:center;
   justify-content:center;
-  z-index:9999;
   padding:16px;
   overflow:hidden;
-
-  /* ✅ watermark için */
-  overflow:hidden;
 }
-
 .auth-backdrop.open{ display:flex; }
 
 .auth-modal{
@@ -1550,18 +1546,100 @@
 }
 .user-mini-btn:hover{ transform:translateY(-1px); }
 
-/* ✅ Watermark CSS */
+/* ✅ Login arkasına amblem (watermark) */
 .auth-backdrop.open::before{
   content:"";
   position:absolute;
   inset:0;
   background:url("logo.png") center / 520px no-repeat;
-  opacity:.14;
+  opacity:.18;
   filter: drop-shadow(0 30px 60px rgba(0,0,0,.35));
   pointer-events:none;
 }
 .auth-modal{ position:relative; z-index:1; }
+/* ✅ Login açıkken arkadaki her şeyi tamamen gizle */
+body.auth-lock header,
+body.auth-lock main#appMain,
+body.auth-lock #assistantPanel{
+  display:none !important;
+}
 
+/* ✅ Login overlay’i her şeyin üstünde + arkası opak olsun (hiçbir şey görünmesin) */
+.auth-backdrop{
+  background:#6b7280 !important;   /* opak gri: alttaki içerik görünmez */
+  z-index:99999 !important;
+}
+/* ✅ Login açıkken arka fon kırık beyaz + ortada AVESORO BI */
+.auth-backdrop{
+  background:#fbfaf6 !important;     /* kırık beyaz */
+  z-index:99999 !important;
+}
+
+/* Eski logo watermark varsa kapat */
+.auth-backdrop::before{ display:none !important; }
+
+/* ✅ AVESORO BI yazısını login'in ÜSTÜNE taşı (CSS'in en altına) */
+
+/* Backdrop katman düzeni */
+.auth-backdrop{
+  position:fixed;
+  inset:0;
+  isolation:isolate;
+}
+
+/* ✅ Login arka planı: kırık beyaz */
+.auth-backdrop{
+  background:#fbfaf6 !important;   /* kırık beyaz */
+}
+
+/* ✅ Premium, kabartmalı AVESORO BI yazısı */
+.auth-backdrop.open::after{
+  content:"AVESORO BI";
+  position:absolute;
+  left:50%;
+  top:30%;
+  transform:translate(-50%,-50%);
+  font-size:92px;
+  font-weight:900;
+  letter-spacing:12px;
+  text-transform:uppercase;
+  white-space:nowrap;
+  pointer-events:none;
+
+  /* gerçek altın hissi: gradient text */
+  background: linear-gradient(
+    180deg,
+    rgba(255,245,214,.95) 0%,
+    rgba(250,204,21,.95) 22%,
+    rgba(234,179,8,.92) 55%,
+    rgba(209,147,0,.88) 78%,
+    rgba(255,236,179,.90) 100%
+  );
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+
+  /* watermark: çok baskın olmasın */
+  opacity:.28;
+
+  /* kabartma / bevel */
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.40),      /* üst highlight */
+    0 -1px 0 rgba(120,80,0,.10),        /* alt ridge */
+    0 18px 60px rgba(234,179,8,.18),    /* altın glow */
+    0 42px 110px rgba(15,23,42,.12);    /* derin gölge */
+  filter: saturate(1.1) contrast(1.05);
+}
+
+/* mobil uyum */
+@media (max-width: 640px){
+  .auth-backdrop.open::after{
+    font-size:52px;
+    letter-spacing:7px;
+    top:26%;
+    opacity:.26;
+  }
+}
 </style>
 </head>
 <body>
@@ -1970,13 +2048,24 @@ function clearSession(){
 
 function openModal(id){
   const el = document.getElementById(id);
-  if(el){ el.classList.add('open'); el.setAttribute('aria-hidden','false'); }
-}
-function closeModal(id){
-  const el = document.getElementById(id);
-  if(el){ el.classList.remove('open'); el.setAttribute('aria-hidden','true'); }
+  if(el){
+    el.classList.add('open');
+    el.setAttribute('aria-hidden','false');
+    document.body.classList.add('auth-lock');  // ✅ ARKAYI GİZLE
+  }
 }
 
+function closeModal(id){
+  const el = document.getElementById(id);
+  if(el){
+    el.classList.remove('open');
+    el.setAttribute('aria-hidden','true');
+  }
+
+  // ✅ başka açık auth modal var mı kontrol et
+  const anyOpen = document.querySelector('.auth-backdrop.open');
+  if(!anyOpen) document.body.classList.remove('auth-lock');
+}
 function setAppLocked(locked){
   const main = document.getElementById('appMain');
   const btnUpload = document.getElementById('btnUpload');
