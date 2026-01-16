@@ -3911,6 +3911,102 @@ document.addEventListener('DOMContentLoaded', ()=>{ initAuth(); });
           clearTimeout(t);
         });
       })();
-  </script>
+  <script>
+/* =========================
+   ✅ RAW URL’den CSV/XLSX yükleme
+   Kullanım:
+   - Sayfa linki:  .../index.html?raw=RAW_URL
+   - veya localStorage’a kaydedip otomatik yükler
+   ========================= */
+const RAW_URL_KEY = 'AVESORO_RAW_URL_V1';
+
+function getQueryParam(name){
+  try{ return new URLSearchParams(location.search).get(name); }
+  catch(e){ return null; }
+}
+
+async function loadFromRawUrl(url){
+  url = String(url || '').trim();
+  if(!url) return;
+
+  try{
+    msg(`RAW verisi indiriliyor...`, true);
+
+    const res = await fetch(url, { cache: 'no-store' });
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    // 404 sayfası vs. gelirse yakalamak için:
+    const ct = (res.headers.get('content-type') || '').toLowerCase();
+    const ext = url.split('?')[0].toLowerCase();
+
+    let rows = [];
+
+    // CSV ise text
+    if(ext.endsWith('.csv') || ct.includes('text/csv') || ct.includes('text/plain')){
+      const text = await res.text();
+      rows = parseCSV(text);
+    } else {
+      // XLSX/XLS vb. ise arrayBuffer
+      const buf = await res.arrayBuffer();
+      const wb = XLSX.read(buf, { type: 'array' });
+      const wsName = wb.SheetNames[0];
+      const ws = wb.Sheets[wsName];
+      const json = XLSX.utils.sheet_to_json(ws, { defval: '' });
+      rows = normalizeRows(json);
+    }
+
+    // ✅ Uygulamaya “veriyi oturt”
+    ingestRows(rows, `RAW: ${url}`);
+
+    // İstersen URL’yi hatırla
+    try{ localStorage.setItem(RAW_URL_KEY, url); }catch(e){}
+    msg(`RAW yüklendi ✅ Satır: ${rows.length.toLocaleString('tr-TR')}`, true);
+  }catch(err){
+    console.error(err);
+    msg(`RAW okunamadı ❌ (${err.message || err})`, false);
+  }
+}
+
+/* Uygulamaya veri bağlama (senin akışına göre tek noktadan) */
+function ingestRows(rows, sourceLabel=''){
+  RAW = Array.isArray(rows) ? rows : [];
+  // Filtre seçeneklerini kur
+  buildMS();
+
+  // Aktif ay yoksa son aya çek
+  if(!ACTIVE_MONTH){
+    ACTIVE_MONTH = (ALL.Donem && ALL.Donem.length) ? ALL.Donem[ALL.Donem.length - 1] : null;
+  }
+  // Dönem filtresi boşsa aktif ayı seç (istersen kaldır)
+  if((FILTERS.Donem || []).length === 0 && ACTIVE_MONTH){
+    FILTERS.Donem = [ACTIVE_MONTH];
+    updateMSLabels();
+  }
+
+  // Senin projende bu fonksiyonlar zaten var:
+  // - renderAll() yoksa: renderKPI/applyFilters/renderCompare/rerenderRiskOnly çağırırsın
+  if(typeof renderAll === 'function'){
+    renderAll();
+  }else{
+    const rowsF = applyFilters(RAW);
+    const cur = currentMonthFromFilters();
+    renderKPI(rowsF, cur);
+    renderMgmtSummary(rowsF, cur);
+    renderCompare(rowsF, cur);
+    rerenderRiskOnly();
+  }
+
+  enhanceAllTables(document);
+  saveState();
+}
+
+/* Sayfa açılışında ?raw= ile otomatik yükle */
+document.addEventListener('DOMContentLoaded', ()=>{
+  const qp = getQueryParam('raw');
+  const saved = (()=>{ try{return localStorage.getItem(RAW_URL_KEY);}catch(e){return null;} })();
+  const url = qp || saved;
+  if(url) loadFromRawUrl(url);
+});
+</script>
 </body>
 </html>
