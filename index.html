@@ -2943,7 +2943,7 @@ async function autoLoadRawIfNeeded(){
     // filtre label + ekranı bas
     updateMSLabels();
     if(typeof renderAll === "function") renderAll();
-    msg("RAW verisi otomatik yüklendi ✅", true);
+    msg("", true);
   }catch(err){
     console.error(err);
     msg("RAW otomatik yükleme hatası: " + (err?.message || err), false);
