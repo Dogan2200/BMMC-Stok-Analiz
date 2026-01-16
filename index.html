@@ -2241,7 +2241,7 @@ document.addEventListener('DOMContentLoaded', ()=>{ initAuth(); });
 // ... parseComparatorExpression vs. aşağıdaki tüm kod burada kalmalı ...
 </script>
 <script>
-/* TABLOLARDA SIRALAMA + FİLTRE
+/* TABLOLARDA SIRALAMA + FİLTRE */
       function parseComparatorExpression(raw){
         const s = (raw||'').trim();
         if(!s) return null;
@@ -3912,11 +3912,14 @@ document.addEventListener('DOMContentLoaded', ()=>{ initAuth(); });
         });
       })();
   <script>
+  // ... (senin uzun ana kodun)
+  (function initAssistantPulse(){
+    ...
+  })();
+</script>
+<script>
 /* =========================
    ✅ RAW URL’den CSV/XLSX yükleme
-   Kullanım:
-   - Sayfa linki:  .../index.html?raw=RAW_URL
-   - veya localStorage’a kaydedip otomatik yükler
    ========================= */
 const RAW_URL_KEY = 'AVESORO_RAW_URL_V1';
 
