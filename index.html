@@ -1352,13 +1352,19 @@
    ========================= */
 .auth-backdrop{
   position:fixed; inset:0;
+  position:fixed;
   background:rgba(2,6,23,.55);
   display:none;
   align-items:center;
   justify-content:center;
   z-index:9999;
   padding:16px;
+  overflow:hidden;
+
+  /* ✅ watermark için */
+  overflow:hidden;
 }
+
 .auth-backdrop.open{ display:flex; }
 
 .auth-modal{
@@ -1543,10 +1549,22 @@
   cursor:pointer;
 }
 .user-mini-btn:hover{ transform:translateY(-1px); }
-    </style>
-  </head>
 
-  <body>
+/* ✅ Watermark CSS */
+.auth-backdrop.open::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:url("logo.png") center / 520px no-repeat;
+  opacity:.14;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,.35));
+  pointer-events:none;
+}
+.auth-modal{ position:relative; z-index:1; }
+
+</style>
+</head>
+<body>
 <header>
   <div class="container">
     <div class="topbar">
@@ -1633,25 +1651,26 @@
       <button class="auth-close" id="loginClose" type="button" title="Kapat">✕</button>
     </div>
 
-    <div class="auth-body">
-      <div class="auth-grid">
-        <div class="auth-field">
-          <label>Kullanıcı Adı</label>
-          <input id="loginUser" type="text" autocomplete="off" />
-        </div>
-        <div class="auth-field">
-          <label>Şifre</label>
-          <input id="loginPass" type="password" autocomplete="off" />
-        </div>
-      </div>
+<div class="auth-body">
+  <div class="auth-grid">
+    <div class="auth-field">
+      <label>Kullanıcı Adı</label>
+      <input id="loginUser" type="text" autocomplete="off" placeholder="kullanıcı adı" />
+    </div>
 
-  <div class="auth-actions">
-  <button class="auth-btn primary" id="loginBtn" type="button">Giriş Yap</button>
-</div>
-
-      <div class="auth-note" id="loginNote" style="display:none;"></div>
+    <div class="auth-field">
+      <label>Şifre</label>
+      <input id="loginPass" type="password" autocomplete="off" placeholder="••••••••" />
     </div>
   </div>
+
+  <div class="auth-actions">
+    <button class="auth-btn primary" id="loginBtn" type="button">Giriş Yap</button>
+  </div>
+
+  <div class="auth-note" id="loginNote" style="display:none;"></div>
+</div>
+</div>
 </div>
 
 <!-- =========================
@@ -2131,11 +2150,9 @@ async function initAuth(){
     closeModal('loginBackdrop');
   }
 function clearLoginForm(){
-  const uEl = document.getElementById('loginUser');
   const pEl = document.getElementById('loginPass');
   const note = document.getElementById('loginNote');
 
-  if(uEl) uEl.value = '';
   if(pEl) pEl.value = '';
 
   if(note){
@@ -2150,22 +2167,21 @@ function clearLoginForm(){
   const loginNote  = document.getElementById('loginNote');
 
      // ✅ Giriş Yap
-  loginBtn && (loginBtn.onclick = async ()=>{
-    const u = (document.getElementById('loginUser')?.value || '').trim();
-    const p = (document.getElementById('loginPass')?.value || '').trim();
+loginBtn && (loginBtn.onclick = async ()=>{
+  const u = (document.getElementById('loginUser')?.value || '').trim();
+const p = (document.getElementById('loginPass')?.value || '').trim();
+const res = await login(u, p);
 
-    const res = await login(u, p);
-    if(!res.ok){
-      setNote(loginNote, res.msg, 'err');
-      return;
-    }
+  if(!res.ok){
+    setNote(document.getElementById('loginNote'), res.msg, 'err');
+    return;
+  }
 
-    setNote(loginNote, 'Giriş başarılı.', 'ok');
-    closeModal('loginBackdrop');
-    setAppLocked(false);
-    paintHeaderUser(res.session);
-    applyRoleUI(res.session);
-  });
+  closeModal('loginBackdrop');
+  setAppLocked(false);
+  paintHeaderUser(res.session);
+  applyRoleUI(res.session);
+});
 
   // ✅ Kapat
   loginClose && (loginClose.onclick = ()=> closeModal('loginBackdrop'));
@@ -3780,7 +3796,8 @@ document.addEventListener('DOMContentLoaded', ()=>{ initAuth(); });
             msg(`Gömülü veri yüklendi. Satır: <b>${RAW.length.toLocaleString('tr-TR')}</b>`,true);
           }else{
             initAnalysisUI();
-        }
+            msg('Excel/CSV yükleyerek başlayın.',true);
+          }
         }catch(e){
           initAnalysisUI();
           msg('Excel/CSV yükleyerek başlayın.',true);
