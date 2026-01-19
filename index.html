@@ -1732,26 +1732,26 @@ body.auth-lock #assistantPanel{
       <button class="auth-close" id="loginClose" type="button" title="Kapat">✕</button>
     </div>
 
-<div class="auth-body">
-  <div class="auth-grid">
-    <div class="auth-field">
-      <label>Kullanıcı Adı</label>
-      <input id="loginUser" type="text" autocomplete="off" placeholder="kullanıcı adı" />
-    </div>
+    <div class="auth-body">
+      <div class="auth-grid">
+        <div class="auth-field">
+          <label>Kullanıcı Adı</label>
+          <input id="loginUser" type="text" autocomplete="off" placeholder="kullanıcı adı" />
+        </div>
 
-    <div class="auth-field">
-      <label>Şifre</label>
-      <input id="loginPass" type="password" autocomplete="off" placeholder="••••••••" />
+        <div class="auth-field">
+          <label>Şifre</label>
+          <input id="loginPass" type="password" autocomplete="off" placeholder="••••••••" />
+        </div>
+      </div>
+
+      <div class="auth-actions">
+        <button class="auth-btn primary" id="loginBtn" type="button">Giriş Yap</button>
+      </div>
+
+      <div class="auth-note" id="loginNote" style="display:none;"></div>
     </div>
   </div>
-
-  <div class="auth-actions">
-    <button class="auth-btn primary" id="loginBtn" type="button">Giriş Yap</button>
-  </div>
-
-  <div class="auth-note" id="loginNote" style="display:none;"></div>
-</div>
-</div>
 </div>
 
 <!-- =========================
@@ -1859,7 +1859,6 @@ body.auth-lock #assistantPanel{
         <button type="submit">Gönder</button>
       </form>
     </div>
-
     <main class="container" id="appMain">
       <input id="file" type="file" accept=".xlsx,.xls,.xlsm,.xlsb,.csv" style="display:none">
 
@@ -2479,6 +2478,141 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   await initAuth();
   await autoLoadRawIfNeeded();
 });
+
+function _readUsersFallback(){
+  try { return JSON.parse(localStorage.getItem(AUTH_USERS_KEY) || "[]") || []; }
+  catch { return []; }
+}
+function _writeUsersFallback(arr){
+  localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(arr || []));
+}
+
+const readUsersSafe  = (typeof readUsers  === "function") ? readUsers  : _readUsersFallback;
+const writeUsersSafe = (typeof writeUsers === "function") ? writeUsers : _writeUsersFallback;
+
+function normalizeUser(u){
+  return {
+    username: String(u.username || "").trim(),
+    role: (u.role === "admin" ? "admin" : "viewer"),
+    passHash: String(u.passHash || "").trim(),
+    createdAt: u.createdAt || new Date().toISOString(),
+    lastLogin: u.lastLogin || ""
+  };
+}
+
+function downloadJson(filename, obj){
+  const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function toastMsg(msg){
+  if(typeof toast === "function") toast(msg);
+  else alert(msg);
+}
+
+// ✅ Dışa aktar
+function exportUsersJSON(){
+  const users = (readUsersSafe() || []).map(normalizeUser);
+
+  // güvenlik: passHash var, plain şifre yok
+  const payload = {
+    app: "AVESORO BI",
+    type: "users",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    users
+  };
+
+  const fileName = `avesoro_users_${new Date().toISOString().slice(0,10)}.json`;
+  downloadJson(fileName, payload);
+  toastMsg("Kullanıcılar JSON olarak dışa aktarıldı.");
+}
+
+// ✅ İçe aktar (replace + admin garanti + merge opsiyonlu)
+async function importUsersJSONFromFile(file, { mode = "replace" } = {}){
+  if(!file) return;
+
+  const text = await file.text();
+  let parsed;
+  try { parsed = JSON.parse(text); }
+  catch { toastMsg("JSON okunamadı. Dosya bozuk olabilir."); return; }
+
+  const incoming = Array.isArray(parsed?.users) ? parsed.users : (Array.isArray(parsed) ? parsed : null);
+  if(!incoming){ toastMsg("JSON formatı geçersiz. 'users' listesi bulunamadı."); return; }
+
+  let newUsers = incoming.map(normalizeUser).filter(u => u.username && u.passHash);
+  if(!newUsers.length){ toastMsg("İçe aktarılacak geçerli kullanıcı bulunamadı."); return; }
+
+  // admin garanti: admin yoksa ekle (şifre hash için sha256 varsa 123 üretir, yoksa dokunmaz)
+  const hasAdmin = newUsers.some(u => u.username.toLowerCase() === "admin" && u.role === "admin");
+  if(!hasAdmin){
+    let adminHash = "";
+    if(typeof sha256 === "function"){
+      adminHash = await sha256("123");
+    }else{
+      // sha256 yoksa kullanıcıya söyleyelim (istersen var olan admin'i import etmelisin)
+      toastMsg("Uyarı: sha256 fonksiyonu bulunamadı. Admin eklenemedi. JSON içinde admin olmalı.");
+    }
+    if(adminHash){
+      newUsers.unshift({
+        username: "admin",
+        role: "admin",
+        passHash: adminHash,
+        createdAt: new Date().toISOString(),
+        lastLogin: ""
+      });
+    }
+  }
+
+  const current = (readUsersSafe() || []).map(normalizeUser);
+
+  if(mode === "merge"){
+    // username bazlı birleştir: gelen kayıt öncelikli
+    const map = new Map();
+    for(const u of current) map.set(u.username.toLowerCase(), u);
+    for(const u of newUsers) map.set(u.username.toLowerCase(), u);
+    newUsers = Array.from(map.values());
+  }
+
+  // replace (varsayılan): tamamen değiştir
+  writeUsersSafe(newUsers);
+
+  toastMsg(mode === "merge" ? "Kullanıcılar birleştirildi (merge)." : "Kullanıcılar içe aktarıldı (replace).");
+
+  // Eğer admin listesi ekranda render ediliyorsa yenile
+  if(typeof renderUsersTable === "function") renderUsersTable();
+  if(typeof refreshAdminUsers === "function") refreshAdminUsers();
+}
+
+// ✅ UI bağlama
+function wireUsersExportImportUI(){
+  const btnEx = document.getElementById("btnUsersExport");
+  const btnIm = document.getElementById("btnUsersImport");
+  const fileIn = document.getElementById("usersJsonFile");
+
+  if(btnEx) btnEx.addEventListener("click", exportUsersJSON);
+
+  if(btnIm && fileIn){
+    btnIm.addEventListener("click", () => fileIn.click());
+    fileIn.addEventListener("change", async () => {
+      const file = fileIn.files && fileIn.files[0];
+      fileIn.value = "";
+
+      if(!file) return;
+
+      // İstersen merge seçeneği de sorabiliriz; şimdilik replace yapıyoruz (en temiz)
+      // merge istersen burayı "merge" yapabilirsin:
+      await importUsersJSONFromFile(file, { mode: "replace" });
+    });
+  }
+}
 
 /* =========================
    TABLOLARDA SIRALAMA + FİLTRE
