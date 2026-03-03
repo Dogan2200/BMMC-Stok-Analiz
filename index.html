@@ -1643,6 +1643,208 @@ body.auth-lock #assistantPanel{
     opacity:.26;
   }
 }
+/* =========================
+   ✅ OUTLIER HERO — PROFESSIONAL ANALYTICS LOOK
+   ========================= */
+.outlier-hero{
+  margin:10px 0 14px;
+  padding:18px 18px 16px;
+  border-radius:24px;
+  border:1px solid rgba(226,232,240,.96);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96));
+  box-shadow:0 18px 48px rgba(15,23,42,.12);
+}
+
+.outlier-hero-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+  flex-wrap:wrap;
+}
+
+.outlier-hero-kicker{
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  color:#94a3b8;
+  margin-bottom:4px;
+}
+
+.outlier-hero-title{
+  font-size:18px;
+  font-weight:900;
+  color:#0f172a;
+  letter-spacing:.01em;
+  margin-bottom:4px;
+}
+
+.outlier-hero-sub{
+  font-size:12px;
+  color:#64748b;
+}
+
+.outlier-hero-badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:flex-end;
+}
+
+.outlier-hero-badges .outlier-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 11px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+  color:#334155;
+  border:1px solid rgba(226,232,240,.95);
+  background:#ffffff;
+  box-shadow:0 8px 20px rgba(15,23,42,.06);
+}
+
+.outlier-hero-badges .outlier-badge .dot{
+  width:8px;
+  height:8px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#facc15,#f59e0b);
+  box-shadow:0 0 0 4px rgba(250,204,21,.14);
+}
+
+.outlier-hero-grid{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:14px;
+}
+
+.outlier-focus-list,
+.outlier-action-panel{
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:18px;
+  background:rgba(255,255,255,.86);
+  padding:14px;
+  box-shadow:0 10px 28px rgba(15,23,42,.06);
+}
+
+.outlier-section-cap{
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  color:#94a3b8;
+  margin-bottom:12px;
+}
+
+.outlier-focus-item{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid #eef2f7;
+}
+.outlier-focus-item:last-child{
+  border-bottom:0;
+  padding-bottom:0;
+}
+
+.outlier-rank{
+  width:28px;
+  height:28px;
+  min-width:28px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:900;
+  color:#0f172a;
+  background:linear-gradient(135deg,#f8fafc,#e2e8f0);
+  border:1px solid rgba(203,213,225,.95);
+}
+
+.outlier-focus-title{
+  font-size:13px;
+  font-weight:900;
+  color:#111827;
+  line-height:1.35;
+  margin-bottom:3px;
+}
+
+.outlier-focus-sub{
+  font-size:12px;
+  color:#64748b;
+  line-height:1.45;
+}
+
+.outlier-action-list{
+  display:grid;
+  gap:10px;
+}
+
+.outlier-action{
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:14px;
+  background:#fff;
+  padding:12px 12px;
+  box-shadow:none;
+}
+
+.outlier-action .t{
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:#94a3b8;
+  margin-bottom:5px;
+}
+
+.outlier-action .d{
+  font-size:12px;
+  font-weight:700;
+  color:#111827;
+  line-height:1.45;
+}
+
+@media (max-width: 980px){
+  .outlier-hero-grid{
+    grid-template-columns:1fr;
+  }
+}
+/* ✅ Tıklamaları öldüren görünmez katmanlara karşı güvenlik */
+.auth-backdrop{ pointer-events:auto; }
+.auth-backdrop:not(.open){ pointer-events:none; }
+
+.filters::before,
+#panel-overview::before{
+  pointer-events:none !important;
+}
+.outlier-narrative{
+  margin-bottom:10px;
+  padding:16px 18px;
+  border-radius:18px;
+  border:1px solid rgba(226,232,240,.95);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96));
+  box-shadow:0 12px 30px rgba(15,23,42,.08);
+  font-size:12px;
+  color:#334155;
+  line-height:1.6;
+}
+.outlier-narrative ul{
+  margin:6px 0 8px 18px;
+  padding:0;
+}
+.outlier-narrative li{
+  margin-bottom:4px;
+}
+.outlier-narrative .ov-section-title{
+  margin-top:6px;
+}
 </style>
 </head>
 <body>
@@ -1852,6 +2054,7 @@ body.auth-lock #assistantPanel{
         <button data-q="Aşırı stoklar hangileri?">Aşırı stok</button>
         <button data-q="Min altı olanlar hangileri?">Min altı</button>
         <button data-q="Hareketsiz stokları göster.">Hareketsiz</button>
+        <button data-q="Outlier analizi özetini ver.">Outlier</button>
       </div>
 
       <form class="assist-input-row" id="assistForm">
@@ -1913,6 +2116,7 @@ body.auth-lock #assistantPanel{
         <div class="tab" data-tab="max">Max Üstü</div>
         <div class="tab" data-tab="excess">Aşırı Stoklar</div>
         <div class="tab" data-tab="pareto">Pareto 80/20</div>
+<div class="tab" data-tab="outlier">Outlier Analizi</div>
         <div class="tab" data-tab="ai">AI Asistan</div>
       </div>
 
@@ -1979,7 +2183,153 @@ body.auth-lock #assistantPanel{
           <div id="paretoItemPremium"></div>
         </div>
       </section>
+<!-- OUTLIER ANALİZİ -->
+<section class="panel" id="panel-outlier">
+  <div class="card">
+    <h3>Outlier Analizi — İstisna, Sapma ve Öncelikli İnceleme Alanları</h3>
 
+    <!-- Kontroller -->
+    <div class="risk-controls" style="margin-top:8px;">
+      <div class="left">
+        <span class="cap">Arama</span>
+        <input id="outlierSearch" type="text" placeholder="Stok, depo, grup, FSN ara..." />
+        <div class="hint">Seçili filtreler + seçili ay içinde aykırı kalemleri listeler.</div>
+      </div>
+
+      <div class="right">
+        <div>
+          <span class="cap">Metrik</span>
+          <select id="outlierMetric">
+            <option value="kal" selected>Kalan</option>
+            <option value="gir">Giren</option>
+            <option value="cik">Çıkan</option>
+          </select>
+        </div>
+
+        <div>
+          <span class="cap">Z Eşiği</span>
+          <select id="outlierZ">
+            <option value="2">2.0</option>
+            <option value="2.5" selected>2.5</option>
+            <option value="3">3.0</option>
+          </select>
+        </div>
+
+        <div>
+          <span class="cap">Gösterim</span>
+          <select id="outlierTopN">
+            <option value="50">50</option>
+            <option value="100" selected>100</option>
+            <option value="150">150</option>
+            <option value="200">200</option>
+            <option value="300">300</option>
+            <option value="500">500</option>
+          </select>
+        </div>
+
+        <div>
+          <span class="cap">İnceleme Boyutu</span>
+          <select id="outlierDim">
+            <option value="StokAdi" selected>Stok Adı</option>
+            <option value="Depo">Depo</option>
+            <option value="UstGrup">Üst Grup</option>
+            <option value="AltGrup">Alt Grup</option>
+            <option value="MTRL">MTRL Group</option>
+            <option value="FSN">FSN</option>
+            <option value="Departman">Departman</option>
+          </select>
+        </div>
+      </div>
+    </div>
+<!-- ✅ YÖNETİCİ ÖZETİ (Premium) -->
+<div class="outlier-hero" id="outlierExec">
+  <div class="outlier-hero-top">
+    <div>
+      <div class="outlier-hero-kicker">Outlier Analizi</div>
+      <div class="outlier-hero-title">Aykırı Değer İzleme ve İstisna Yönetimi</div>
+      <div class="outlier-hero-sub" id="outlierExecSub">—</div>
+    </div>
+
+    <div class="outlier-hero-badges" id="outlierExecBadges"></div>
+  </div>
+
+  <div class="outlier-hero-grid">
+    <div class="outlier-focus-list">
+      <div class="outlier-section-cap">Öncelikli İnceleme Alanları</div>
+
+      <div class="outlier-focus-item">
+        <div class="outlier-rank">1</div>
+        <div class="outlier-focus-body">
+          <div class="outlier-focus-title" id="outlierExecTop1">—</div>
+          <div class="outlier-focus-sub" id="outlierExecTop1Sub">—</div>
+        </div>
+      </div>
+
+      <div class="outlier-focus-item">
+        <div class="outlier-rank">2</div>
+        <div class="outlier-focus-body">
+          <div class="outlier-focus-title" id="outlierExecTop2">—</div>
+          <div class="outlier-focus-sub" id="outlierExecTop2Sub">—</div>
+        </div>
+      </div>
+
+      <div class="outlier-focus-item">
+        <div class="outlier-rank">3</div>
+        <div class="outlier-focus-body">
+          <div class="outlier-focus-title" id="outlierExecTop3">—</div>
+          <div class="outlier-focus-sub" id="outlierExecTop3Sub">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="outlier-action-panel">
+      <div class="outlier-section-cap">Analiz Notları ve Önerilen Kontroller</div>
+      <div class="outlier-action-list" id="outlierExecActions"></div>
+    </div>
+  </div>
+</div>
+    <!-- KPI kartları -->
+    <div class="risk-kpis" id="outlierKpis">
+      <div class="risk-kpi">
+        <div class="cap">Outlier Kayıt</div>
+        <div class="val" id="outlierKpiCount">—</div>
+        <div class="sub" id="outlierKpiCountSub">Seçili ay</div>
+      </div>
+      <div class="risk-kpi">
+        <div class="cap">Toplam Etki</div>
+        <div class="val" id="outlierKpiImpact">—</div>
+        <div class="sub">Mutlak etki toplamı</div>
+      </div>
+      <div class="risk-kpi">
+        <div class="cap">En Baskın Boyut</div>
+        <div class="val" id="outlierKpiDim">—</div>
+        <div class="sub">Etkiye göre</div>
+      </div>
+      <div class="risk-kpi">
+        <div class="cap">Durum</div>
+        <div class="val" id="outlierStatusText">—</div>
+        <div class="sub">Yoğunluk seviyesi</div>
+      </div>
+    </div>
+
+    <!-- Anlatı -->
+    <div class="outlier-narrative" id="outlierNarrative">Veri yükleyin.</div>
+    <div id="outlierNarrativeTags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;"></div>
+
+    <!-- Boyut özeti -->
+    <div class="card" style="margin:0 0 10px 0; padding:12px;">
+      <h4 style="margin:0 0 8px 0;">Boyut Bazlı Outlier Özeti</h4>
+      <div id="outlierDimSummary"></div>
+    </div>
+
+    <!-- Detay tablo -->
+    <div id="outlierTableWrap"></div>
+
+    <p class="note" style="margin-top:10px;">
+      Not: Aykırılık, seçilen metrik için (Kalan/Giren/Çıkan) grup içi Z-Score yaklaşımı ile hesaplanır.
+    </p>
+  </div>
+</section>
       <!-- AI PANEL -->
       <section class="panel" id="panel-ai">
         <div class="card">
@@ -2016,20 +2366,50 @@ async function sha256(str){
 }
 
 async function ensureDefaultAdmin(){
-  const raw = localStorage.getItem(AUTH_USERS_KEY);
-  if(raw) return;
+  let users = [];
+  try { users = JSON.parse(localStorage.getItem(AUTH_USERS_KEY) || '[]') || []; }
+  catch { users = []; }
 
-  const passHash = await sha256('123'); // admin/123
-  const users = [{
-    username:'admin',
-    role:'admin',
-    passHash,
-    createdAt: nowISO(),
-    lastLogin: ''
-  }];
-  localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(users));
+  // normalize
+  users = users
+    .filter(u => u && String(u.username||'').trim())
+    .map(u => ({
+      username: String(u.username||'').trim(),
+      role: (u.role === 'admin' ? 'admin' : 'viewer'),
+      passHash: String(u.passHash||'').trim(),
+      createdAt: u.createdAt || nowISO(),
+      lastLogin: u.lastLogin || ''
+    }));
+
+  let admin = users.find(u => u.username.toLowerCase() === 'admin');
+
+  // admin yoksa ekle
+  if(!admin){
+    users.unshift({
+      username: 'admin',
+      role: 'admin',
+      passHash: await sha256('123'),
+      createdAt: nowISO(),
+      lastLogin: ''
+    });
+    localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(users));
+    return;
+  }
+
+  // admin var ama passHash boş/bozuksa düzelt
+  if(!admin.passHash || !admin.passHash.startsWith('h:')){
+    admin.passHash = await sha256('123');
+    admin.role = 'admin';
+    localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(users));
+    return;
+  }
+
+  // rol admin değilse düzelt
+  if(admin.role !== 'admin'){
+    admin.role = 'admin';
+    localStorage.setItem(AUTH_USERS_KEY, JSON.stringify(users));
+  }
 }
-
 function readUsers(){
   try{ return JSON.parse(localStorage.getItem(AUTH_USERS_KEY) || '[]') || []; }
   catch(e){ return []; }
@@ -2476,7 +2856,18 @@ async function initAuth(){
 
 document.addEventListener('DOMContentLoaded', async ()=>{
   await initAuth();
-  await autoLoadRawIfNeeded();
+
+  setTimeout(async ()=>{
+    try{
+      await autoLoadRawIfNeeded();
+
+      if(RAW && RAW.length){
+        renderAll();
+      }
+    }catch(e){
+      console.error(e);
+    }
+  }, 150);
 });
 
 function _readUsersFallback(){
@@ -2512,107 +2903,6 @@ function downloadJson(filename, obj){
   URL.revokeObjectURL(url);
 }
 
-function toastMsg(msg){
-  if(typeof toast === "function") toast(msg);
-  else alert(msg);
-}
-
-// ✅ Dışa aktar
-function exportUsersJSON(){
-  const users = (readUsersSafe() || []).map(normalizeUser);
-
-  // güvenlik: passHash var, plain şifre yok
-  const payload = {
-    app: "AVESORO BI",
-    type: "users",
-    version: 1,
-    exportedAt: new Date().toISOString(),
-    users
-  };
-
-  const fileName = `avesoro_users_${new Date().toISOString().slice(0,10)}.json`;
-  downloadJson(fileName, payload);
-  toastMsg("Kullanıcılar JSON olarak dışa aktarıldı.");
-}
-
-// ✅ İçe aktar (replace + admin garanti + merge opsiyonlu)
-async function importUsersJSONFromFile(file, { mode = "replace" } = {}){
-  if(!file) return;
-
-  const text = await file.text();
-  let parsed;
-  try { parsed = JSON.parse(text); }
-  catch { toastMsg("JSON okunamadı. Dosya bozuk olabilir."); return; }
-
-  const incoming = Array.isArray(parsed?.users) ? parsed.users : (Array.isArray(parsed) ? parsed : null);
-  if(!incoming){ toastMsg("JSON formatı geçersiz. 'users' listesi bulunamadı."); return; }
-
-  let newUsers = incoming.map(normalizeUser).filter(u => u.username && u.passHash);
-  if(!newUsers.length){ toastMsg("İçe aktarılacak geçerli kullanıcı bulunamadı."); return; }
-
-  // admin garanti: admin yoksa ekle (şifre hash için sha256 varsa 123 üretir, yoksa dokunmaz)
-  const hasAdmin = newUsers.some(u => u.username.toLowerCase() === "admin" && u.role === "admin");
-  if(!hasAdmin){
-    let adminHash = "";
-    if(typeof sha256 === "function"){
-      adminHash = await sha256("123");
-    }else{
-      // sha256 yoksa kullanıcıya söyleyelim (istersen var olan admin'i import etmelisin)
-      toastMsg("Uyarı: sha256 fonksiyonu bulunamadı. Admin eklenemedi. JSON içinde admin olmalı.");
-    }
-    if(adminHash){
-      newUsers.unshift({
-        username: "admin",
-        role: "admin",
-        passHash: adminHash,
-        createdAt: new Date().toISOString(),
-        lastLogin: ""
-      });
-    }
-  }
-
-  const current = (readUsersSafe() || []).map(normalizeUser);
-
-  if(mode === "merge"){
-    // username bazlı birleştir: gelen kayıt öncelikli
-    const map = new Map();
-    for(const u of current) map.set(u.username.toLowerCase(), u);
-    for(const u of newUsers) map.set(u.username.toLowerCase(), u);
-    newUsers = Array.from(map.values());
-  }
-
-  // replace (varsayılan): tamamen değiştir
-  writeUsersSafe(newUsers);
-
-  toastMsg(mode === "merge" ? "Kullanıcılar birleştirildi (merge)." : "Kullanıcılar içe aktarıldı (replace).");
-
-  // Eğer admin listesi ekranda render ediliyorsa yenile
-  if(typeof renderUsersTable === "function") renderUsersTable();
-  if(typeof refreshAdminUsers === "function") refreshAdminUsers();
-}
-
-// ✅ UI bağlama
-function wireUsersExportImportUI(){
-  const btnEx = document.getElementById("btnUsersExport");
-  const btnIm = document.getElementById("btnUsersImport");
-  const fileIn = document.getElementById("usersJsonFile");
-
-  if(btnEx) btnEx.addEventListener("click", exportUsersJSON);
-
-  if(btnIm && fileIn){
-    btnIm.addEventListener("click", () => fileIn.click());
-    fileIn.addEventListener("change", async () => {
-      const file = fileIn.files && fileIn.files[0];
-      fileIn.value = "";
-
-      if(!file) return;
-
-      // İstersen merge seçeneği de sorabiliriz; şimdilik replace yapıyoruz (en temiz)
-      // merge istersen burayı "merge" yapabilirsin:
-      await importUsersJSONFromFile(file, { mode: "replace" });
-    });
-  }
-}
 
 /* =========================
    TABLOLARDA SIRALAMA + FİLTRE
@@ -2876,6 +3166,7 @@ function wireUsersExportImportUI(){
       let RAW=[];
       let ACTIVE_MONTH=null;
       let FROM_EMBED=false;
+      const RAW_URL_KEY = 'AVESORO_RAW_URL_V1';
 
 // ✅ AUTO RAW LOAD (GitHub raw / URL)
 const AUTO_RAW_ENABLED = true;
@@ -2883,15 +3174,20 @@ const AUTO_RAW_ENABLED = true;
 // Repo: Dogan2200/BMMC-Stok-Analiz  | Dosya: kamu/data.xlsx
 const RAW_DATA_URL =
   "https://raw.githubusercontent.com/Dogan2200/BMMC-Stok-Analiz/main/kamu/data.xlsx?v=" + Date.now();
+console.log('AUTO RAW URL:', RAW_DATA_URL);
 
+window.addEventListener('error', function(e){
+  console.error('JS ERROR:', e.message, 'line:', e.lineno);
+});
 
       let RISK_UI = {
-        nomove:{ q:'', n:150, inner:'FSN' },
-        min:{ q:'', n:150, inner:'FSN' },
-        max:{ q:'', n:150, inner:'FSN' },
-        excess:{ q:'', n:150, inner:'FSN' },
-        pareto:{ n:120 }
-      };
+  nomove:{ q:'', n:150, inner:'FSN' },
+  min:{ q:'', n:150, inner:'FSN' },
+  max:{ q:'', n:150, inner:'FSN' },
+  excess:{ q:'', n:150, inner:'FSN' },
+  pareto:{ n:120 },
+  outlier:{ q:'', n:100, metric:'kal', z:2.5, dim:'StokAdi' }
+};
 
       const MONTH_LABELS_TR=['','Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
       function fmtMonthLabel(ym){
@@ -3051,33 +3347,70 @@ const RAW_DATA_URL =
 
 async function autoLoadRawIfNeeded(){
   try{
-    if(!AUTO_RAW_ENABLED) return;
-    if(!RAW_DATA_URL || RAW_DATA_URL === "RAW_URL_BURAYA") return;
-
-    // Zaten veri yüklüyse tekrar çekme
     if(Array.isArray(RAW) && RAW.length) return;
 
-    const rows = await loadRemoteData(RAW_DATA_URL);
-    RAW = rows || [];
-    FROM_EMBED = true;
+    const qpRaw = (() => {
+      try { return new URLSearchParams(location.search).get('raw'); }
+      catch(e){ return null; }
+    })();
+
+    const savedRaw = (() => {
+      try { return localStorage.getItem(RAW_URL_KEY); }
+      catch(e){ return null; }
+    })();
+
+    const finalUrl =
+      String(qpRaw || savedRaw || (AUTO_RAW_ENABLED ? RAW_DATA_URL : '') || '').trim();
+
+    if(!finalUrl || finalUrl === 'RAW_URL_BURAYA') return;
+
+    let rows = [];
+
+    // raw query/localStorage akışı
+    if(
+      finalUrl.includes('raw.githubusercontent.com') ||
+      finalUrl.toLowerCase().endsWith('.csv') ||
+      finalUrl.toLowerCase().endsWith('.xlsx') ||
+      finalUrl.toLowerCase().endsWith('.xls') ||
+      finalUrl.toLowerCase().endsWith('.xlsm') ||
+      finalUrl.toLowerCase().endsWith('.json')
+    ){
+      rows = await loadRemoteData(finalUrl);
+      console.log('AUTO LOAD finalUrl:', finalUrl);
+      console.log('AUTO LOAD rows:', Array.isArray(rows) ? rows.length : 0);
+    }else{
+      rows = await loadRemoteData(finalUrl);
+    }
+
+    RAW = Array.isArray(rows) ? rows : [];
 
     if(!RAW.length){
-      msg("RAW verisi indirildi ama satır bulunamadı.", false);
+      msg("Otomatik veri indirildi fakat satır bulunamadı.", false);
       return;
     }
 
+    FROM_EMBED = true;
+
+    try{
+      localStorage.setItem(RAW_URL_KEY, finalUrl);
+    }catch(e){}
+
     buildMS();
 
-    // aktif ay yoksa en güncel ayı seç
-    if(!ACTIVE_MONTH){
-      const months = [...new Set(RAW.map(x=>x.Donem).filter(Boolean))].sort();
-      ACTIVE_MONTH = months[months.length - 1] || null;
+    const months = [...new Set(RAW.map(x=>x.Donem).filter(Boolean))].sort();
+    ACTIVE_MONTH = months[months.length - 1] || null;
+
+    if((FILTERS.Donem || []).length === 0 && ACTIVE_MONTH){
+      FILTERS.Donem = [ACTIVE_MONTH];
     }
 
-    // filtre label + ekranı bas
     updateMSLabels();
-    if(typeof renderAll === "function") renderAll();
-    msg("", true);
+
+    if(typeof renderAll === "function"){
+      renderAll();
+    }
+
+    msg(`Veri otomatik yüklendi. Satır: <b>${RAW.length.toLocaleString('tr-TR')}</b>`, true);
   }catch(err){
     console.error(err);
     msg("RAW otomatik yükleme hatası: " + (err?.message || err), false);
@@ -3510,16 +3843,21 @@ async function autoLoadRawIfNeeded(){
         return buildMaxPack(rows,curMonth);
       }
 
-      function rerenderRiskOnly(){
-        if(!RAW.length) return;
-        const rows = applyFilters(RAW);
-        const curMonth = currentMonthFromFilters();
-        renderRiskPages(rows,curMonth);
-        renderParetoPremium(rows,curMonth);
-        enhanceAllTables(document);
-        saveState();
-      }
+function rerenderRiskOnly(){
+  if(!RAW.length) return;
+  const rows = applyFilters(RAW);
+  const curMonth = currentMonthFromFilters();
 
+  renderRiskPages(rows,curMonth);
+  renderParetoPremium(rows,curMonth);
+
+  if(typeof renderOutlierPage === 'function'){
+    renderOutlierPage(rows,curMonth);
+  }
+
+  enhanceAllTables(document);
+  saveState();
+}
       function renderRiskWrap(mountId, title, sub, pack, uiKey, columns){
         const el=document.getElementById(mountId);
         if(!el) return;
@@ -3815,7 +4153,559 @@ async function autoLoadRawIfNeeded(){
           ]
         );
       }
+/* =========================
+   ✅ OUTLIER ANALİZİ (TEMİZ MODÜL)
+   ========================= */
 
+function mean(arr){
+  if(!arr || !arr.length) return 0;
+  return arr.reduce((a,b)=>a+(Number(b)||0),0) / arr.length;
+}
+function stddev(arr){
+  if(!arr || arr.length < 2) return 0;
+  const m = mean(arr);
+  const v = arr.reduce((a,b)=> a + Math.pow((Number(b)||0)-m,2), 0) / arr.length;
+  return Math.sqrt(v);
+}
+
+function applyFiltersExceptMonth(rows){
+  const f = FILTERS;
+  const ok=(key,val)=>{
+    if(key==='Donem') return true;
+    const s=f[key]; if(!s||!s.length) return true;
+    return s.includes(val);
+  };
+  return rows.filter(r=>
+    ok('DepoSinifi',r.DepoSinifi)&&ok('Depo',r.Depo)&&
+    ok('FSN',r.FSN)&&ok('MTRL',r.MTRL)&&ok('UstGrup',r.UstGrup)&&ok('AltGrup',r.AltGrup)
+  );
+}
+
+function getOutlierMetricValue(r, cols, metric){
+  const bal = balanceOfRow(r, cols);
+  if(metric === 'gir') return r[cols.gir] || 0;
+  if(metric === 'cik') return r[cols.cik] || 0;
+  return bal; // kal
+}
+
+/**
+ * Outlier mantığı:
+ * - StokAdi seçiliyken: cross (stoklar arası) outlier (tek değer/stok) -> bu senin istediğin
+ * - Diğer boyutlar: mevcut “boyut içi satır” z-score yaklaşımı
+ */
+function buildOutlierPack(rows, curMonth){
+  const ui = RISK_UI.outlier || { q:'', n:100, metric:'kal', z:2.5, dim:'StokAdi' };
+  const cols = getCols();
+
+  const dim    = ui.dim || 'StokAdi';
+  const metric = ui.metric || 'kal';
+  const zLimit = Number(ui.z || 2.5);
+
+  const monthRows = rows.filter(r => r.Donem === curMonth);
+  const baseRows = monthRows; // istersen GIT hariç: monthRows.filter(r=>!isGoodsInTransitRow(r))
+
+  // --------------------------
+  // ✅ STOK ADI: CROSS (stoklar arası)
+  // --------------------------
+  if(dim === 'StokAdi'){
+    // stok bazında toplula
+    const agg = new Map();
+    baseRows.forEach(r=>{
+      const key = String(r.StokAdi || 'Belirtilmemiş').trim() || 'Belirtilmemiş';
+      const v = getOutlierMetricValue(r, cols, metric);
+      if(!agg.has(key)) agg.set(key, { key, value:0, sample:r });
+      agg.get(key).value += (Number(v)||0);
+    });
+
+    const items = [...agg.values()];
+    const vals = items.map(x=>Number(x.value)||0);
+    const mAll = mean(vals);
+    const sAll = stddev(vals);
+
+    let findings = [];
+    if(sAll && sAll !== 0){
+      findings = items.map(it=>{
+        const z = (it.value - mAll) / sAll;
+        const az = Math.abs(z);
+        const r = it.sample || {};
+        return {
+          dimKey: it.key,
+          metric, value: it.value,
+          zScore: z, absZ: az,
+          impact: Math.abs(it.value - mAll),
+          Donem: curMonth,
+          Depo: '—',
+          DepoSinifi: r.DepoSinifi || '—',
+          StokAdi: it.key,
+          UstGrup: r.UstGrup || '—',
+          AltGrup: r.AltGrup || '—',
+          MTRL: r.MTRL || '—',
+          FSN: r.FSN || '—',
+          Departman: r.Departman || '—',
+          raw: r
+        };
+      }).filter(x=>x.absZ >= zLimit);
+    }
+
+    // arama
+    const q = deaccent(String(ui.q || '').trim());
+    if(q){
+      findings = findings.filter(x=>deaccent([x.StokAdi,x.UstGrup,x.AltGrup,x.MTRL,x.FSN,x.Departman].join(' ')).includes(q));
+    }
+
+    // sıralama + limit
+    findings.sort((a,b)=> (b.absZ-a.absZ) || (b.impact-a.impact));
+    const shown = findings.slice(0, Number(ui.n || 100));
+
+    const totalImpact = findings.reduce((s,x)=>s+Math.abs(x.impact||0),0);
+    const topDim = findings[0]?.StokAdi || '—';
+
+    const dimSummary = findings.slice(0, 200).map(x=>({
+      dimKey: x.StokAdi,
+      count: 1,
+      totalImpact: Math.abs(x.impact||0),
+      maxAbsZ: Math.abs(x.absZ||0)
+    })).sort((a,b)=> b.totalImpact - a.totalImpact);
+
+    return { findingsAll: findings, findingsShown: shown, dimSummary, totalImpact, topDim, metric, z:zLimit, dim, sourceCount: baseRows.length };
+  }
+
+  // --------------------------
+  // ✅ Diğer boyutlar: BOYUT İÇİ (satır bazında) Z
+  // --------------------------
+  const dimMap = new Map();
+  baseRows.forEach(r=>{
+    const key = String(r[dim] || 'Belirtilmemiş').trim() || 'Belirtilmemiş';
+    const v = getOutlierMetricValue(r, cols, metric);
+    if(!dimMap.has(key)) dimMap.set(key, { key, values:[], rows:[] });
+    dimMap.get(key).values.push(v);
+    dimMap.get(key).rows.push(r);
+  });
+
+  const dimStats = [];
+  dimMap.forEach(g=>{
+    dimStats.push({ key:g.key, mean:mean(g.values), std:stddev(g.values), rows:g.rows });
+  });
+
+  let findings = [];
+  dimStats.forEach(ds=>{
+    if(!ds.std || ds.std === 0) return;
+    ds.rows.forEach(r=>{
+      const val = getOutlierMetricValue(r, cols, metric);
+      const z = (val - ds.mean) / ds.std;
+      const az = Math.abs(z);
+      if(az >= zLimit){
+        findings.push({
+          dimKey: ds.key,
+          metric, value: val,
+          zScore: z, absZ: az,
+          impact: Math.abs(val - ds.mean),
+          Donem: r.Donem || '—',
+          Depo: r.Depo || '—',
+          DepoSinifi: r.DepoSinifi || '—',
+          StokAdi: r.StokAdi || '—',
+          UstGrup: r.UstGrup || '—',
+          AltGrup: r.AltGrup || '—',
+          MTRL: r.MTRL || '—',
+          FSN: r.FSN || '—',
+          Departman: r.Departman || '—',
+          raw: r
+        });
+      }
+    });
+  });
+
+  const q2 = deaccent(String(ui.q || '').trim());
+  if(q2){
+    findings = findings.filter(x=>deaccent([x.dimKey,x.Depo,x.StokAdi,x.UstGrup,x.AltGrup,x.MTRL,x.FSN,x.Departman].join(' ')).includes(q2));
+  }
+
+  findings.sort((a,b)=> (b.absZ-a.absZ) || (b.impact-a.impact));
+  const shown = findings.slice(0, Number(ui.n || 100));
+
+  const dimAgg = new Map();
+  findings.forEach(f=>{
+    if(!dimAgg.has(f.dimKey)) dimAgg.set(f.dimKey, { dimKey:f.dimKey, count:0, totalImpact:0, maxAbsZ:0 });
+    const g = dimAgg.get(f.dimKey);
+    g.count += 1;
+    g.totalImpact += Math.abs(f.impact||0);
+    g.maxAbsZ = Math.max(g.maxAbsZ, Math.abs(f.absZ||0));
+  });
+
+  const dimSummary = [...dimAgg.values()].sort((a,b)=> b.totalImpact - a.totalImpact);
+  const totalImpact = findings.reduce((a,b)=> a + Math.abs(b.impact || 0), 0);
+  const topDim = dimSummary[0]?.dimKey || '—';
+
+  return { findingsAll: findings, findingsShown: shown, dimSummary, totalImpact, topDim, metric, z:zLimit, dim, sourceCount: baseRows.length };
+}
+
+function renderOutlierDimSummary(dimSummary){
+  const el = document.getElementById('outlierDimSummary');
+  if(!el) return;
+
+  if(!dimSummary || !dimSummary.length){
+    el.innerHTML = `<div class="risk-empty">Boyut bazlı outlier özeti bulunamadı.</div>`;
+    return;
+  }
+
+  const top = dimSummary.slice(0, 20);
+  const footer = {
+    count: top.reduce((a,b)=>a+(b.count||0),0),
+    totalImpact: top.reduce((a,b)=>a+(b.totalImpact||0),0)
+  };
+
+  const tbl = document.createElement('table');
+  tbl.innerHTML = `
+    <thead>
+      <tr>
+        <th>Boyut Değeri</th>
+        <th class="num">Outlier Adet</th>
+        <th class="num">Toplam Etki</th>
+        <th class="num">Max |Z|</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${top.map(r=>`
+        <tr>
+          <td>${r.dimKey}</td>
+          <td class="num">${(r.count||0).toLocaleString('tr-TR')}</td>
+          <td class="num">${FMT(r.totalImpact||0)}</td>
+          <td class="num">${(Math.round((r.maxAbsZ||0)*100)/100).toLocaleString('tr-TR')}</td>
+        </tr>
+      `).join('')}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td><b>Toplam (ilk ${top.length})</b></td>
+        <td class="num"><b>${footer.count.toLocaleString('tr-TR')}</b></td>
+        <td class="num"><b>${FMT(footer.totalImpact)}</b></td>
+        <td class="num"><b>—</b></td>
+      </tr>
+    </tfoot>
+  `;
+  el.innerHTML = '';
+  el.appendChild(tbl);
+  enhanceTable(tbl);
+}
+
+function renderOutlierTable(findings){
+  const wrap = document.getElementById('outlierTableWrap');
+  if(!wrap) return;
+
+  if(!findings || !findings.length){
+    wrap.innerHTML = `<div class="risk-empty">Seçilen koşullarda outlier kayıt bulunamadı.</div>`;
+    return;
+  }
+
+  const tbl = document.createElement('table');
+  tbl.innerHTML = `
+    <thead>
+      <tr>
+        <th>Boyut</th>
+        <th>Stok Adı</th>
+        <th>Depo</th>
+        <th>FSN</th>
+        <th>MTRL</th>
+        <th class="num">Değer</th>
+        <th class="num">Z-Score</th>
+        <th class="num">Etki</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${findings.map(x=>`
+        <tr>
+          <td>${x.dimKey}</td>
+          <td>${x.StokAdi}</td>
+          <td>${x.Depo}</td>
+          <td>${x.FSN}</td>
+          <td>${x.MTRL}</td>
+          <td class="num">${FMT(x.value)}</td>
+          <td class="num">${(Math.round((x.zScore||0)*100)/100).toLocaleString('tr-TR')}</td>
+          <td class="num">${FMT(Math.abs(x.impact||0))}</td>
+        </tr>
+      `).join('')}
+    </tbody>
+  `;
+  wrap.innerHTML = '';
+  wrap.appendChild(tbl);
+  enhanceTable(tbl);
+}
+
+function updateOutlierNarrative({
+  findings = [],
+  totalImpact = 0,
+  topDim = '—',
+  fsnTxt = '—',
+  metric = 'kal',
+  z = 2.5,
+  curMonthLabel = ''
+} = {}) {
+  const narrativeEl = document.getElementById('outlierNarrative');
+  const tagsEl = document.getElementById('outlierNarrativeTags');
+  const statusEl = document.getElementById('outlierStatusText');
+
+  if (!narrativeEl) return;
+
+  const count = findings.length || 0;
+
+  let severity = 'Düşük';
+  if (count > 5000 || totalImpact > 50000000) severity = 'Yüksek';
+  else if (count > 1000 || totalImpact > 5000000) severity = 'Orta';
+
+  const impactTxt = (typeof FMT === 'function')
+    ? FMT(totalImpact)
+    : Number(totalImpact || 0).toLocaleString('tr-TR');
+
+  const metricMap = { kal:'Kalan', gir:'Giren', cik:'Çıkan' };
+  const metricText = metricMap[metric] || metric;
+
+  const text = count === 0
+    ? `
+      <div class="ov-section-title" data-type="trend">Durum</div>
+      <ul>
+        <li><strong>${curMonthLabel || 'Seçili ay'}</strong> için <strong>${metricText}</strong> metriğinde, Z ≥ ${z} eşiğine göre outlier bulunamadı.</li>
+      </ul>
+      <div class="ov-section-title" data-type="action">Öneri</div>
+      <ul>
+        <li>Z eşiğini 2.0 seviyesine düşürerek daha hassas tarama yapabilirsiniz.</li>
+        <li>Boyutu (Depo / Üst Grup / MTRL / FSN) değiştirerek farklı bakış açısı deneyin.</li>
+      </ul>
+    `
+    : `
+      <div class="ov-section-title" data-type="trend">Outlier Özeti</div>
+      <ul>
+        <li><strong>${curMonthLabel || 'Seçili ay'}</strong> için <strong>${metricText}</strong> metriğinde <strong>${count.toLocaleString('tr-TR')}</strong> outlier tespit edildi (Z ≥ ${z}).</li>
+        <li><strong>Toplam etki:</strong> ${impactTxt}</li>
+        <li><strong>En baskın boyut:</strong> ${topDim}</li>
+        <li><strong>Yoğun FSN görünümü:</strong> ${fsnTxt || '—'}</li>
+      </ul>
+      <div class="ov-section-title" data-type="risk">Risk Yorumu</div>
+      <ul>
+        <li>Yüksek Z-score kalemler normal dağılımdan sapma gösterir; yanlış planlama, ani talep, tek seferlik giriş/çıkış veya veri kalitesi kaynaklı olabilir.</li>
+      </ul>
+      <div class="ov-section-title" data-type="action">Önerilen Aksiyon</div>
+      <ul>
+        <li>İlk 20 outlier kalemi işlem geçmişi / sipariş / transfer / proje bazında doğrulayın.</li>
+        <li>Tekrarlayan outlierlar için min-max ve satınalma parametrelerini güncelleyin.</li>
+      </ul>
+    `;
+
+  narrativeEl.innerHTML = text;
+
+  if (statusEl) statusEl.textContent = severity;
+
+  if (tagsEl) {
+    const tags = [
+      `Outlier: ${count.toLocaleString('tr-TR')}`,
+      `Toplam Etki: ${impactTxt}`,
+      `Boyut: ${topDim}`,
+      `Metrik: ${metricText}`,
+      `Z Eşiği: ${z}`,
+      `Seviye: ${severity}`
+    ];
+    tagsEl.innerHTML = tags.map(t => `<span class="risk-chip">${t}</span>`).join('');
+  }
+}
+
+function renderOutlierPage(rows, curMonth){
+  try{
+    const ui = RISK_UI.outlier || { q:'', n:100, metric:'kal', z:2.5, dim:'StokAdi' };
+
+    const s = document.getElementById('outlierSearch');
+    const m = document.getElementById('outlierMetric');
+    const zEl = document.getElementById('outlierZ');
+    const nEl = document.getElementById('outlierTopN');
+    const d = document.getElementById('outlierDim');
+
+    if (s && s.value !== (ui.q || '')) s.value = ui.q || '';
+    if (m && m.value !== (ui.metric || 'kal')) m.value = ui.metric || 'kal';
+    if (zEl && String(zEl.value) !== String(ui.z || 2.5)) zEl.value = String(ui.z || 2.5);
+    if (nEl && String(nEl.value) !== String(ui.n || 100)) nEl.value = String(ui.n || 100);
+    if (d && d.value !== (ui.dim || 'StokAdi')) d.value = ui.dim || 'StokAdi';
+
+    const pack = buildOutlierPack(rows, curMonth);
+
+    const kpiCount = document.getElementById('outlierKpiCount');
+    const kpiImpact = document.getElementById('outlierKpiImpact');
+    const kpiDim = document.getElementById('outlierKpiDim');
+    const kpiCountSub = document.getElementById('outlierKpiCountSub');
+
+    if (kpiCount) kpiCount.textContent = (pack.findingsAll.length || 0).toLocaleString('tr-TR');
+    if (kpiImpact) kpiImpact.textContent = FMT(pack.totalImpact || 0);
+    if (kpiDim) kpiDim.textContent = pack.topDim || '—';
+    if (kpiCountSub) {
+      kpiCountSub.textContent = `${fmtMonthLabel(curMonth)} • Kaynak satır: ${(pack.sourceCount || 0).toLocaleString('tr-TR')}`;
+    }
+
+    const fsnCounter = new Map();
+    (pack.findingsAll || []).forEach(x=>{
+      const k = x.FSN || '—';
+      fsnCounter.set(k, (fsnCounter.get(k) || 0) + 1);
+    });
+
+    const fsnTxt = [...fsnCounter.entries()]
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0,3)
+      .map(([k,v])=>`${k} (${v})`)
+      .join(', ') || '—';
+
+    updateOutlierNarrative({
+      findings: pack.findingsAll,
+      totalImpact: pack.totalImpact,
+      topDim: pack.topDim,
+      fsnTxt,
+      metric: pack.metric,
+      z: pack.z,
+      curMonthLabel: fmtMonthLabel(curMonth)
+    });
+
+    renderOutlierExecSummary(pack, curMonth);
+    renderOutlierDimSummary(pack.dimSummary);
+    renderOutlierTable(pack.findingsShown);
+  }catch(err){
+    console.error('renderOutlierPage error:', err);
+    const wrap = document.getElementById('outlierTableWrap');
+    if(wrap){
+      wrap.innerHTML = `<div class="risk-empty">Outlier sayfası render hatası: ${err.message || err}</div>`;
+    }
+  }
+}
+
+function renderOutlierExecSummary(pack, curMonth){
+  const sub = document.getElementById('outlierExecSub');
+  const badges = document.getElementById('outlierExecBadges');
+  const actions = document.getElementById('outlierExecActions');
+
+  const top1 = document.getElementById('outlierExecTop1');
+  const top1s = document.getElementById('outlierExecTop1Sub');
+  const top2 = document.getElementById('outlierExecTop2');
+  const top2s = document.getElementById('outlierExecTop2Sub');
+  const top3 = document.getElementById('outlierExecTop3');
+  const top3s = document.getElementById('outlierExecTop3Sub');
+
+  if(!pack) return;
+
+  const metricLabel =
+    pack.metric === 'kal' ? 'Kalan' :
+    pack.metric === 'gir' ? 'Giren' : 'Çıkan';
+
+  if(sub){
+    sub.textContent = `${fmtMonthLabel(curMonth)} • Boyut: ${pack.dim} • Metrik: ${metricLabel} • Z ≥ ${pack.z}`;
+  }
+
+  if(badges){
+    const sev = document.getElementById('outlierStatusText')?.textContent || '—';
+    const arr = [
+      `Outlier: ${(pack.findingsAll?.length || 0).toLocaleString('tr-TR')}`,
+      `Toplam Etki: ${FMT(pack.totalImpact || 0)}`,
+      `En Baskın: ${pack.topDim || '—'}`,
+      `Seviye: ${sev}`
+    ];
+
+    badges.innerHTML = arr.map(t => `
+      <span class="outlier-badge"><span class="dot"></span>${t}</span>
+    `).join('');
+  }
+
+  const sorted = (pack.findingsAll || [])
+    .slice()
+    .sort((a,b) => Math.abs(b.impact || 0) - Math.abs(a.impact || 0));
+
+  const take = sorted.slice(0,3);
+
+  const fmtLine = (x) => `${(x.StokAdi || '—').slice(0,36)} • ${(x.Depo || '—').slice(0,20)}`;
+  const fmtSub  = (x) => `Etki: ${FMT(Math.abs(x.impact || 0))} • Z: ${(Math.round((Math.abs(x.absZ || 0))*100)/100).toLocaleString('tr-TR')}`;
+
+  if(top1)  top1.textContent  = take[0] ? fmtLine(take[0]) : '—';
+  if(top1s) top1s.textContent = take[0] ? fmtSub(take[0]) : '—';
+
+  if(top2)  top2.textContent  = take[1] ? fmtLine(take[1]) : '—';
+  if(top2s) top2s.textContent = take[1] ? fmtSub(take[1]) : '—';
+
+  if(top3)  top3.textContent  = take[2] ? fmtLine(take[2]) : '—';
+  if(top3s) top3s.textContent = take[2] ? fmtSub(take[2]) : '—';
+
+  if(actions){
+    const sev = document.getElementById('outlierStatusText')?.textContent || 'Düşük';
+
+    const t1 = sev === 'Yüksek'
+      ? 'İlk 20 outlier kalem için işlem geçmişi, sipariş ve transfer doğrulaması yapın.'
+      : 'Öncelikli outlier kalemlerde veri doğrulaması ve dönemsel kıyaslama yapın.';
+
+    const t2 = 'Tekrarlayan outlierlarda Min/Max parametrelerini ve tedarik planını revize edin.';
+
+    const t3 = pack.dim === 'FSN'
+      ? 'FSN yoğunluğu varsa sınıf bazlı satınalma ve transfer kurallarını gözden geçirin.'
+      : 'Boyutu FSN, Depo, Üst Grup veya MTRL kırılımında değiştirerek kök nedeni daraltın.';
+
+    actions.innerHTML = `
+  <div class="outlier-action">
+    <div class="t">Kontrol 1</div>
+    <div class="d">${t1}</div>
+  </div>
+  <div class="outlier-action">
+    <div class="t">Kontrol 2</div>
+    <div class="d">${t2}</div>
+  </div>
+  <div class="outlier-action">
+    <div class="t">Kontrol 3</div>
+    <div class="d">${t3}</div>
+  </div>
+`;
+  }
+}
+function wireOutlierUI(){
+  const search = document.getElementById('outlierSearch');
+  const metric = document.getElementById('outlierMetric');
+  const zEl = document.getElementById('outlierZ');
+  const topN = document.getElementById('outlierTopN');
+  const dim = document.getElementById('outlierDim');
+
+  if (search && !search.dataset.wired){
+    search.dataset.wired = '1';
+    search.addEventListener('input', ()=>{
+      RISK_UI.outlier = RISK_UI.outlier || {};
+      RISK_UI.outlier.q = search.value || '';
+      rerenderRiskOnly();
+    });
+  }
+
+  if (metric && !metric.dataset.wired){
+    metric.dataset.wired = '1';
+    metric.addEventListener('change', ()=>{
+      RISK_UI.outlier = RISK_UI.outlier || {};
+      RISK_UI.outlier.metric = metric.value || 'kal';
+      rerenderRiskOnly();
+    });
+  }
+
+  if (zEl && !zEl.dataset.wired){
+    zEl.dataset.wired = '1';
+    zEl.addEventListener('change', ()=>{
+      RISK_UI.outlier = RISK_UI.outlier || {};
+      RISK_UI.outlier.z = Number(zEl.value || 2.5);
+      rerenderRiskOnly();
+    });
+  }
+
+  if (topN && !topN.dataset.wired){
+    topN.dataset.wired = '1';
+    topN.addEventListener('change', ()=>{
+      RISK_UI.outlier = RISK_UI.outlier || {};
+      RISK_UI.outlier.n = Number(topN.value || 100);
+      rerenderRiskOnly();
+    });
+  }
+
+  if (dim && !dim.dataset.wired){
+    dim.dataset.wired = '1';
+    dim.addEventListener('change', ()=>{
+      RISK_UI.outlier = RISK_UI.outlier || {};
+      RISK_UI.outlier.dim = dim.value || 'StokAdi';
+      rerenderRiskOnly();
+    });
+  }
+}
       /* ============ ✅ Pareto Premium ============ */
       function paretoListFromAgg(aggRows){
         const arr = aggRows.slice().sort((a,b)=> (b.cik||0) - (a.cik||0));
@@ -4070,70 +4960,112 @@ async function autoLoadRawIfNeeded(){
       }
 
       function renderAll(){
-        if(!RAW.length){return;}
-        const rows = applyFilters(RAW);
+  if(!RAW.length){return;}
+  const rows = applyFilters(RAW);
 
-        const months=[...new Set(RAW.map(r=>r.Donem))].sort();
-        ACTIVE_MONTH = months[months.length-1] || null;
-        const curMonth = currentMonthFromFilters();
+  const months=[...new Set(RAW.map(r=>r.Donem))].sort();
+  ACTIVE_MONTH = months[months.length-1] || null;
+  const curMonth = currentMonthFromFilters();
 
-        renderKPI(rows,curMonth);
-        renderMgmtSummary(rows,curMonth);
+  renderKPI(rows,curMonth);
+  renderMgmtSummary(rows,curMonth);
 
-        renderOverviewCard('ov-card-class','Depo Sınıfı','DepoSinifi',rows,curMonth);
-        renderOverviewCard('ov-card-depo','Depo','Depo',rows,curMonth,{ limit: 0 });
-        renderOverviewCard('ov-card-fsn','FSN Class','FSN',rows,curMonth);
+  renderOverviewCard('ov-card-class','Depo Sınıfı','DepoSinifi',rows,curMonth);
+  renderOverviewCard('ov-card-depo','Depo','Depo',rows,curMonth,{ limit: 0 });
+  renderOverviewCard('ov-card-fsn','FSN Class','FSN',rows,curMonth);
 
-        renderCompare(rows,curMonth);
+  renderCompare(rows,curMonth);
 
-        renderRiskPages(rows,curMonth);
-        renderParetoPremium(rows,curMonth);
+  renderRiskPages(rows,curMonth);
+  renderParetoPremium(rows,curMonth);
 
-        document.getElementById('aiAuto').textContent = `Seçili ay: ${fmtMonthLabel(curMonth)} • Satır: ${rows.filter(r=>r.Donem===curMonth).length.toLocaleString('tr-TR')}`;
+  if(typeof renderOutlierPage === 'function'){
+    renderOutlierPage(rows, curMonth);
+  }
 
-        enhanceAllTables(document);
+  wireOutlierUI();
+
+  const aiAuto = document.getElementById('aiAuto');
+  if(aiAuto){
+    aiAuto.textContent = `Seçili ay: ${fmtMonthLabel(curMonth)} • Satır: ${rows.filter(r=>r.Donem===curMonth).length.toLocaleString('tr-TR')}`;
+  }
+
+  enhanceAllTables(document);
+}
+
+      /* ---------------------- Tabs (✅ SAFE / Delegation) ---------------------- */
+window.__AV_TABS_WIRED = window.__AV_TABS_WIRED || false;
+
+function setTab(tab){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  const el = document.getElementById('panel-'+tab);
+  if(el) el.classList.add('active');
+
+  if(tab === 'outlier' && RAW && RAW.length){
+    try{
+      const rows = applyFilters(RAW);
+      const curMonth = currentMonthFromFilters();
+
+      if(typeof renderOutlierPage === 'function'){
+        renderOutlierPage(rows, curMonth);
       }
 
-      /* ---------------------- Tabs ---------------------- */
-      function setTab(tab){
-        document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
-        document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-        const el=document.getElementById('panel-'+tab);
-        if(el) el.classList.add('active');
-      }
-      document.getElementById('tabs').addEventListener('click',e=>{
-        const t=e.target.closest('.tab'); if(!t) return;
-        setTab(t.dataset.tab);
+      wireOutlierUI();
+      enhanceAllTables(document.getElementById('panel-outlier'));
+    }catch(e){
+      console.error(e);
+    }
+  }
+}
+
+function wireTabsSafe(){
+  if(window.__AV_TABS_WIRED) return;
+  window.__AV_TABS_WIRED = true;
+
+  document.addEventListener('click', (e)=>{
+    const t = e.target.closest('.tab');
+    if(!t) return;
+    const tab = t.dataset.tab;
+    if(!tab) return;
+    setTab(tab);
+  }, true);
+}
+wireTabsSafe();
+
+     /* ---------------------- Dropdown open/close (✅ SAFE / Delegation) ---------------------- */
+window.__AV_DD_WIRED = window.__AV_DD_WIRED || false;
+
+function wireDropdownSafe(){
+  if(window.__AV_DD_WIRED) return;
+  window.__AV_DD_WIRED = true;
+
+  // dropdown aç/kapat
+  document.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.ddbox > button');
+    if(btn){
+      e.preventDefault();
+      e.stopPropagation();
+
+      const box = btn.closest('.ddbox');
+      if(!box) return;
+
+      // diğerlerini kapat
+      document.querySelectorAll('.ddbox.open').forEach(x=>{
+        if(x !== box) x.classList.remove('open');
       });
 
-      /* ---------------------- Mode Switch ---------------------- */
-      function initAnalysisUI(){
-        const sw=document.getElementById('modeSwitch'); if(!sw)return;
-        [...sw.querySelectorAll('button')].forEach(btn=>{
-          btn.classList.toggle('active', btn.dataset.mode === ANALYSIS_MODE);
-        });
-      }
-      document.getElementById('modeSwitch').addEventListener('click',e=>{
-        const b=e.target.closest('button'); if(!b)return;
-        ANALYSIS_MODE=b.dataset.mode;
-        initAnalysisUI();
-        renderAll();
-        saveState();
-      });
+      box.classList.toggle('open');
+      return;
+    }
 
-      /* ---------------------- Dropdown open/close ---------------------- */
-      const msEls=[...document.querySelectorAll('.ddbox')];
-      msEls.forEach(ms=>{
-        const btn=ms.querySelector('button');
-        btn.addEventListener('click',e=>{
-          e.stopPropagation();
-          msEls.forEach(x=>{if(x!==ms)x.classList.remove('open');});
-          ms.classList.toggle('open');
-        });
-      });
-      document.body.addEventListener('click',e=>{
-        if(!e.target.closest('.ddbox'))msEls.forEach(x=>x.classList.remove('open'));
-      });
+    // dışarı tıklayınca kapat
+    if(!e.target.closest('.ddbox')){
+      document.querySelectorAll('.ddbox.open').forEach(x=>x.classList.remove('open'));
+    }
+  }, true);
+}
+wireDropdownSafe();
 
       /* ---------------------- Upload / Clear / Save ---------------------- */
       document.getElementById('btnUpload').onclick=()=>document.getElementById('file').click();
@@ -4385,7 +5317,7 @@ async function loadFromRawUrl(url){
   if(!url) return;
 
   try{
-    msg(`RAW verisi indiriliyor...`, true);
+    msg(`RAW verisi indiriliyor... <b>${url}</b>`, true);
 
     const res = await fetch(url, { cache: 'no-store', mode: 'cors', credentials: 'omit' });
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -4439,21 +5371,24 @@ async function loadFromRawUrl(url){
 /* Uygulamaya veri bağlama (senin akışına göre tek noktadan) */
 function ingestRows(rows, sourceLabel=''){
   RAW = Array.isArray(rows) ? rows : [];
-  // Filtre seçeneklerini kur
+
+  if(!RAW.length){
+    msg('Veri seti boş geldi.', false);
+    return;
+  }
+
   buildMS();
 
-  // Aktif ay yoksa son aya çek
-  if(!ACTIVE_MONTH){
-    ACTIVE_MONTH = (ALL.Donem && ALL.Donem.length) ? ALL.Donem[ALL.Donem.length - 1] : null;
-  }
-  // Dönem filtresi boşsa aktif ayı seç (istersen kaldır)
-  if((FILTERS.Donem || []).length === 0 && ACTIVE_MONTH){
+  ACTIVE_MONTH = (ALL.Donem && ALL.Donem.length)
+    ? ALL.Donem[ALL.Donem.length - 1]
+    : null;
+
+  if(ACTIVE_MONTH){
     FILTERS.Donem = [ACTIVE_MONTH];
-    updateMSLabels();
   }
 
-  // Senin projende bu fonksiyonlar zaten var:
-  // - renderAll() yoksa: renderKPI/applyFilters/renderCompare/rerenderRiskOnly çağırırsın
+  updateMSLabels();
+
   if(typeof renderAll === 'function'){
     renderAll();
   }else{
@@ -4467,14 +5402,27 @@ function ingestRows(rows, sourceLabel=''){
 
   enhanceAllTables(document);
   saveState();
-}
 
+  if(sourceLabel){
+    msg(`${sourceLabel} verisi yüklendi. Satır: <b>${RAW.length.toLocaleString('tr-TR')}</b>`, true);
+  }
+}
 /* Sayfa açılışında ?raw= ile otomatik yükle */
 document.addEventListener('DOMContentLoaded', ()=>{
   const qp = getQueryParam('raw');
   const saved = (()=>{ try{return localStorage.getItem(RAW_URL_KEY);}catch(e){return null;} })();
-  const url = qp || saved;
-  if(url) loadFromRawUrl(url);
+  const url = qp || saved || (AUTO_RAW_ENABLED ? RAW_DATA_URL : '');
+
+  console.log('DOMContentLoaded raw url:', url);
+
+  if(url && (!RAW || !RAW.length)){
+    setTimeout(()=>{
+      if(!RAW || !RAW.length){
+        console.log('loadFromRawUrl tetiklendi');
+        loadFromRawUrl(url);
+      }
+    }, 250);
+  }
 });
 </script>
 </body>
