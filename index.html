@@ -2830,16 +2830,34 @@ body.auth-lock #assistantPanel{
 
 <!-- Boyut özeti -->
 <div class="outlier-section-card">
-  <h4>Boyut Bazlı Outlier Özeti</h4>
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+    <div>
+      <h4 style="margin:0 0 4px 0;">Boyut Bazlı Outlier Özeti</h4>
+      <div class="note">Boyutlara göre toplam etki ve yoğunlaşan sapmalar</div>
+    </div>
+
+    <div class="outlier-metric-pill" style="padding:10px 14px;">
+      <strong>Toplam Etki:</strong>
+      <span id="outlierDimSummaryTotal">—</span>
+    </div>
+  </div>
+
   <div id="outlierDimSummary"></div>
 </div>
 
 <!-- Detay tablo -->
 <details class="outlier-detail-shell" open>
   <summary>
-    <div>
-      Detay Kayıtlar
-      <div class="sub">Outlier detay satırları • filtrelenebilir tablo</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;width:100%;">
+      <div>
+        Detay Kayıtlar
+        <div class="sub">Outlier detay satırları • filtrelenebilir tablo</div>
+      </div>
+
+      <div class="outlier-metric-pill" style="padding:10px 14px;">
+        <strong>Toplam Etki:</strong>
+        <span id="outlierDetailTotal">—</span>
+      </div>
     </div>
     <span class="outlier-chevron">⌄</span>
   </summary>
@@ -2847,6 +2865,7 @@ body.auth-lock #assistantPanel{
     <div id="outlierTableWrap"></div>
   </div>
 </details>
+
     <p class="note" style="margin-top:10px;">
       Not: Aykırılık, seçilen metrik için (Kalan/Giren/Çıkan) grup içi Z-Score yaklaşımı ile hesaplanır.
     </p>
@@ -4862,9 +4881,11 @@ function buildOutlierPack(rows, curMonth){
 }
 function renderOutlierDimSummary(dimSummary, findingsAll = [], metric = 'kal'){
   const el = document.getElementById('outlierDimSummary');
+  const totalEl = document.getElementById('outlierDimSummaryTotal');
   if(!el) return;
 
   if(!dimSummary || !dimSummary.length){
+    if(totalEl) totalEl.textContent = FMT(0);
     el.innerHTML = `<div class="risk-empty">Boyut bazlı outlier özeti bulunamadı.</div>`;
     return;
   }
@@ -4873,7 +4894,10 @@ function renderOutlierDimSummary(dimSummary, findingsAll = [], metric = 'kal'){
     metric === 'kal' ? 'Kalan' :
     metric === 'gir' ? 'Giren' : 'Çıkan';
 
-  const top = dimSummary.slice(0, 12);
+  const top = dimSummary.slice(0, 10);
+  const dimTotalImpact = top.reduce((s, x) => s + Math.abs(x.totalImpact || 0), 0);
+
+  if(totalEl) totalEl.textContent = FMT(dimTotalImpact || 0);
 
   const html = top.map((r, idx)=>{
     const related = (findingsAll || [])
@@ -4976,6 +5000,7 @@ function renderOutlierDimSummary(dimSummary, findingsAll = [], metric = 'kal'){
 
   el.innerHTML = `<div class="outlier-accordion">${html}</div>`;
 }
+
 function updateOutlierNarrative({
   findings = [],
   totalImpact = 0,
@@ -5105,8 +5130,8 @@ function renderOutlierPage(rows, curMonth){
     });
 
     renderOutlierExecSummary(pack, curMonth);
-    renderOutlierDimSummary(pack.dimSummary, pack.findingsAll, pack.metric);
-    renderOutlierTable(pack.findingsShown);
+renderOutlierDimSummary(pack.dimSummary, pack.findingsAll, pack.metric);
+renderOutlierTable(pack.findingsShown, pack.findingsAll);
    }catch(err){
     console.error('renderOutlierPage error:', err);
 
@@ -5125,9 +5150,13 @@ function renderOutlierPage(rows, curMonth){
     }
   }
 }
-function renderOutlierTable(findings){
+function renderOutlierTable(findings, findingsAll = []){
   const wrap = document.getElementById('outlierTableWrap');
+  const totalEl = document.getElementById('outlierDetailTotal');
   if(!wrap) return;
+
+  const detailTotalImpact = (findingsAll || findings || []).reduce((s, x) => s + Math.abs(x.impact || 0), 0);
+  if(totalEl) totalEl.textContent = FMT(detailTotalImpact || 0);
 
   if(!findings || !findings.length){
     wrap.innerHTML = `<div class="risk-empty">Outlier kayıt bulunamadı.</div>`;
@@ -5170,6 +5199,7 @@ function renderOutlierTable(findings){
   wrap.appendChild(tbl);
   enhanceTable(tbl);
 }
+
 function renderOutlierExecSummary(pack, curMonth){
   const sub = document.getElementById('outlierExecSub');
   const badges = document.getElementById('outlierExecBadges');
