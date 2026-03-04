@@ -1644,135 +1644,176 @@ body.auth-lock #assistantPanel{
   }
 }
 /* =========================
-   ✅ OUTLIER EXEC SUMMARY (Premium)
+   ✅ OUTLIER HERO — PROFESSIONAL ANALYTICS LOOK
    ========================= */
-.outlier-exec{
-  display:grid;
-  grid-template-columns: 1.6fr 1fr;
-  gap:12px;
-  padding:14px;
-  border-radius:22px;
-  margin:10px 0 12px;
-
+.outlier-hero{
+  margin:10px 0 14px;
+  padding:18px 18px 16px;
+  border-radius:24px;
+  border:1px solid rgba(226,232,240,.96);
   background:
-    radial-gradient(140% 220% at 0% 0%, rgba(254,249,195,.55), transparent 58%),
-    radial-gradient(140% 220% at 100% 120%, rgba(187,247,208,.40), transparent 58%),
-    rgba(255,255,255,.92);
-  border:1px solid rgba(250,204,21,.34);
-  box-shadow:0 20px 60px rgba(15,23,42,.14);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96));
+  box-shadow:0 18px 48px rgba(15,23,42,.12);
 }
 
-.outlier-exec-title{
-  font-size:12px;
-  font-weight:1000;
-  letter-spacing:.14em;
+.outlier-hero-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+  flex-wrap:wrap;
+}
+
+.outlier-hero-kicker{
+  font-size:10px;
+  font-weight:900;
   text-transform:uppercase;
-  color:#0f172a;
+  letter-spacing:.16em;
+  color:#94a3b8;
   margin-bottom:4px;
 }
 
-.outlier-exec-sub{
-  font-size:12px;
-  color:#475569;
-  margin-bottom:10px;
+.outlier-hero-title{
+  font-size:18px;
+  font-weight:900;
+  color:#0f172a;
+  letter-spacing:.01em;
+  margin-bottom:4px;
 }
 
-.outlier-exec-badges{
+.outlier-hero-sub{
+  font-size:12px;
+  color:#64748b;
+}
+
+.outlier-hero-badges{
   display:flex;
   flex-wrap:wrap;
-  gap:6px;
-  margin-bottom:10px;
+  gap:8px;
+  justify-content:flex-end;
 }
-.outlier-badge{
+
+.outlier-hero-badges .outlier-badge{
   display:inline-flex;
   align-items:center;
   gap:8px;
-  padding:6px 10px;
+  padding:7px 11px;
   border-radius:999px;
-  border:1px solid rgba(226,232,240,.92);
-  background:rgba(255,255,255,.86);
-  box-shadow:0 10px 22px rgba(15,23,42,.08);
   font-size:11px;
+  font-weight:800;
+  color:#334155;
+  border:1px solid rgba(226,232,240,.95);
+  background:#ffffff;
+  box-shadow:0 8px 20px rgba(15,23,42,.06);
+}
+
+.outlier-hero-badges .outlier-badge .dot{
+  width:8px;
+  height:8px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#facc15,#f59e0b);
+  box-shadow:0 0 0 4px rgba(250,204,21,.14);
+}
+
+.outlier-hero-grid{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:14px;
+}
+
+.outlier-focus-list,
+.outlier-action-panel{
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:18px;
+  background:rgba(255,255,255,.86);
+  padding:14px;
+  box-shadow:0 10px 28px rgba(15,23,42,.06);
+}
+
+.outlier-section-cap{
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  color:#94a3b8;
+  margin-bottom:12px;
+}
+
+.outlier-focus-item{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid #eef2f7;
+}
+.outlier-focus-item:last-child{
+  border-bottom:0;
+  padding-bottom:0;
+}
+
+.outlier-rank{
+  width:28px;
+  height:28px;
+  min-width:28px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
   font-weight:900;
   color:#0f172a;
-}
-.outlier-badge .dot{
-  width:10px;height:10px;border-radius:999px;
-  box-shadow:0 0 0 4px rgba(250,204,21,.18);
-  background:linear-gradient(135deg,#facc15,#f59e0b);
+  background:linear-gradient(135deg,#f8fafc,#e2e8f0);
+  border:1px solid rgba(203,213,225,.95);
 }
 
-.outlier-exec-actions{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:8px;
+.outlier-focus-title{
+  font-size:13px;
+  font-weight:900;
+  color:#111827;
+  line-height:1.35;
+  margin-bottom:3px;
 }
-.outlier-action{
-  padding:10px 12px;
-  border-radius:16px;
-  border:1px solid rgba(226,232,240,.92);
-  background:rgba(255,255,255,.86);
-  box-shadow:0 12px 28px rgba(15,23,42,.10);
-}
-.outlier-action .t{
-  font-size:11px;
-  font-weight:1000;
-  letter-spacing:.12em;
-  text-transform:uppercase;
+
+.outlier-focus-sub{
+  font-size:12px;
   color:#64748b;
-  margin-bottom:4px;
+  line-height:1.45;
 }
+
+.outlier-action-list{
+  display:grid;
+  gap:10px;
+}
+
+.outlier-action{
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:14px;
+  background:#fff;
+  padding:12px 12px;
+  box-shadow:none;
+}
+
+.outlier-action .t{
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:#94a3b8;
+  margin-bottom:5px;
+}
+
 .outlier-action .d{
   font-size:12px;
+  font-weight:700;
   color:#111827;
-  font-weight:800;
-  line-height:1.35;
-}
-
-.outlier-exec-right{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:8px;
-}
-.outlier-mini{
-  padding:10px 12px;
-  border-radius:18px;
-  border:1px solid rgba(226,232,240,.92);
-  background:
-    radial-gradient(120% 180% at 0% 0%, rgba(255,255,255,.78), transparent 58%),
-    rgba(255,255,255,.88);
-  box-shadow:0 14px 34px rgba(15,23,42,.10);
-}
-.outlier-mini .cap{
-  font-size:10px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:#94a3b8;
-  font-weight:1000;
-  margin-bottom:4px;
-}
-.outlier-mini .val{
-  font-size:12.5px;
-  font-weight:1000;
-  color:#0f172a;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.outlier-mini .sub{
-  font-size:11px;
-  color:#64748b;
-  margin-top:2px;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
+  line-height:1.45;
 }
 
 @media (max-width: 980px){
-  .outlier-exec{ grid-template-columns:1fr; }
+  .outlier-hero-grid{
+    grid-template-columns:1fr;
+  }
 }
 /* ✅ Tıklamaları öldüren görünmez katmanlara karşı güvenlik */
 .auth-backdrop{ pointer-events:auto; }
@@ -1781,6 +1822,546 @@ body.auth-lock #assistantPanel{
 .filters::before,
 #panel-overview::before{
   pointer-events:none !important;
+}
+.outlier-narrative{
+  margin-bottom:10px;
+  padding:16px 18px;
+  border-radius:18px;
+  border:1px solid rgba(226,232,240,.95);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96));
+  box-shadow:0 12px 30px rgba(15,23,42,.08);
+  font-size:12px;
+  color:#334155;
+  line-height:1.6;
+}
+.outlier-narrative ul{
+  margin:6px 0 8px 18px;
+  padding:0;
+}
+.outlier-narrative li{
+  margin-bottom:4px;
+}
+.outlier-narrative .ov-section-title{
+  margin-top:6px;
+}
+/* =========================
+   ✅ PREMIUM OUTLIER SAYFASI — SADE YÖNETİCİ ÖZETİ
+   ========================= */
+
+#panel-outlier .card{
+  border-radius:30px;
+  background:
+    radial-gradient(140% 220% at 0% 0%, rgba(255,248,220,.58), transparent 58%),
+    radial-gradient(160% 220% at 100% 120%, rgba(220,252,231,.34), transparent 58%),
+    rgba(255,255,255,.97);
+  border:1px solid rgba(250,204,21,.24);
+  box-shadow:0 24px 70px rgba(15,23,42,.12);
+  padding:20px;
+}
+
+#panel-outlier h3{
+  font-size:28px;
+  line-height:1.14;
+  margin:0 0 16px 0;
+  font-weight:1000;
+  color:#0f172a;
+  letter-spacing:-.02em;
+}
+
+.outlier-hero{
+  display:grid;
+  grid-template-columns:1.55fr .85fr;
+  gap:16px;
+  margin:14px 0 18px;
+}
+
+@media(max-width:980px){
+  .outlier-hero{
+    grid-template-columns:1fr;
+  }
+}
+
+.outlier-hero-main,
+.outlier-hero-side{
+  border-radius:26px;
+  border:1px solid rgba(226,232,240,.95);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.985), rgba(248,250,252,.96));
+  box-shadow:
+    0 16px 40px rgba(15,23,42,.08),
+    inset 0 0 0 1px rgba(255,255,255,.36);
+}
+
+.outlier-hero-main{
+  padding:22px 22px 18px;
+}
+
+.outlier-hero-side{
+  padding:14px;
+  display:grid;
+  gap:10px;
+  align-content:start;
+}
+
+.outlier-hero-label{
+  font-size:10px;
+  font-weight:1000;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#94a3b8;
+  margin-bottom:8px;
+}
+
+.outlier-hero-title{
+  font-size:34px;
+  font-weight:1000;
+  color:#0f172a;
+  line-height:1.06;
+  margin-bottom:8px;
+  max-width:760px;
+}
+
+.outlier-hero-sub{
+  font-size:13px;
+  color:#64748b;
+  margin-bottom:14px;
+}
+
+.outlier-chip-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:16px;
+}
+
+.outlier-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid rgba(226,232,240,.95);
+  background:#ffffff;
+  box-shadow:0 8px 18px rgba(15,23,42,.05);
+  font-size:11px;
+  font-weight:900;
+  color:#0f172a;
+}
+
+.outlier-chip::before{
+  content:'';
+  width:8px;
+  height:8px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#facc15,#f59e0b);
+  box-shadow:0 0 0 4px rgba(250,204,21,.16);
+}
+
+.outlier-main-insight{
+  padding:16px 18px;
+  border-radius:20px;
+  border:1px solid rgba(226,232,240,.92);
+  background:
+    radial-gradient(120% 180% at 0% 0%, rgba(255,255,255,.96), transparent 55%),
+    rgba(248,250,252,.86);
+  box-shadow:0 12px 24px rgba(15,23,42,.06);
+  margin-bottom:12px;
+}
+
+.outlier-main-insight .cap{
+  font-size:10px;
+  font-weight:1000;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:#94a3b8;
+  margin-bottom:6px;
+}
+
+.outlier-main-insight .val{
+  font-size:18px;
+  font-weight:1000;
+  color:#0f172a;
+  line-height:1.28;
+}
+
+.outlier-main-insight .sub{
+  margin-top:6px;
+  font-size:12px;
+  color:#64748b;
+}
+
+.outlier-action-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+
+.outlier-action-card{
+  padding:14px 15px;
+  border-radius:18px;
+  border:1px solid rgba(226,232,240,.92);
+  background:#ffffff;
+  box-shadow:0 10px 22px rgba(15,23,42,.05);
+}
+
+.outlier-action-card .cap{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  color:#94a3b8;
+  font-weight:1000;
+  margin-bottom:5px;
+}
+
+.outlier-action-card .txt{
+  font-size:12px;
+  color:#0f172a;
+  line-height:1.5;
+  font-weight:800;
+}
+
+.outlier-priority{
+  padding:14px 14px 13px;
+  border-radius:18px;
+  border:1px solid rgba(226,232,240,.92);
+  background:#ffffff;
+  box-shadow:0 10px 22px rgba(15,23,42,.05);
+}
+
+.outlier-priority .cap{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  color:#94a3b8;
+  font-weight:1000;
+  margin-bottom:5px;
+}
+
+.outlier-priority .val{
+  font-size:14px;
+  font-weight:1000;
+  color:#0f172a;
+  line-height:1.28;
+}
+
+.outlier-priority .sub{
+  margin-top:4px;
+  font-size:11px;
+  color:#64748b;
+}
+
+.outlier-kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin:0 0 14px;
+}
+@media(max-width:980px){
+  .outlier-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(max-width:560px){
+  .outlier-kpi-grid{grid-template-columns:1fr;}
+}
+
+.outlier-kpi{
+  padding:16px 16px 14px;
+  border-radius:22px;
+  border:1px solid rgba(226,232,240,.95);
+  background:#ffffff;
+  box-shadow:0 12px 26px rgba(15,23,42,.05);
+}
+
+.outlier-kpi .cap{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  color:#94a3b8;
+  font-weight:1000;
+  margin-bottom:6px;
+}
+
+.outlier-kpi .val{
+  font-size:24px;
+  font-weight:1000;
+  color:#0f172a;
+  line-height:1.1;
+}
+
+.outlier-kpi .sub{
+  font-size:12px;
+  color:#64748b;
+  margin-top:4px;
+}
+
+.outlier-narrative{
+  margin-bottom:14px;
+  padding:18px 20px;
+  border-radius:22px;
+  border:1px solid rgba(226,232,240,.95);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.99), rgba(248,250,252,.97));
+  box-shadow:0 12px 28px rgba(15,23,42,.05);
+  font-size:13px;
+  color:#334155;
+  line-height:1.7;
+}
+
+.outlier-narrative ul{
+  margin:6px 0 8px 18px;
+  padding:0;
+}
+.outlier-narrative li{
+  margin-bottom:4px;
+}
+.outlier-narrative .ov-section-title{
+  margin-top:8px;
+}
+
+.outlier-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:0 0 14px;
+}
+
+.outlier-section-card{
+  border-radius:22px;
+  border:1px solid rgba(226,232,240,.95);
+  background:#ffffff;
+  box-shadow:0 12px 28px rgba(15,23,42,.05);
+  padding:16px;
+  margin-bottom:12px;
+}
+
+.outlier-section-card h4{
+  margin:0 0 12px 0;
+  font-size:17px;
+  font-weight:1000;
+  color:#0f172a;
+}
+/* =========================
+   ✅ OUTLIER ACCORDION SUMMARY
+   ========================= */
+
+.outlier-accordion{
+  display:grid;
+  gap:12px;
+}
+
+.outlier-acc-item{
+  border:1px solid rgba(226,232,240,.95);
+  border-radius:22px;
+  background:
+    radial-gradient(120% 180% at 0% 0%, rgba(255,255,255,.98), transparent 58%),
+    radial-gradient(140% 180% at 100% 120%, rgba(254,249,195,.30), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96));
+  box-shadow:0 14px 36px rgba(15,23,42,.08);
+  overflow:hidden;
+}
+
+.outlier-acc-item[open]{
+  border-color:rgba(250,204,21,.38);
+  box-shadow:0 18px 42px rgba(15,23,42,.10);
+}
+
+.outlier-acc-head{
+  list-style:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:16px 18px;
+  background:transparent;
+}
+.outlier-acc-head::-webkit-details-marker{ display:none; }
+
+.outlier-acc-left{
+  min-width:0;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.outlier-acc-rank{
+  width:34px;
+  height:34px;
+  min-width:34px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:1000;
+  color:#0f172a;
+  background:linear-gradient(135deg,#fde68a,#facc15);
+  box-shadow:0 10px 22px rgba(250,204,21,.22);
+}
+
+.outlier-acc-title{
+  font-size:15px;
+  font-weight:1000;
+  color:#0f172a;
+  line-height:1.25;
+  margin-bottom:4px;
+  word-break:break-word;
+}
+
+.outlier-acc-sub{
+  font-size:12px;
+  color:#64748b;
+  line-height:1.45;
+}
+
+.outlier-acc-right{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.outlier-metric-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid rgba(226,232,240,.95);
+  background:#fff;
+  font-size:11px;
+  font-weight:900;
+  color:#334155;
+  box-shadow:0 8px 18px rgba(15,23,42,.05);
+  white-space:nowrap;
+}
+
+.outlier-metric-pill strong{
+  color:#0f172a;
+}
+
+.outlier-chevron{
+  width:30px;
+  height:30px;
+  min-width:30px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(226,232,240,.95);
+  background:#fff;
+  color:#64748b;
+  font-size:14px;
+  font-weight:1000;
+  transition:transform .18s ease;
+}
+
+.outlier-acc-item[open] .outlier-chevron{
+  transform:rotate(180deg);
+}
+
+.outlier-acc-body{
+  padding:0 18px 18px;
+  border-top:1px solid rgba(241,245,249,.95);
+  background:
+    radial-gradient(120% 160% at 100% 120%, rgba(220,252,231,.28), transparent 55%),
+    rgba(255,255,255,.78);
+}
+
+.outlier-acc-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:14px;
+}
+@media(max-width:900px){
+  .outlier-acc-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+.outlier-acc-box{
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:18px;
+  background:rgba(255,255,255,.88);
+  padding:14px;
+  box-shadow:0 10px 24px rgba(15,23,42,.06);
+}
+
+.outlier-acc-box .cap{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  color:#94a3b8;
+  font-weight:1000;
+  margin-bottom:6px;
+}
+
+.outlier-acc-box .txt{
+  font-size:13px;
+  color:#0f172a;
+  line-height:1.55;
+  font-weight:700;
+}
+
+.outlier-inline-table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:12px;
+  margin-top:12px;
+  background:#fff;
+  border:1px solid rgba(226,232,240,.92);
+  border-radius:16px;
+  overflow:hidden;
+}
+.outlier-inline-table thead th{
+  background:linear-gradient(180deg,#ffffff,#f8fafc);
+  padding:9px 10px;
+  border-bottom:1px solid #e5e7eb;
+  text-align:left;
+}
+.outlier-inline-table tbody td{
+  padding:8px 10px;
+  border-bottom:1px solid #f1f5f9;
+}
+.outlier-inline-table tbody tr:last-child td{
+  border-bottom:0;
+}
+
+.outlier-detail-shell{
+  margin-top:12px;
+  border-radius:22px;
+  border:1px solid rgba(226,232,240,.95);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,250,252,.96));
+  box-shadow:0 14px 34px rgba(15,23,42,.08);
+  overflow:hidden;
+}
+
+.outlier-detail-shell > summary{
+  list-style:none;
+  cursor:pointer;
+  padding:16px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  font-size:15px;
+  font-weight:1000;
+  color:#0f172a;
+}
+.outlier-detail-shell > summary::-webkit-details-marker{ display:none; }
+
+.outlier-detail-shell > summary .sub{
+  font-size:12px;
+  font-weight:700;
+  color:#64748b;
+}
+
+.outlier-detail-body{
+  padding:0 14px 14px;
 }
 </style>
 </head>
@@ -2123,7 +2704,7 @@ body.auth-lock #assistantPanel{
 <!-- OUTLIER ANALİZİ -->
 <section class="panel" id="panel-outlier">
   <div class="card">
-    <h3>Outlier Analizi — Aykırı Değer Tespiti (Seçili Ay)</h3>
+    <h3>Outlier Analizi — İstisna, Sapma ve Öncelikli İnceleme Alanları</h3>
 
     <!-- Kontroller -->
     <div class="risk-controls" style="margin-top:8px;">
@@ -2178,76 +2759,94 @@ body.auth-lock #assistantPanel{
         </div>
       </div>
     </div>
-<!-- ✅ YÖNETİCİ ÖZETİ (Premium) -->
-<div class="outlier-exec" id="outlierExec">
-  <div class="outlier-exec-left">
-    <div class="outlier-exec-title">Yönetici Özeti</div>
-    <div class="outlier-exec-sub" id="outlierExecSub">—</div>
+<!-- PREMIUM HERO / YÖNETİCİ ÖZETİ -->
+<div class="outlier-hero" id="outlierExec">
+  <div class="outlier-hero-main">
+    <div class="outlier-hero-label">Yönetici Özeti</div>
+    <div class="outlier-hero-title" id="outlierExecTopTitle">Outlier görünümü hazırlanıyor</div>
+    <div class="outlier-hero-sub" id="outlierExecSub">—</div>
 
-    <div class="outlier-exec-badges" id="outlierExecBadges"></div>
+    <div class="outlier-chip-row" id="outlierExecBadges"></div>
 
-    <div class="outlier-exec-actions" id="outlierExecActions">
-      <!-- JS dolduracak -->
+    <div class="outlier-main-insight">
+      <div class="cap">Ana Yorum</div>
+      <div class="val" id="outlierExecMainInsight">—</div>
+      <div class="sub" id="outlierExecMainInsightSub">—</div>
     </div>
+
+    <div class="outlier-action-grid" id="outlierExecActions"></div>
   </div>
 
-  <div class="outlier-exec-right">
-    <div class="outlier-mini">
-      <div class="cap">Öncelik-1 (En yüksek etki)</div>
+  <div class="outlier-hero-side">
+    <div class="outlier-priority">
+      <div class="cap">Öncelik-1</div>
       <div class="val" id="outlierExecTop1">—</div>
       <div class="sub" id="outlierExecTop1Sub">—</div>
     </div>
 
-    <div class="outlier-mini">
+    <div class="outlier-priority">
       <div class="cap">Öncelik-2</div>
       <div class="val" id="outlierExecTop2">—</div>
       <div class="sub" id="outlierExecTop2Sub">—</div>
     </div>
 
-    <div class="outlier-mini">
+    <div class="outlier-priority">
       <div class="cap">Öncelik-3</div>
       <div class="val" id="outlierExecTop3">—</div>
       <div class="sub" id="outlierExecTop3Sub">—</div>
     </div>
   </div>
 </div>
-    <!-- KPI kartları -->
-    <div class="risk-kpis" id="outlierKpis">
-      <div class="risk-kpi">
-        <div class="cap">Outlier Kayıt</div>
-        <div class="val" id="outlierKpiCount">—</div>
-        <div class="sub" id="outlierKpiCountSub">Seçili ay</div>
-      </div>
-      <div class="risk-kpi">
-        <div class="cap">Toplam Etki</div>
-        <div class="val" id="outlierKpiImpact">—</div>
-        <div class="sub">Mutlak etki toplamı</div>
-      </div>
-      <div class="risk-kpi">
-        <div class="cap">En Baskın Boyut</div>
-        <div class="val" id="outlierKpiDim">—</div>
-        <div class="sub">Etkiye göre</div>
-      </div>
-      <div class="risk-kpi">
-        <div class="cap">Durum</div>
-        <div class="val" id="outlierStatusText">—</div>
-        <div class="sub">Yoğunluk seviyesi</div>
-      </div>
+<!-- KPI kartları -->
+<div class="outlier-kpi-grid" id="outlierKpis">
+  <div class="outlier-kpi">
+    <div class="cap">Outlier Kayıt</div>
+    <div class="val" id="outlierKpiCount">—</div>
+    <div class="sub" id="outlierKpiCountSub">Seçili ay</div>
+  </div>
+
+  <div class="outlier-kpi">
+    <div class="cap">Toplam Etki</div>
+    <div class="val" id="outlierKpiImpact">—</div>
+    <div class="sub">Mutlak etki toplamı</div>
+  </div>
+
+  <div class="outlier-kpi">
+    <div class="cap">En Baskın Boyut</div>
+    <div class="val" id="outlierKpiDim">—</div>
+    <div class="sub">Etkiye göre</div>
+  </div>
+
+  <div class="outlier-kpi">
+    <div class="cap">Durum</div>
+    <div class="val" id="outlierStatusText">—</div>
+    <div class="sub">Yoğunluk seviyesi</div>
+  </div>
+</div>
+
+<!-- Anlatı -->
+<div class="outlier-narrative" id="outlierNarrative">Veri yükleyin.</div>
+<div class="outlier-tags" id="outlierNarrativeTags"></div>
+
+<!-- Boyut özeti -->
+<div class="outlier-section-card">
+  <h4>Boyut Bazlı Outlier Özeti</h4>
+  <div id="outlierDimSummary"></div>
+</div>
+
+<!-- Detay tablo -->
+<details class="outlier-detail-shell" open>
+  <summary>
+    <div>
+      Detay Kayıtlar
+      <div class="sub">Outlier detay satırları • filtrelenebilir tablo</div>
     </div>
-
-    <!-- Anlatı -->
-    <div class="ov-description" id="outlierNarrative" style="margin-bottom:10px;">Veri yükleyin.</div>
-    <div id="outlierNarrativeTags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;"></div>
-
-    <!-- Boyut özeti -->
-    <div class="card" style="margin:0 0 10px 0; padding:12px;">
-      <h4 style="margin:0 0 8px 0;">Boyut Bazlı Outlier Özeti</h4>
-      <div id="outlierDimSummary"></div>
-    </div>
-
-    <!-- Detay tablo -->
+    <span class="outlier-chevron">⌄</span>
+  </summary>
+  <div class="outlier-detail-body">
     <div id="outlierTableWrap"></div>
-
+  </div>
+</details>
     <p class="note" style="margin-top:10px;">
       Not: Aykırılık, seçilen metrik için (Kalan/Giren/Çıkan) grup içi Z-Score yaklaşımı ile hesaplanır.
     </p>
@@ -4261,8 +4860,7 @@ function buildOutlierPack(rows, curMonth){
 
   return { findingsAll: findings, findingsShown: shown, dimSummary, totalImpact, topDim, metric, z:zLimit, dim, sourceCount: baseRows.length };
 }
-
-function renderOutlierDimSummary(dimSummary){
+function renderOutlierDimSummary(dimSummary, findingsAll = [], metric = 'kal'){
   const el = document.getElementById('outlierDimSummary');
   if(!el) return;
 
@@ -4271,89 +4869,113 @@ function renderOutlierDimSummary(dimSummary){
     return;
   }
 
-  const top = dimSummary.slice(0, 20);
-  const footer = {
-    count: top.reduce((a,b)=>a+(b.count||0),0),
-    totalImpact: top.reduce((a,b)=>a+(b.totalImpact||0),0)
-  };
+  const metricLabel =
+    metric === 'kal' ? 'Kalan' :
+    metric === 'gir' ? 'Giren' : 'Çıkan';
 
-  const tbl = document.createElement('table');
-  tbl.innerHTML = `
-    <thead>
-      <tr>
-        <th>Boyut Değeri</th>
-        <th class="num">Outlier Adet</th>
-        <th class="num">Toplam Etki</th>
-        <th class="num">Max |Z|</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${top.map(r=>`
-        <tr>
-          <td>${r.dimKey}</td>
-          <td class="num">${(r.count||0).toLocaleString('tr-TR')}</td>
-          <td class="num">${FMT(r.totalImpact||0)}</td>
-          <td class="num">${(Math.round((r.maxAbsZ||0)*100)/100).toLocaleString('tr-TR')}</td>
-        </tr>
-      `).join('')}
-    </tbody>
-    <tfoot>
-      <tr>
-        <td><b>Toplam (ilk ${top.length})</b></td>
-        <td class="num"><b>${footer.count.toLocaleString('tr-TR')}</b></td>
-        <td class="num"><b>${FMT(footer.totalImpact)}</b></td>
-        <td class="num"><b>—</b></td>
-      </tr>
-    </tfoot>
-  `;
-  el.innerHTML = '';
-  el.appendChild(tbl);
-  enhanceTable(tbl);
+  const top = dimSummary.slice(0, 12);
+
+  const html = top.map((r, idx)=>{
+    const related = (findingsAll || [])
+      .filter(x => x.dimKey === r.dimKey)
+      .sort((a,b)=> Math.abs(b.impact || 0) - Math.abs(a.impact || 0))
+      .slice(0, 5);
+
+    const sampleNames = related
+      .slice(0,3)
+      .map(x => x.StokAdi || '—')
+      .filter(Boolean);
+
+    const topFSN = related[0]?.FSN || '—';
+
+    const reasonText = related.length
+      ? `${r.dimKey} boyutunda ${related.length} dikkat çeken kayıt var. En güçlü sapma ${sampleNames[0] || 'ilgili kayıt'} üzerinde yoğunlaşıyor.`
+      : `${r.dimKey} için özet kayıt hazırlandı.`;
+
+    const actionText =
+      `Bu boyutta ilk kayıtları ${metricLabel.toLowerCase()} değişimi, sipariş geçmişi, transfer hareketi ve min-max parametreleri açısından kontrol edin.`;
+
+    return `
+      <details class="outlier-acc-item" ${idx < 3 ? 'open' : ''}>
+        <summary class="outlier-acc-head">
+          <div class="outlier-acc-left">
+            <div class="outlier-acc-rank">${idx + 1}</div>
+            <div>
+              <div class="outlier-acc-title">${r.dimKey}</div>
+              <div class="outlier-acc-sub">
+                Boyut etkisi yüksek • Özet inceleme alanı
+              </div>
+            </div>
+          </div>
+
+          <div class="outlier-acc-right">
+            <span class="outlier-metric-pill"><strong>Adet:</strong> ${(r.count || 0).toLocaleString('tr-TR')}</span>
+            <span class="outlier-metric-pill"><strong>Toplam Etki:</strong> ${FMT(r.totalImpact || 0)}</span>
+            <span class="outlier-metric-pill"><strong>Max |Z|:</strong> ${(Math.round((r.maxAbsZ || 0) * 100) / 100).toLocaleString('tr-TR')}</span>
+            <span class="outlier-chevron">⌄</span>
+          </div>
+        </summary>
+
+        <div class="outlier-acc-body">
+          <div class="outlier-acc-grid">
+            <div class="outlier-acc-box">
+              <div class="cap">Yönetici Yorumu</div>
+              <div class="txt">${reasonText}</div>
+            </div>
+
+            <div class="outlier-acc-box">
+              <div class="cap">Önerilen Aksiyon</div>
+              <div class="txt">${actionText}</div>
+            </div>
+          </div>
+
+          <div class="outlier-acc-grid">
+            <div class="outlier-acc-box">
+              <div class="cap">Yoğunlaşan FSN</div>
+              <div class="txt">${topFSN}</div>
+            </div>
+
+            <div class="outlier-acc-box">
+              <div class="cap">Örnek Kalemler</div>
+              <div class="txt">${sampleNames.length ? sampleNames.join(' • ') : '—'}</div>
+            </div>
+          </div>
+
+          ${
+            related.length
+              ? `
+              <table class="outlier-inline-table">
+                <thead>
+                  <tr>
+                    <th>Stok Adı</th>
+                    <th>FSN</th>
+                    <th class="num">Değer</th>
+                    <th class="num">Z-Score</th>
+                    <th class="num">Etki</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${related.map(x=>`
+                    <tr>
+                      <td>${x.StokAdi || '—'}</td>
+                      <td>${x.FSN || '—'}</td>
+                      <td class="num">${FMT(x.value || 0)}</td>
+                      <td class="num">${(Math.round((x.zScore || 0) * 100) / 100).toLocaleString('tr-TR')}</td>
+                      <td class="num">${FMT(Math.abs(x.impact || 0))}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+              `
+              : ''
+          }
+        </div>
+      </details>
+    `;
+  }).join('');
+
+  el.innerHTML = `<div class="outlier-accordion">${html}</div>`;
 }
-
-function renderOutlierTable(findings){
-  const wrap = document.getElementById('outlierTableWrap');
-  if(!wrap) return;
-
-  if(!findings || !findings.length){
-    wrap.innerHTML = `<div class="risk-empty">Seçilen koşullarda outlier kayıt bulunamadı.</div>`;
-    return;
-  }
-
-  const tbl = document.createElement('table');
-  tbl.innerHTML = `
-    <thead>
-      <tr>
-        <th>Boyut</th>
-        <th>Stok Adı</th>
-        <th>Depo</th>
-        <th>FSN</th>
-        <th>MTRL</th>
-        <th class="num">Değer</th>
-        <th class="num">Z-Score</th>
-        <th class="num">Etki</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${findings.map(x=>`
-        <tr>
-          <td>${x.dimKey}</td>
-          <td>${x.StokAdi}</td>
-          <td>${x.Depo}</td>
-          <td>${x.FSN}</td>
-          <td>${x.MTRL}</td>
-          <td class="num">${FMT(x.value)}</td>
-          <td class="num">${(Math.round((x.zScore||0)*100)/100).toLocaleString('tr-TR')}</td>
-          <td class="num">${FMT(Math.abs(x.impact||0))}</td>
-        </tr>
-      `).join('')}
-    </tbody>
-  `;
-  wrap.innerHTML = '';
-  wrap.appendChild(tbl);
-  enhanceTable(tbl);
-}
-
 function updateOutlierNarrative({
   findings = [],
   totalImpact = 0,
@@ -4483,21 +5105,79 @@ function renderOutlierPage(rows, curMonth){
     });
 
     renderOutlierExecSummary(pack, curMonth);
-    renderOutlierDimSummary(pack.dimSummary);
+    renderOutlierDimSummary(pack.dimSummary, pack.findingsAll, pack.metric);
     renderOutlierTable(pack.findingsShown);
-  }catch(err){
+   }catch(err){
     console.error('renderOutlierPage error:', err);
+
     const wrap = document.getElementById('outlierTableWrap');
+    const dimWrap = document.getElementById('outlierDimSummary');
+    const nar = document.getElementById('outlierNarrative');
+
+    if(nar){
+      nar.innerHTML = `<div class="risk-empty">Outlier anlatı alanı render hatası: ${err.message || err}</div>`;
+    }
+    if(dimWrap){
+      dimWrap.innerHTML = `<div class="risk-empty">Boyut özeti render hatası: ${err.message || err}</div>`;
+    }
     if(wrap){
-      wrap.innerHTML = `<div class="risk-empty">Outlier sayfası render hatası: ${err.message || err}</div>`;
+      wrap.innerHTML = `<div class="risk-empty">Outlier tablo render hatası: ${err.message || err}</div>`;
     }
   }
 }
+function renderOutlierTable(findings){
+  const wrap = document.getElementById('outlierTableWrap');
+  if(!wrap) return;
 
+  if(!findings || !findings.length){
+    wrap.innerHTML = `<div class="risk-empty">Outlier kayıt bulunamadı.</div>`;
+    return;
+  }
+
+  const tbl = document.createElement('table');
+  tbl.className = 'risk-table';
+
+  tbl.innerHTML = `
+    <thead>
+      <tr>
+        <th>Boyut</th>
+        <th>Stok Adı</th>
+        <th>Depo</th>
+        <th>FSN</th>
+        <th>MTRL</th>
+        <th class="num">Değer</th>
+        <th class="num">Z-Score</th>
+        <th class="num">Etki</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${findings.map(x=>`
+        <tr>
+          <td>${x.dimKey || '—'}</td>
+          <td>${x.StokAdi || '—'}</td>
+          <td>${x.Depo || '—'}</td>
+          <td>${x.FSN || '—'}</td>
+          <td>${x.MTRL || '—'}</td>
+          <td class="num">${FMT(x.value || 0)}</td>
+          <td class="num">${(Math.round((x.zScore || 0) * 100) / 100).toLocaleString('tr-TR')}</td>
+          <td class="num">${FMT(Math.abs(x.impact || 0))}</td>
+        </tr>
+      `).join('')}
+    </tbody>
+  `;
+
+  wrap.innerHTML = '';
+  wrap.appendChild(tbl);
+  enhanceTable(tbl);
+}
 function renderOutlierExecSummary(pack, curMonth){
   const sub = document.getElementById('outlierExecSub');
   const badges = document.getElementById('outlierExecBadges');
   const actions = document.getElementById('outlierExecActions');
+  const topTitle = document.getElementById('outlierExecTopTitle');
+
+  const mainInsight = document.getElementById('outlierExecMainInsight');
+  const mainInsightSub = document.getElementById('outlierExecMainInsightSub');
 
   const top1 = document.getElementById('outlierExecTop1');
   const top1s = document.getElementById('outlierExecTop1Sub');
@@ -4512,12 +5192,25 @@ function renderOutlierExecSummary(pack, curMonth){
     pack.metric === 'kal' ? 'Kalan' :
     pack.metric === 'gir' ? 'Giren' : 'Çıkan';
 
+  const sev = document.getElementById('outlierStatusText')?.textContent || 'Düşük';
+
+  const sorted = (pack.findingsAll || [])
+    .slice()
+    .sort((a,b) => Math.abs(b.impact || 0) - Math.abs(a.impact || 0));
+
+  const lead = sorted[0] || null;
+
   if(sub){
     sub.textContent = `${fmtMonthLabel(curMonth)} • Boyut: ${pack.dim} • Metrik: ${metricLabel} • Z ≥ ${pack.z}`;
   }
 
+  if(topTitle){
+    topTitle.textContent = lead
+      ? `${lead.StokAdi || lead.dimKey || '—'} outlier etkisinde öne çıkıyor`
+      : `Seçili dönemde belirgin outlier görünmüyor`;
+  }
+
   if(badges){
-    const sev = document.getElementById('outlierStatusText')?.textContent || '—';
     const arr = [
       `Outlier: ${(pack.findingsAll?.length || 0).toLocaleString('tr-TR')}`,
       `Toplam Etki: ${FMT(pack.totalImpact || 0)}`,
@@ -4526,53 +5219,61 @@ function renderOutlierExecSummary(pack, curMonth){
     ];
 
     badges.innerHTML = arr.map(t => `
-      <span class="outlier-badge"><span class="dot"></span>${t}</span>
+      <span class="outlier-chip">${t}</span>
     `).join('');
   }
 
-  const sorted = (pack.findingsAll || [])
-    .slice()
-    .sort((a,b) => Math.abs(b.impact || 0) - Math.abs(a.impact || 0));
+  if(mainInsight){
+    if(lead){
+      mainInsight.textContent = `${lead.StokAdi || lead.dimKey || '—'} kalemi, mevcut kırılım içinde en yüksek sapma ve etkiyi üretiyor.`;
+    }else{
+      mainInsight.textContent = `Seçilen eşik ve boyut altında kritik seviye outlier tespit edilmedi.`;
+    }
+  }
 
-  const take = sorted.slice(0,3);
+  if(mainInsightSub){
+    if(lead){
+      mainInsightSub.textContent = `Etki: ${FMT(Math.abs(lead.impact || 0))} • Z-Score: ${(Math.round((Math.abs(lead.absZ || 0))*100)/100).toLocaleString('tr-TR')} • ${fmtMonthLabel(curMonth)}`;
+    }else{
+      mainInsightSub.textContent = `Z eşiğini düşürerek veya inceleme boyutunu değiştirerek daha hassas tarama yapabilirsiniz.`;
+    }
+  }
 
-  const fmtLine = (x) => `${(x.StokAdi || '—').slice(0,36)} • ${(x.Depo || '—').slice(0,20)}`;
+  const fmtLine = (x) => `${(x.StokAdi || x.dimKey || '—').slice(0,42)}`;
   const fmtSub  = (x) => `Etki: ${FMT(Math.abs(x.impact || 0))} • Z: ${(Math.round((Math.abs(x.absZ || 0))*100)/100).toLocaleString('tr-TR')}`;
 
-  if(top1)  top1.textContent  = take[0] ? fmtLine(take[0]) : '—';
-  if(top1s) top1s.textContent = take[0] ? fmtSub(take[0]) : '—';
+  if(top1)  top1.textContent  = sorted[0] ? fmtLine(sorted[0]) : '—';
+  if(top1s) top1s.textContent = sorted[0] ? fmtSub(sorted[0]) : '—';
 
-  if(top2)  top2.textContent  = take[1] ? fmtLine(take[1]) : '—';
-  if(top2s) top2s.textContent = take[1] ? fmtSub(take[1]) : '—';
+  if(top2)  top2.textContent  = sorted[1] ? fmtLine(sorted[1]) : '—';
+  if(top2s) top2s.textContent = sorted[1] ? fmtSub(sorted[1]) : '—';
 
-  if(top3)  top3.textContent  = take[2] ? fmtLine(take[2]) : '—';
-  if(top3s) top3s.textContent = take[2] ? fmtSub(take[2]) : '—';
+  if(top3)  top3.textContent  = sorted[2] ? fmtLine(sorted[2]) : '—';
+  if(top3s) top3s.textContent = sorted[2] ? fmtSub(sorted[2]) : '—';
 
   if(actions){
-    const sev = document.getElementById('outlierStatusText')?.textContent || 'Düşük';
+ const t1 = sev === 'Yüksek'
+  ? 'İlk 20 kritik kalemde işlem geçmişi, sipariş hareketi ve transfer kayıtlarını yönetim önceliğiyle doğrulayın.'
+  : 'Öncelikli sapma gösteren kalemlerde veri doğrulaması ve dönemsel karşılaştırma incelemesi yapın.';
 
-    const t1 = sev === 'Yüksek'
-      ? 'İlk 20 outlier kalem için işlem geçmişi, sipariş ve transfer doğrulaması yapın.'
-      : 'Öncelikli outlier kalemlerde veri doğrulaması ve dönemsel kıyaslama yapın.';
-
-    const t2 = 'Tekrarlayan outlierlarda Min/Max parametrelerini ve tedarik planını revize edin.';
+    const t2 = 'Tekrarlayan outlier kalemlerde min-max parametrelerini ve tedarik planını yeniden değerlendirin.';
 
     const t3 = pack.dim === 'FSN'
-      ? 'FSN yoğunluğu varsa sınıf bazlı satınalma ve transfer kurallarını gözden geçirin.'
-      : 'Boyutu FSN, Depo, Üst Grup veya MTRL kırılımında değiştirerek kök nedeni daraltın.';
+      ? 'FSN yoğunluğu varsa sınıf bazlı tedarik ve stoklama kurallarını gözden geçirin.'
+      : 'Boyutu FSN, Depo, Üst Grup veya MTRL kırılımında tekrar inceleyerek kök nedeni daraltın.';
 
     actions.innerHTML = `
-      <div class="outlier-action">
-        <div class="t">Hızlı Aksiyon</div>
-        <div class="d">${t1}</div>
+      <div class="outlier-action-card">
+        <div class="cap">Hızlı Aksiyon</div>
+        <div class="txt">${t1}</div>
       </div>
-      <div class="outlier-action">
-        <div class="t">Parametre & Plan</div>
-        <div class="d">${t2}</div>
+      <div class="outlier-action-card">
+        <div class="cap">Parametre ve Plan</div>
+        <div class="txt">${t2}</div>
       </div>
-      <div class="outlier-action">
-        <div class="t">Kök Neden</div>
-        <div class="d">${t3}</div>
+      <div class="outlier-action-card">
+        <div class="cap">Kök Neden</div>
+        <div class="txt">${t3}</div>
       </div>
     `;
   }
